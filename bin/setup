@@ -19,4 +19,9 @@ trap 'ret=$?; test $ret -ne 0 && printf "\nSetup failed!\n\n" >&2; exit $ret' EX
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
+fancy_echo 'Applying MacOS configurations ...'
+
+# Map 'caps lock' key to 'control'
+hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}' >/dev/null
+
 fancy_echo 'Setup completed!'

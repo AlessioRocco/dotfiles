@@ -24,4 +24,12 @@ fancy_echo 'Applying MacOS configurations ...'
 # Map 'caps lock' key to 'control'
 hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}' >/dev/null
 
+# Dock configurations
+
+## Show only active apps.
+defaults write com.apple.dock static-only -bool TRUE
+
+## Restart the Dock to apply the changes
+killall Dock
+
 fancy_echo 'Setup completed!'

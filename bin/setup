@@ -29,6 +29,9 @@ hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x70
 ## Show only active apps.
 defaults write com.apple.dock static-only -bool TRUE
 
+## Automatically hide and show the Dock.
+defaults write com.apple.dock autohide -bool TRUE
+
 ## Restart the Dock to apply the changes
 killall Dock
 

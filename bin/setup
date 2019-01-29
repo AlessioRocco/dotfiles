@@ -11,3 +11,6 @@ fancy_echo() {
   # shellcheck disable=SC2059
   printf "\\n$fmt\\n" "$@"
 }
+
+# Exit immediately if a command exits with a non-zero status.
+set -e

@@ -32,6 +32,9 @@ defaults write com.apple.dock static-only -bool TRUE
 ## Automatically hide and show the Dock.
 defaults write com.apple.dock autohide -bool TRUE
 
+## Set Dock position to the left of the screen.
+defaults write com.apple.dock orientation left
+
 ## Restart the Dock to apply the changes
 killall Dock
 

@@ -72,6 +72,7 @@ brew "rcm"
 
 # Apps
 cask "iterm2"
+cask "spectacle"
 
 # Mac App Store command line interface
 brew "mas"

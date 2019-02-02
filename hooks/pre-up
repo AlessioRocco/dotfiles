@@ -1,0 +1,15 @@
+#!/usr/local/bin/fish
+
+function fancy_echo
+  printf "\n$argv\n"
+end
+
+# Install or update fisher
+if not functions -q fisher
+  fancy_echo 'Installing fisher ...'
+  set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+  curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+else
+  fancy_echo 'Updating fisher ...'
+  fisher self-update
+end

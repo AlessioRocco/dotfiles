@@ -1,0 +1,9 @@
+#!/usr/local/bin/fish
+
+function fancy_echo
+  printf "\n$argv\n"
+end
+
+# Install, update or delete fisher packages
+fancy_echo 'Installing fisher packages ...'
+fish -c fisher

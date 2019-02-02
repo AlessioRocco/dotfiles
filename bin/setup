@@ -62,11 +62,13 @@ fi
 fancy_echo "Updating Homebrew formulae ..."
 brew update
 brew bundle --file=- <<EOF
+tap "thoughtbot/formulae"
 
 # Tools
 brew "fish"
 brew "git"
 brew "neovim"
+brew "rcm"
 
 # Apps
 cask "iterm2"

@@ -66,6 +66,7 @@ brew bundle --file=- <<EOF
 # Tools
 brew "fish"
 brew "git"
+brew "neovim"
 
 EOF
 

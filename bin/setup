@@ -87,4 +87,14 @@ case "$SHELL" in
     ;;
 esac
 
+# Clone the repo if not present then install dotfiles with rcup
+DOTFILES_DIR="$HOME/dotfiles"
+
+fancy_echo "Installing dotfiles ..."
+if [ ! -d "$DOTFILES_DIR" ]; then
+  git clone https://github.com/AlessioRocco/dotfiles-new "$DOTFILES_DIR"
+fi
+rcup -K -d "$DOTFILES_DIR" rcrc
+rcup
+
 fancy_echo 'Setup completed!'

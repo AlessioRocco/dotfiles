@@ -12,6 +12,18 @@ fancy_echo() {
   printf "\\n$fmt\\n" "$@"
 }
 
+update_shell() {
+  local shell_path;
+  shell_path="$(command -v fish)"
+
+  fancy_echo "Changing your shell to fish ..."
+  if ! grep "$shell_path" /etc/shells > /dev/null 2>&1 ; then
+    fancy_echo "Adding '$shell_path' to /etc/shells"
+    sudo sh -c "echo $shell_path >> /etc/shells"
+  fi
+  sudo chsh -s "$shell_path" "$USER"
+}
+
 # Add a failed message if setup fails.
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "\nSetup failed!\n\n" >&2; exit $ret' EXIT
@@ -55,5 +67,17 @@ brew bundle --file=- <<EOF
 brew "fish"
 
 EOF
+
+# Change the shell to fish if needed
+case "$SHELL" in
+  */fish)
+    if [ "$(command -v fish)" != '/usr/local/bin/fish' ] ; then
+      update_shell
+    fi
+    ;;
+  *)
+    update_shell
+    ;;
+esac
 
 fancy_echo 'Setup completed!'

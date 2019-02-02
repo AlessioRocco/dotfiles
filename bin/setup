@@ -68,6 +68,9 @@ brew "fish"
 brew "git"
 brew "neovim"
 
+# Apps
+cask "iterm2"
+
 EOF
 
 # Change the shell to fish if needed

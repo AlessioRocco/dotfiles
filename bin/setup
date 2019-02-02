@@ -65,6 +65,7 @@ brew bundle --file=- <<EOF
 
 # Tools
 brew "fish"
+brew "git"
 
 EOF
 

@@ -46,4 +46,10 @@ if ! command -v brew >/dev/null; then
     'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 fi
 
+# Upgrade Homebrew and install or upgrade formulae
+fancy_echo "Updating Homebrew formulae ..."
+brew update
+brew bundle --file=- <<EOF
+EOF
+
 fancy_echo 'Setup completed!'

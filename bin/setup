@@ -71,6 +71,7 @@ brew "neovim"
 brew "rcm"
 
 # Apps
+cask "cleanmymac"
 cask "iterm2"
 cask "spectacle"
 

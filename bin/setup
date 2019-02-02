@@ -98,6 +98,14 @@ case "$SHELL" in
     ;;
 esac
 
+# Create code folder
+CODE_DIR="$HOME/code"
+
+if [ ! -d "$CODE_DIR" ]; then
+  fancy_echo "Creating code folder ..."
+  mkdir "$CODE_DIR"
+fi
+
 # Clone the repo if not present then install dotfiles with rcup
 DOTFILES_DIR="$HOME/dotfiles"
 

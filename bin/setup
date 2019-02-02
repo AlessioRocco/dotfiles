@@ -38,4 +38,12 @@ defaults write com.apple.dock orientation left
 ## Restart the Dock to apply the changes
 killall Dock
 
+# Install Homebrew if the brew command is not found
+if ! command -v brew >/dev/null; then
+  fancy_echo "Installing Homebrew ..."
+
+  curl -fsS \
+    'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+fi
+
 fancy_echo 'Setup completed!'

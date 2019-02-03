@@ -102,6 +102,9 @@ cask "spectacle"
 # Mac App Store command line interface
 brew "mas"
 
+# Programming language prerequisites and package managers
+brew "gpg"
+
 EOF
 
 # Install Apps from Apple Store
@@ -124,9 +127,11 @@ esac
 
 # Install asdf plugins
 install_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
+install_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
 
 # Install languages
 source "/usr/local/opt/asdf/asdf.sh"
+bash "$HOME/.asdf/plugins/nodejs/bin/import-release-team-keyring"
 install_asdf_language "ruby"
 
 # Create code folder

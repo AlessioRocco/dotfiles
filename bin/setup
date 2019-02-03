@@ -133,6 +133,7 @@ install_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
 source "/usr/local/opt/asdf/asdf.sh"
 bash "$HOME/.asdf/plugins/nodejs/bin/import-release-team-keyring"
 install_asdf_language "ruby"
+install_asdf_language "nodejs"
 
 # Create code folder
 CODE_DIR="$HOME/code"

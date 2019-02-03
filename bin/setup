@@ -110,6 +110,9 @@ case "$SHELL" in
     ;;
 esac
 
+# Install asdf plugins
+install_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
+
 # Create code folder
 CODE_DIR="$HOME/code"
 

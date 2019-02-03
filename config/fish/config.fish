@@ -8,5 +8,5 @@ set -xg EDITOR "nvim"
 
 ### Configurations
 
-# Asdf - leave this at the bottom of the file
+# Asdf - leave this at the bottom of the file.
 source /usr/local/opt/asdf/asdf.fish

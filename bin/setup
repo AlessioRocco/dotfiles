@@ -65,6 +65,7 @@ brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 
 # Tools
+brew "asdf"
 brew "fish"
 brew "git"
 brew "hub"

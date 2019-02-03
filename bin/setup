@@ -67,6 +67,7 @@ tap "thoughtbot/formulae"
 # Tools
 brew "fish"
 brew "git"
+brew "hub"
 brew "neovim"
 brew "rcm"
 

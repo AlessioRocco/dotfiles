@@ -24,6 +24,16 @@ update_shell() {
   sudo chsh -s "$shell_path" "$USER"
 }
 
+install_asdf_plugin() {
+  local name="$1"
+  local url="$2"
+
+  if ! asdf plugin-list | grep -Fq "$name"; then
+    fancy_echo "Installing $name asdf plugin ..."
+    asdf plugin-add "$name" "$url"
+  fi
+}
+
 # Add a failed message if setup fails.
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "\nSetup failed!\n\n" >&2; exit $ret' EXIT

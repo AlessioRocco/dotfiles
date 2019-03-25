@@ -4,4 +4,5 @@
 [commit]
   template = ~/.gitmessage
 [alias]
+  a = add
   s = status --short --branch

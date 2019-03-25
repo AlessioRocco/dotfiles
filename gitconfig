@@ -6,5 +6,6 @@
 [alias]
   a = add
   c = commit
+  pf = push --force-with-lease
   ps = push
   s = status --short --branch

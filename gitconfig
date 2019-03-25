@@ -6,4 +6,5 @@
 [alias]
   a = add
   c = commit
+  ps = push
   s = status --short --branch

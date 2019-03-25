@@ -3,3 +3,5 @@
   email = alessio.rocco.lt@gmail.com
 [commit]
   template = ~/.gitmessage
+[alias]
+  s = status --short --branch

@@ -6,6 +6,7 @@
 [alias]
   a = add
   c = commit
+  i = init
   pf = push --force-with-lease
   pl = pull
   ps = push

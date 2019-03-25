@@ -7,5 +7,6 @@
   a = add
   c = commit
   pf = push --force-with-lease
+  pl = pull
   ps = push
   s = status --short --branch

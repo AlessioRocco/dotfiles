@@ -75,6 +75,9 @@ killall Dock
 ## Automatically hide and show the Menubar.
 defaults write NSGlobalDomain _HIHideMenuBar -bool TRUE
 
+## Add Spectacle app to login items
+osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Spectacle.app", hidden:true}'
+
 # Install Homebrew if the brew command is not found
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."

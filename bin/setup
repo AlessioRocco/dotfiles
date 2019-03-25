@@ -159,4 +159,12 @@ fi
 rcup -K -d "$DOTFILES_DIR" rcrc
 rcup
 
+fancy_echo 'Applying iTerm2 configurations ...'
+
+# Specify the iTerm2 preferences directory
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/dotfiles/iterm2"
+
+# Tell iTerm2 to use the custom preferences in the directory
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
 fancy_echo 'Setup completed!'

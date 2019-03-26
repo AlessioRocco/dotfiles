@@ -15,6 +15,7 @@
   hp = stash pop
   i = init
   l = log -30
+  la = log --graph --all -30
   ll = log
   pf = push --force-with-lease
   pl = pull

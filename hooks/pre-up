@@ -13,3 +13,9 @@ else
   fancy_echo 'Updating fisher ...'
   fisher self-update
 end
+
+# Install Tmux Plugin Manager
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]
+  fancy_echo "Installing Tmux Plugin Manager ..."
+  git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+end

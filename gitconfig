@@ -11,6 +11,7 @@
   ap = add --patch
   br = branch
   bra = branch --all --verbose
+  brd = branch --delete
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit

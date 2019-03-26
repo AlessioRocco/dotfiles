@@ -1,6 +1,8 @@
 [user]
   name = Alessio Rocco
   email = alessio.rocco.lt@gmail.com
+[core]
+  excludesfile = ~/.gitignore
 [commit]
   template = ~/.gitmessage
 [push]

@@ -11,6 +11,7 @@
   ca = commit --amend
   car = commit --amend --no-edit
   co = checkout
+  d = diff --color-words
   glog = log -E -i --grep
   h = stash
   hl = stash list

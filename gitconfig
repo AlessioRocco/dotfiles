@@ -9,6 +9,7 @@
   a = add
   aa = add --all
   ap = add --patch
+  br = branch
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit

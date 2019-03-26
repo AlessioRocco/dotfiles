@@ -5,6 +5,8 @@
   template = ~/.gitmessage
 [push]
   default = current
+[merge]
+  ff = only
 [format]
   pretty = %C(yellow)%h%C(reset) %C(green)%ar%C(reset) %C(bold blue)%an%C(reset) %C(red)%d%C(reset) %s%C(reset)
 [alias]

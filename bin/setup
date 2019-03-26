@@ -94,6 +94,7 @@ tap "thoughtbot/formulae"
 
 # Tools
 brew "asdf"
+brew "diff-so-fancy"
 brew "fish"
 brew "git"
 brew "gitsh"

@@ -10,6 +10,7 @@
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit
+  cm = commit -m
   co = checkout
   d = diff --color-words
   glog = log -E -i --grep

@@ -101,6 +101,7 @@ brew "gitsh"
 brew "hub"
 brew "neovim"
 brew "rcm"
+brew "tmux"
 
 # Apps
 cask "cleanmymac"

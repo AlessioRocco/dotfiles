@@ -3,6 +3,8 @@
   email = alessio.rocco.lt@gmail.com
 [commit]
   template = ~/.gitmessage
+[push]
+  default = current
 [format]
   pretty = %C(yellow)%h%C(reset) %C(green)%ar%C(reset) %C(bold blue)%an%C(reset) %C(red)%d%C(reset) %s%C(reset)
 [alias]

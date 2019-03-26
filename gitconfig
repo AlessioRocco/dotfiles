@@ -6,6 +6,7 @@
 [gitsh]
   gitcommand = hub
   nogreeting = true
+  defaultcommand = s
 [commit]
   template = ~/.gitmessage
 [push]

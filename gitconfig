@@ -10,6 +10,7 @@
   co = checkout
   h = stash
   hl = stash list
+  hp = stash pop
   i = init
   pf = push --force-with-lease
   pl = pull

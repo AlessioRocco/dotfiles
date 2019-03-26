@@ -10,6 +10,7 @@
   aa = add --all
   ap = add --patch
   br = branch
+  bra = branch --all --verbose
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit

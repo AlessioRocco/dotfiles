@@ -7,6 +7,7 @@
   pretty = %C(yellow)%h%C(reset) %C(green)%ar%C(reset) %C(bold blue)%an%C(reset) %C(red)%d%C(reset) %s%C(reset)
 [alias]
   a = add
+  aa = add --all
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit

@@ -9,6 +9,7 @@
   ca = commit --amend
   co = checkout
   h = stash
+  hl = stash list
   i = init
   pf = push --force-with-lease
   pl = pull

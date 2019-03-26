@@ -16,6 +16,7 @@
   i = init
   l = log -30
   la = log --graph --all -30
+  lal = log --graph --all
   ll = log
   pf = push --force-with-lease
   pl = pull

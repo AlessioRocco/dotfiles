@@ -33,6 +33,7 @@
   pl = pull
   ps = push
   r = rebase
+  ra = rebase --abort
   rc = rebase --continue
   ri = rebase --interactive
   rs = rebase --skip

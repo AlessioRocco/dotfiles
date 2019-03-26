@@ -3,6 +3,7 @@
   email = alessio.rocco.lt@gmail.com
 [core]
   excludesfile = ~/.gitignore
+  autocrlf = input
 [gitsh]
   gitcommand = hub
   nogreeting = true

@@ -21,6 +21,7 @@
   ds = diff --color-words --cached
   glog = log -E -i --grep
   h = stash
+  ha = stash --include-untracked
   hl = stash list
   hp = stash pop
   i = init

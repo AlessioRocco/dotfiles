@@ -26,3 +26,4 @@
   ps = push
   s = status --short --branch
   slog = log -G
+  unstage = reset

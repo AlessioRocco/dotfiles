@@ -32,6 +32,7 @@
   pl = pull
   ps = push
   r = rebase
+  ri = rebase --interactive
   s = status --short --branch
   slog = log -G
   uncommit = reset --soft HEAD^

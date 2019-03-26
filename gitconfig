@@ -9,6 +9,7 @@
   a = add
   c = commit
   ca = commit --amend
+  car = commit --amend --no-edit
   co = checkout
   glog = log -E -i --grep
   h = stash

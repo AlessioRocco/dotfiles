@@ -35,6 +35,7 @@
   r = rebase
   rc = rebase --continue
   ri = rebase --interactive
+  rs = rebase --skip
   s = status --short --branch
   slog = log -G
   uncommit = reset --soft HEAD^

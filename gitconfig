@@ -3,6 +3,8 @@
   email = alessio.rocco.lt@gmail.com
 [core]
   excludesfile = ~/.gitignore
+[gitsh]
+  gitcommand = hub
 [commit]
   template = ~/.gitmessage
 [push]

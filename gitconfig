@@ -8,6 +8,7 @@
 [alias]
   a = add
   aa = add --all
+  ap = add --patch
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit

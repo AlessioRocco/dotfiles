@@ -5,6 +5,7 @@
   excludesfile = ~/.gitignore
 [gitsh]
   gitcommand = hub
+  nogreeting = true
 [commit]
   template = ~/.gitmessage
 [push]

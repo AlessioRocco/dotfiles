@@ -9,6 +9,8 @@
   ff = only
 [fetch]
   prune = true
+[rebase]
+  autosquash = true
 [format]
   pretty = %C(yellow)%h%C(reset) %C(green)%ar%C(reset) %C(bold blue)%an%C(reset) %C(red)%d%C(reset) %s%C(reset)
 [alias]

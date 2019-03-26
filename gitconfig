@@ -18,6 +18,7 @@
   cm = commit -m
   co = checkout
   d = diff --color-words
+  ds = diff --color-words --cached
   glog = log -E -i --grep
   h = stash
   hl = stash list

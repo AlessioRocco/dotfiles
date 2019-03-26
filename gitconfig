@@ -33,6 +33,7 @@
   pl = pull
   ps = push
   r = rebase
+  rc = rebase --continue
   ri = rebase --interactive
   s = status --short --branch
   slog = log -G

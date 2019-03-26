@@ -26,4 +26,5 @@
   ps = push
   s = status --short --branch
   slog = log -G
+  uncommit = reset --soft HEAD^
   unstage = reset

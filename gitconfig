@@ -52,6 +52,7 @@
   co = checkout
   d = diff --color-words
   ds = diff --color-words --cached
+  fixup = !git log -50 --color | fzf-tmux --ansi --reverse --no-sort | cut -d ' ' -f1 | xargs git commit --fixup
   glog = log -E -i --grep
   h = stash
   ha = stash --include-untracked

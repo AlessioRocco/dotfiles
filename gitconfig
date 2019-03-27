@@ -68,7 +68,7 @@
   r = rebase
   ra = rebase --abort
   rc = rebase --continue
-  ri = rebase --interactive
+  ri = !git log -50 --color | fzf-tmux --ansi --reverse --no-sort | cut -d ' ' -f1 | xargs -I sha git rebase --interactive sha^
   rs = rebase --skip
   s = status --short --branch
   slog = log -G

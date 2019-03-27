@@ -7,3 +7,8 @@ end
 # Install, update or delete fisher packages
 fancy_echo 'Installing fisher packages ...'
 fish -c fisher
+
+# Install, update and clean Tmux Plugin Manager plugins
+fancy_echo 'Installing, updating and cleaning Tmux Plugin Manager plugins ...'
+$HOME/.tmux/plugins/tpm/bin/clean_plugins
+$HOME/.tmux/plugins/tpm/bin/update_plugins all

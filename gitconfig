@@ -1,6 +1,7 @@
 [user]
   name = Alessio Rocco
   email = alessio.rocco.lt@gmail.com
+  signingkey = D8D7C8036A534B7D
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -11,6 +12,7 @@
   defaultcommand = s
 [commit]
   template = ~/.gitmessage
+  gpgsign = true
 [push]
   default = current
 [pull]

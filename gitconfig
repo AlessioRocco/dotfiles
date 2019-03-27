@@ -44,6 +44,7 @@
   br = branch
   bra = branch --all --verbose
   brd = branch --delete
+  bselect = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
   c = commit
   ca = commit --amend
   car = commit --amend --no-edit

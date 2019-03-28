@@ -14,6 +14,9 @@ set PATH ~/.bin $PATH
 
 ### Aliases
 
+# Git/Hub
+alias g "git_or_gitsh"
+
 # Reload fish shell configuration
 alias reload "reload_configuration"
 

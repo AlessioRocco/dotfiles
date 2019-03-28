@@ -12,6 +12,11 @@ set -U FZF_LEGACY_KEYBINDINGS 0
 # Set $PATH
 set PATH ~/.bin $PATH
 
+### Aliases
+
+# Reload fish shell configuration
+alias reload "reload_configuration"
+
 ### Configurations
 
 # Asdf - leave this at the bottom of the file.

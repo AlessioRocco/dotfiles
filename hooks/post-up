@@ -12,3 +12,7 @@ fish -c fisher
 fancy_echo 'Installing, updating and cleaning Tmux Plugin Manager plugins ...'
 $HOME/.tmux/plugins/tpm/bin/clean_plugins
 $HOME/.tmux/plugins/tpm/bin/update_plugins all
+
+# Install, update and clean NeoVim plugins
+fancy_echo 'Installing, updating and cleaning NeoVim packages ...'
+nvim +PlugUpdate +PlugClean! +qa

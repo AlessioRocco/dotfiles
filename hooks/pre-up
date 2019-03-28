@@ -19,3 +19,13 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]
   fancy_echo "Installing Tmux Plugin Manager ..."
   git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 end
+
+# Install vim-plug for NeoVim
+if test -e "$HOME/.local/share/nvim/site/autoload/plug.vim"
+  fancy_echo "Updating vim-plug for NeoVim ..."
+  vim -E -s +PlugUpgrade +qa
+else
+  fancy_echo "Installing vim-plug for NeoVim ..."
+  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+end

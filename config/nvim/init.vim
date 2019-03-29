@@ -10,6 +10,8 @@ call plug#end()
 
 """ General
 
+let g:mapleader = ","                 " Set leader key to ','
+
 "" Theme preferences
 set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme

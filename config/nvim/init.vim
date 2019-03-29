@@ -6,3 +6,8 @@ call plug#begin()
 " Initialize plugin system
 call plug#end()
 
+
+""" General
+
+"" Theme preferences
+set termguicolors                     " Set up true color support

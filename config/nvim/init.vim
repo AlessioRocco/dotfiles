@@ -12,6 +12,7 @@ call plug#end()
 
 let g:mapleader = ","                 " Set leader key to ','
 set clipboard+=unnamed                " Copy and Paste from the system clipboard
+set mouse=a                           " Enable mouse
 
 "" Theme preferences
 set termguicolors                     " Set up true color support

@@ -22,5 +22,10 @@ alias reload "reload_configuration"
 
 ### Configurations
 
+# Automatically set gruvbox dark with medium contrast as theme
+if type -q theme_gruvbox
+  theme_gruvbox dark medium
+end
+
 # Asdf - leave this at the bottom of the file.
 source /usr/local/opt/asdf/asdf.fish

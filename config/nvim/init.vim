@@ -11,6 +11,7 @@ call plug#end()
 """ General
 
 let g:mapleader = ","                 " Set leader key to ','
+set clipboard+=unnamed                " Copy and Paste from the system clipboard
 
 "" Theme preferences
 set termguicolors                     " Set up true color support

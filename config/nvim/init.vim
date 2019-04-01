@@ -3,6 +3,7 @@
 call plug#begin()
 " Make sure you use single quotes
 
+Plug 'christoomey/vim-tmux-navigator' " Seamless navigation between tmux panes and vim splits
 Plug 'editorconfig/editorconfig-vim'  " EditorConfig plugin for Vim http://editorconfig.org
 Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim

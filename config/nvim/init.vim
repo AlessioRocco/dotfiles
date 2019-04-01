@@ -10,6 +10,7 @@ Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
 Plug 'sheerun/vim-polyglot'           " A solid language pack for Vim.
+Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
 
 " Initialize plugin system
 call plug#end()
@@ -62,6 +63,9 @@ set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme
 
 """ Plugins
+
+"" Airline
+let g:airline_powerline_fonts = 1
 
 "" NERDTree
 let NERDTreeAutoDeleteBuffer = 1      " Automatically delete the buffer of the file you just deleted with NerdTree

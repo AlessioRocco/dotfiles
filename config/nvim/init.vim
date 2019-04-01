@@ -14,6 +14,7 @@ let g:mapleader = ","                 " Set leader key to ','
 set clipboard+=unnamed                " Copy and Paste from the system clipboard
 set list listchars=tab:»·,trail:·     " Display extra whitespace
 set mouse=a                           " Enable mouse
+set wildmode=list:longest,full        " Command Line configurations
 
 "" Number column preferences
 set number                            " Use absolute line numbers column

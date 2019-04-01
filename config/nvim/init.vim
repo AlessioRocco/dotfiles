@@ -30,6 +30,10 @@ set scrolloff=2                       " Set minimal number of screen lines to ke
 set sidescroll=1                      " Incrementally scroll one character at a time to reveal more text as needed
 set sidescrolloff=10                  " Set minimal number of screen columns to keep to the left and to the right of the cursor
 
+"" Searching preferences
+set ignorecase                        " Searching is not case sensitive
+set smartcase                         " Make search case sensitive only if it contains uppercase letters
+
 "" Theme preferences
 set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme

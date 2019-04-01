@@ -14,6 +14,11 @@ let g:mapleader = ","                 " Set leader key to ','
 set clipboard+=unnamed                " Copy and Paste from the system clipboard
 set mouse=a                           " Enable mouse
 
+"" Number column preferences
+set number                            " Use absolute line numbers column
+set numberwidth=5                     " Change line numbers column width
+
 "" Theme preferences
 set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme
+

@@ -4,6 +4,7 @@ call plug#begin()
 " Make sure you use single quotes
 
 Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim
+Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
 
 " Initialize plugin system
 call plug#end()

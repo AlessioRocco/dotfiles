@@ -8,6 +8,7 @@ Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
+Plug 'sheerun/vim-polyglot'           " A solid language pack for Vim.
 
 " Initialize plugin system
 call plug#end()

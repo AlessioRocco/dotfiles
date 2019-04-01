@@ -11,6 +11,7 @@ Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
 Plug 'sheerun/vim-polyglot'           " A solid language pack for Vim.
 Plug 'tpope/vim-commentary'           " commentary.vim: comment stuff out
+Plug 'tpope/vim-surround'             " surround.vim: quoting/parenthesizing made simple
 Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
 
 " Initialize plugin system

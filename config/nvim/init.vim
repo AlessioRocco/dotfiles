@@ -54,3 +54,14 @@ augroup END
 "" Theme preferences
 set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme
+
+""" Plugins
+
+"" NERDTree
+let NERDTreeAutoDeleteBuffer = 1      " Automatically delete the buffer of the file you just deleted with NerdTree
+let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
+
+""" Keymaps
+
+"" NERDTree
+nnoremap \ :NERDTreeToggle<cr>

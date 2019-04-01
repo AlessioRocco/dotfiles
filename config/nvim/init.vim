@@ -4,6 +4,8 @@ call plug#begin()
 " Make sure you use single quotes
 
 Plug 'editorconfig/editorconfig-vim'  " EditorConfig plugin for Vim http://editorconfig.org
+Plug '/usr/local/opt/fzf'             " fzf love vim
+Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
 
@@ -67,3 +69,7 @@ let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
 
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
+
+"" FZF
+nnoremap <C-p> :Files<cr>
+nnoremap <C-t> :Buffers<cr>

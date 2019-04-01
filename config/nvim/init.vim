@@ -34,6 +34,22 @@ set sidescrolloff=10                  " Set minimal number of screen columns to 
 set ignorecase                        " Searching is not case sensitive
 set smartcase                         " Make search case sensitive only if it contains uppercase letters
 
+"" Autoread and autowrite
+set autowrite                         " Write the contents of the file if it has been modified
+set autowriteall                      " Like 'autowrite' but also used for commands
+set noswapfile                        " Don't create a swapfile for a new buffer
+set nowritebackup                     " Don't backup before overwriting a file.
+set undofile                          " Automatically save your undo history
+
+" Auto read files when focus is gained
+au FocusGained * :checktime
+
+" Auto save files when focus is lost
+augroup save
+  au!
+  au FocusLost * wall
+augroup END
+
 "" Theme preferences
 set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme

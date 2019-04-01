@@ -12,6 +12,7 @@ call plug#end()
 
 let g:mapleader = ","                 " Set leader key to ','
 set clipboard+=unnamed                " Copy and Paste from the system clipboard
+set list listchars=tab:»·,trail:·     " Display extra whitespace
 set mouse=a                           " Enable mouse
 
 "" Number column preferences

@@ -107,6 +107,7 @@ brew "tmux"
 # Apps
 cask "cleanmymac"
 cask "docker"
+cask "firefox"
 cask "google-chrome"
 cask "iterm2"
 cask "spectacle"

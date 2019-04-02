@@ -26,6 +26,9 @@ alias reload "reload_configuration"
 # Editor
 alias e "editor"
 
+# Edit host database file
+alias eh "sudo vim /etc/hosts"
+
 ### Abbreviations
 
 # Bundler

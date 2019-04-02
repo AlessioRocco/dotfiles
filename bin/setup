@@ -118,6 +118,7 @@ cask "spotify"
 
 # Services
 brew "postgres", restart_service: :changed
+brew "redis", restart_service: :changed
 
 # Mac App Store command line interface
 brew "mas"

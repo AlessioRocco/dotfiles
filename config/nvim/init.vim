@@ -12,6 +12,7 @@ Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
 Plug 'sheerun/vim-polyglot'           " A solid language pack for Vim.
 Plug 'tpope/vim-commentary'           " commentary.vim: comment stuff out
 Plug 'tpope/vim-fugitive'             " fugitive.vim: a Git wrapper so awesome, it should be illegal
+Plug 'tpope/vim-rhubarb'              " rhubarb.vim: GitHub extension for fugitive.vim
 Plug 'tpope/vim-surround'             " surround.vim: quoting/parenthesizing made simple
 Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
 

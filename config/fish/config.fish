@@ -26,6 +26,15 @@ alias reload "reload_configuration"
 # Editor
 alias e "editor"
 
+### Abbreviations
+
+# Bundler
+abbr b "bundle"
+abbr be "bundle exec"
+abbr bi "bundle install"
+abbr bu "bundle update"
+abbr bo "bundle open"
+
 ### Configurations
 
 # Automatically set gruvbox dark with medium contrast as theme

@@ -91,6 +91,7 @@ fancy_echo "Updating Homebrew formulae ..."
 brew update
 brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
+tap "homebrew/services"
 
 # Tools
 brew "asdf"

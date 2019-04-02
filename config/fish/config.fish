@@ -20,6 +20,9 @@ alias g "git_or_gitsh"
 # Reload fish shell configuration
 alias reload "reload_configuration"
 
+# Editor
+alias e "editor"
+
 ### Configurations
 
 # Automatically set gruvbox dark with medium contrast as theme

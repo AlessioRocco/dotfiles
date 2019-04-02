@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Keeping macOS clean
+
+fancy_echo() {
+  local fmt="$1"; shift
+
+  # shellcheck disable=SC2059
+  printf "\\n$fmt\\n" "$@"
+}
+
+# Cleanup brew
+fancy_echo "Cleaning Homebrew ..."
+brew cleanup -s
+
+# Diagnotic
+fancy_echo "Homebrew Diagnostic ..."
+brew doctor
+brew missing
+
+# Exit with success
+exit 0

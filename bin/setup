@@ -122,6 +122,7 @@ EOF
 
 # Install Apps from Apple Store
 fancy_echo "Installing Apps from Apple Store ..."
+mas install 1147396723 # WhatsApp Desktop
 mas install 1333542190 # 1Password 7
 mas install 506189836  # Harvest
 mas install 747648890  # Telegram

@@ -110,6 +110,7 @@ cask "docker"
 cask "google-chrome"
 cask "iterm2"
 cask "spectacle"
+cask "spotify"
 
 # Mac App Store command line interface
 brew "mas"

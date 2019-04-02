@@ -6,6 +6,9 @@ set -xg CDPATH . ~/code
 # Set NeoVim as the default editor.
 set -xg EDITOR "nvim"
 
+# Editor for opening gems
+set -xg BUNDLER_EDITOR "nvim"
+
 # Use fzf new keybindings
 set -U FZF_LEGACY_KEYBINDINGS 0
 

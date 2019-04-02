@@ -125,6 +125,7 @@ brew "mas"
 
 # Programming language prerequisites and package managers
 brew "gpg"
+brew "yarn", args: ["ignore-dependencies"]
 
 EOF
 

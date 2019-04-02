@@ -121,6 +121,7 @@ EOF
 # Install Apps from Apple Store
 fancy_echo "Installing Apps from Apple Store ..."
 mas install 1333542190 # 1Password 7
+mas install 506189836  # Harvest
 mas install 803453959  # Slack
 mas install 918858936  # AirMail 3
 mas install 960276676  # Taurine

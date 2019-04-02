@@ -3,6 +3,7 @@
 call plug#begin()
 " Make sure you use single quotes
 
+Plug 'airblade/vim-gitgutter'         " A Vim plugin which shows a git diff in the gutter (sign column) and stages/undoes hunks.
 Plug 'christoomey/vim-tmux-navigator' " Seamless navigation between tmux panes and vim splits
 Plug 'editorconfig/editorconfig-vim'  " EditorConfig plugin for Vim http://editorconfig.org
 Plug '/usr/local/opt/fzf'             " fzf love vim

@@ -120,6 +120,9 @@ cask "spotify"
 brew "postgres", restart_service: :changed
 brew "redis", restart_service: :changed
 
+# Image manipulation
+brew "imagemagick"
+
 # Mac App Store command line interface
 brew "mas"
 

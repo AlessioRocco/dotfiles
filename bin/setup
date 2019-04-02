@@ -187,6 +187,11 @@ fi
 rcup -K -d "$DOTFILES_DIR" rcrc
 rcup
 
+# Set bundle number of cores
+fancy_echo "Setting bundle number of cores ..."
+number_of_cores=$(sysctl -n hw.ncpu)
+bundle config --global jobs $((number_of_cores - 1))
+
 fancy_echo 'Applying iTerm2 configurations ...'
 
 # Specify the iTerm2 preferences directory

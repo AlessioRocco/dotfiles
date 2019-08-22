@@ -42,6 +42,7 @@
 [alias]
   a = add
   aa = add --all
+  aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi
   ap = add --patch
   br = branch
   bra = branch --all --verbose

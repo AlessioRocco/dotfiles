@@ -63,6 +63,7 @@
   hl = stash list
   hp = stash pop
   i = init
+  l = !fish -c 'fzf_git_log | pbcopy'
   l = log -30
   la = log --graph --all -30
   lal = log --graph --all

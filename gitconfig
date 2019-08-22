@@ -76,7 +76,7 @@
   ri = !git log -50 --color | fzf-tmux --ansi --reverse --no-sort | cut -d ' ' -f1 | xargs -I sha git rebase --interactive sha^
   rs = rebase --skip
   s = status --short --branch
-  sh = !git log --color | fzf-tmux --ansi --reverse --no-sort | cut -d ' ' -f1 | xargs git show --format=medium
+  sh = !fish -c 'fzf_git_log | xargs git show --format=medium'
   slog = log -G
   uncommit = reset --soft HEAD^
   unstage = reset

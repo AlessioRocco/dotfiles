@@ -51,7 +51,7 @@
   bselect = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
   c = commit
   ca = commit --amend
-  car = commit --amend --no-edit
+  cane = commit --amend --no-edit
   cm = commit -m
   co = checkout
   d = diff --color-words

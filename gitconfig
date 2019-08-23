@@ -44,42 +44,71 @@
   ### parameters (E.g. 'a' is the alias for 'add' and 'i' is the alias for
   ### 'init') but with some exception (E.g. 'co' is the alias for 'checkout').
 
+  ## init
+  i = init
+
+  # status
+  s = status --short --branch
+
+  ## add
   a = add
   aa = add --all
-  aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi
   ap = add --patch
+
+  ## commit
+  c = commit
+  ca = commit --amend
+  cane = commit --amend --no-edit
+  cm = commit -m
+  fixup = !fish -c 'fzf_git_log | xargs git commit --fixup'
+
+  ## checkout
+  co = checkout
+
+  ## branch
   bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
   br = branch
   bra = branch --all --verbose
   brd = branch --delete
   bs = bselect
   bselect = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
-  c = commit
-  ca = commit --amend
-  cane = commit --amend --no-edit
-  cm = commit -m
-  co = checkout
-  d = diff --color-words
-  ds = diff --color-words --cached
-  fixup = !fish -c 'fzf_git_log | xargs git commit --fixup'
-  glog = log -E -i --grep
-  h = stash
-  ha = stash --include-untracked
-  hl = stash list
-  hp = stash pop
-  i = init
-  l = !fish -c 'fzf_git_log | pbcopy'
-  la = !fish -c 'fzf_git_log --graph | pbcopy'
-  pf = push --force-with-lease
-  pl = pull
-  ps = push
+
+  ## rebase
   r = rebase
   ra = rebase --abort
   rc = rebase --continue
   ri = !fish -c 'fzf_git_log | xargs -I sha git rebase --interactive sha^'
   rs = rebase --skip
-  s = status --short --branch
+
+  ## stash
+  h = stash
+  ha = stash --include-untracked
+  hl = stash list
+  hp = stash pop
+
+  ## push
+  pf = push --force-with-lease
+  ps = push
+
+  ## pull
+  pl = pull
+
+  ## show
   sh = !fish -c 'fzf_git_log | xargs git show --format=medium'
+
+  ## log
+  l = !fish -c 'fzf_git_log | pbcopy'
+  glog = log -E -i --grep
+  la = !fish -c 'fzf_git_log --graph | pbcopy'
   slog = log -G
-  uncommit = reset --soft HEAD^
+
+  ## diff
+  d = diff --color-words
+  ds = diff --color-words --cached
+
+  ## reset
   unstage = reset
+  uncommit = reset --soft HEAD^
+
+  ## config
+  aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi

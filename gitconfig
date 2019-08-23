@@ -48,6 +48,7 @@
   i = init
 
   # status
+  s = status
   ss = status --short --branch
 
   ## add

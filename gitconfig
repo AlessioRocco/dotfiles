@@ -40,6 +40,10 @@
 [format]
   pretty = %C(yellow)%h%C(reset) %C(green)%ar%C(reset) %C(bold blue)%an%C(reset) %C(red)%d%C(reset) %s%C(reset)
 [alias]
+  ### Git aliases, usually a single character is mapped to the command without
+  ### parameters (E.g. 'a' is the alias for 'add' and 'i' is the alias for
+  ### 'init') but with some exception (E.g. 'co' is the alias for 'checkout').
+
   a = add
   aa = add --all
   aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi

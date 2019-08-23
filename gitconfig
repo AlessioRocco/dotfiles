@@ -65,6 +65,7 @@
 
   ## checkout
   co = checkout
+  cob = checkout -b
 
   ## branch
   bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete

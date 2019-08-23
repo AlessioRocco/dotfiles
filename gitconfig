@@ -9,7 +9,7 @@
 [gitsh]
   gitcommand = hub
   nogreeting = true
-  defaultcommand = s
+  defaultcommand = ss
 [commit]
   template = ~/.gitmessage
   gpgsign = true
@@ -48,7 +48,7 @@
   i = init
 
   # status
-  s = status --short --branch
+  ss = status --short --branch
 
   ## add
   a = add

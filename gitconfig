@@ -44,6 +44,7 @@
   aa = add --all
   aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi
   ap = add --patch
+  bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
   br = branch
   bra = branch --all --verbose
   brd = branch --delete

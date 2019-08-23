@@ -70,10 +70,10 @@
 
   ## branch
   b = branch
-  bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
+  bs = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
   br = !git branch --remote | fzf-tmux --reverse | xargs git checkout --track
   ba = !git branch --all | fzf-tmux --reverse | xargs git checkout --track
-  bs = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
+  bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
 
   ## rebase
   r = rebase

@@ -69,8 +69,8 @@
   com = checkout master
 
   ## branch
+  b = branch
   bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
-  br = branch
   bra = branch --all --verbose
   brd = branch --delete
   bs = bselect

@@ -72,7 +72,7 @@
   r = rebase
   ra = rebase --abort
   rc = rebase --continue
-  ri = !git log -50 --color | fzf-tmux --ansi --reverse --no-sort | cut -d ' ' -f1 | xargs -I sha git rebase --interactive sha^
+  ri = !fish -c 'fzf_git_log | xargs -I sha git rebase --interactive sha^'
   rs = rebase --skip
   s = status --short --branch
   sh = !fish -c 'fzf_git_log | xargs git show --format=medium'

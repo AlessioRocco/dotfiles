@@ -72,7 +72,6 @@
   b = branch
   bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
   bra = branch --all --verbose
-  brd = branch --delete
   bs = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
 
   ## rebase

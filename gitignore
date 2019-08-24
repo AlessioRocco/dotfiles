@@ -13,3 +13,4 @@ tmp/**/*
 *.pyc
 vim/view
 node_modules
+.tool-versions

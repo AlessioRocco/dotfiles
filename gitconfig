@@ -78,11 +78,11 @@
 
   ## rebase
   r = rebase
-  ra = rebase --abort
   rc = rebase --continue
+  rs = rebase --skip
+  ra = rebase --abort
   ri = !fish -c 'fzf_git_log | xargs -I sha git rebase --interactive sha^'
   rim = rebase --interactive master
-  rs = rebase --skip
 
   ## stash
   h = stash

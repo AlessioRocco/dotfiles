@@ -106,7 +106,7 @@
   ## log
   ll = !fish -c 'fzf_git_log | pbcopy'
   la = !fish -c 'fzf_git_log --graph | pbcopy'
-  slog = log -G
+  slog = !fish -c 'fzf_git_log -G '$1' | pbcopy'
 
   ## diff
   d = diff --color-words

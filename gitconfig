@@ -104,8 +104,7 @@
   sh = !fish -c 'fzf_git_log | xargs git show --format=medium'
 
   ## log
-  l = !fish -c 'fzf_git_log | pbcopy'
-  glog = log -E -i --grep
+  ll = !fish -c 'fzf_git_log | pbcopy'
   la = !fish -c 'fzf_git_log --graph | pbcopy'
   slog = log -G
 

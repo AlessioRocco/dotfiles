@@ -74,7 +74,7 @@
   bs = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
   br = !git branch --remote | fzf-tmux --reverse | xargs git checkout --track
   ba = !fish -c 'fzf_git_branch --all | pbcopy'
-  bd = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git branch --delete
+  bd = !fish -c 'fzf_git_branch | xargs git branch --delete'
 
   ## rebase
   r = rebase

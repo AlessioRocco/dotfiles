@@ -89,6 +89,7 @@
   ha = stash --include-untracked
   hl = stash list
   hp = stash pop
+  hy = stash apply
 
   ## push
   pf = push --force-with-lease

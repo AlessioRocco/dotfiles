@@ -89,6 +89,7 @@
   hh = stash --include-untracked
   hl = !fish -c 'fzf_git_stash_list | pbcopy'
   hlp = !fish -c 'fzf_git_stash_list | xargs git stash pop'
+  hla = !fish -c 'fzf_git_stash_list | xargs git stash apply'
   hp = stash pop
   ha = stash apply
 

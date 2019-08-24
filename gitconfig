@@ -89,7 +89,7 @@
   hh = stash --include-untracked
   hl = !fish -c 'fzf_git_stash_list | pbcopy'
   hp = stash pop
-  hy = stash apply
+  ha = stash apply
 
   ## push
   pf = push --force-with-lease

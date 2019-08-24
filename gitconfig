@@ -72,7 +72,7 @@
   b = branch
   bl = !fish -c 'fzf_git_branch | pbcopy'
   bs = !git branch | grep -v '^*' | fzf-tmux --reverse | xargs git checkout
-  br = !git branch --remote | fzf-tmux --reverse | xargs git checkout --track
+  br = !fish -c 'fzf_git_branch --remote | xargs git checkout --track'
   ba = !fish -c 'fzf_git_branch --all | pbcopy'
   bd = !fish -c 'fzf_git_branch | xargs git branch --delete'
 

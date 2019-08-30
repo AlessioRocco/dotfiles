@@ -92,6 +92,7 @@ brew update
 brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
+tap "heroku/brew"
 
 # Tools
 brew "asdf"
@@ -100,6 +101,7 @@ brew "fish"
 brew "fzf"
 brew "git"
 brew "gitsh"
+brew "heroku"
 brew "hub"
 brew "neovim"
 brew "rcm"

@@ -106,6 +106,7 @@ brew "heroku"
 brew "hub"
 brew "neovim"
 brew "rcm"
+brew "ripgrep"
 brew "tmux"
 
 # Apps

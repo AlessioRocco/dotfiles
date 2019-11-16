@@ -96,6 +96,7 @@ tap "heroku/brew"
 
 # Tools
 brew "asdf"
+brew "awscli"
 brew "diff-so-fancy"
 brew "fish"
 brew "fzf"

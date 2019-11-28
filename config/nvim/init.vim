@@ -85,6 +85,9 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']     " Ensure that Editor
 let NERDTreeAutoDeleteBuffer = 1      " Automatically delete the buffer of the file you just deleted with NerdTree
 let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
 
+"" vim-test
+let test#strategy = "neovim"               " Use neovim terminal as strategy to run tests
+let test#neovim#term_position = "vsplit"   " Run test in a vertical split pane
 
 "" Sneak
 let g:sneak#label = 1                 " Enable label-mode for a minimalist alternative to EasyMotion

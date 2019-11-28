@@ -126,6 +126,15 @@ vnoremap N Nzz
 nnoremap c "xc
 xnoremap c "xc
 
+" Split and resize panes
+nnoremap <leader>\| :vsplit<cr>
+nnoremap <leader>- :split<cr>
+
+nnoremap <silent> <Right> :vertical-resize +1<cr>
+nnoremap <silent> <Left> :vertical-resize -1<cr>
+nnoremap <silent> <Up> :resize +1<cr>
+nnoremap <silent> <Down> :resize -1<cr>
+
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

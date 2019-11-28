@@ -27,7 +27,6 @@ let g:mapleader = " "                 " Set leader key to space
 set clipboard+=unnamed                " Copy and Paste from the system clipboard
 set list listchars=tab:»·,trail:·     " Display extra whitespace
 set mouse=a                           " Enable mouse
-set shell=/bin/sh                     " Use sh as default shell
 set wildmode=list:longest,full        " Command Line configurations
 
 "" Number column preferences

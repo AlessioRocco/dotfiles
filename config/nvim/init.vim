@@ -87,6 +87,9 @@ let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
 " jj exits to normal mode
 inoremap jj <esc>
 
+" Reindent the entire file
+nnoremap <leader>f gg=G
+
 " Set movement keys to move by virtual line, i.e. get around wrapped lines
 nnoremap j gj
 nnoremap k gk

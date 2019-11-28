@@ -86,6 +86,18 @@ let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
 
 " jj exits to normal mode
 inoremap jj <esc>
+
+" Set movement keys to move by virtual line, i.e. get around wrapped lines
+nnoremap j gj
+nnoremap k gk
+vnoremap j gj
+vnoremap k gk
+
+nnoremap $ g$
+nnoremap 0 g0
+vnoremap $ g$
+vnoremap 0 g0
+
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

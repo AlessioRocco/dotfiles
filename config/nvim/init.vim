@@ -61,6 +61,7 @@ au FocusGained * :checktime
 augroup save
   au!
   au FocusLost * wall
+  au BufLeave * wall                   " Write all changed buffers when leaving a buffer.
 augroup END
 
 "" Theme preferences

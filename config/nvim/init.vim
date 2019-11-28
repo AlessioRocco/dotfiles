@@ -65,7 +65,7 @@ augroup END
 set termguicolors                     " Set up true color support
 colorscheme gruvbox                   " Set gruvbox as default theme
 
-""" Plugins
+""" Plugin Settings
 
 "" Airline
 let g:airline_powerline_fonts = 1

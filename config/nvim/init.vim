@@ -84,6 +84,8 @@ let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
 
 """ Keymaps
 
+" jj exits to normal mode
+inoremap jj <esc>
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

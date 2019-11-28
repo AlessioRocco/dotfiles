@@ -98,6 +98,12 @@ nnoremap 0 g0
 vnoremap $ g$
 vnoremap 0 g0
 
+" 'D' to delete to the end of the line (by default, 'D' just does a 'dd').
+" This also catches up with 'C', which changes to the end of the line.
+" Also, do the exact same thing with 'Y'.
+nnoremap D d$
+nnoremap Y y$
+
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

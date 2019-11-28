@@ -92,6 +92,14 @@ let test#neovim#term_position = "vsplit"   " Run test in a vertical split pane
 "" Sneak
 let g:sneak#label = 1                 " Enable label-mode for a minimalist alternative to EasyMotion
 
+"" FZF
+
+" Hide statusline
+" https://github.com/junegunn/fzf.vim#hide-statusline
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
 """ Keymaps
 
 " jj exits to normal mode

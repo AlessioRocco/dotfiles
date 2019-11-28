@@ -10,6 +10,7 @@ Plug 'editorconfig/editorconfig-vim'  " EditorConfig plugin for Vim http://edito
 Plug 'janko/vim-test'                 " Run your tests at the speed of thought
 Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim
+Plug 'justinmk/vim-sneak'             " The missing motion for Vim
 Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim.
 Plug 'sheerun/vim-polyglot'           " A solid language pack for Vim.

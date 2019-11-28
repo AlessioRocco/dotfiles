@@ -23,7 +23,7 @@ call plug#end()
 
 """ General
 
-let g:mapleader = ","                 " Set leader key to ','
+let g:mapleader = " "                 " Set leader key to space
 set clipboard+=unnamed                " Copy and Paste from the system clipboard
 set list listchars=tab:»·,trail:·     " Display extra whitespace
 set mouse=a                           " Enable mouse

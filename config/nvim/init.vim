@@ -87,6 +87,9 @@ let NERDTreeMinimalUI = 1             " Disable 'Press ? for help' text
 " jj exits to normal mode
 inoremap jj <esc>
 
+" Close buffer.
+nnoremap <leader>q :bd<cr>
+
 " Reindent the entire file
 nnoremap <leader>f gg=G
 

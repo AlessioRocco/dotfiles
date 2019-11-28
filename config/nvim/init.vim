@@ -116,6 +116,10 @@ nnoremap N Nzz
 vnoremap n nzz
 vnoremap N Nzz
 
+" Don't yank to default register when changing something.
+nnoremap c "xc
+xnoremap c "xc
+
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

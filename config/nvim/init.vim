@@ -90,6 +90,9 @@ inoremap jj <esc>
 " Close buffer.
 nnoremap <leader>q :bd<cr>
 
+" Exit NeoVim.
+nnoremap <leader>Q :quitall<cr>
+
 " Reindent the entire file
 nnoremap <leader>f gg=G
 

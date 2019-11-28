@@ -104,6 +104,12 @@ vnoremap 0 g0
 nnoremap D d$
 nnoremap Y y$
 
+" H and L in order to move to the beginning/ending of the current line.
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L g_
+
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

@@ -155,3 +155,6 @@ nnoremap <leader>b :Gbrowse<cr>
 "" FZF
 nnoremap <C-p> :Files<cr>
 nnoremap <C-t> :Buffers<cr>
+nnoremap <C-g> :GitFiles?<cr>
+nnoremap <leader>/ :Rg<space>
+

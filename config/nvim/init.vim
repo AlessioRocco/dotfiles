@@ -54,11 +54,9 @@ set noswapfile                        " Don't create a swapfile for a new buffer
 set nowritebackup                     " Don't backup before overwriting a file.
 set undofile                          " Automatically save your undo history
 
-" Auto read files when focus is gained
-au FocusGained * :checktime
-
 augroup update_buffers
   au!
+  au FocusGained * :checktime          " Auto read files when focus is gained
   au FocusLost * wall                  " Auto save files when focus is lost
   au BufLeave * wall                   " Write all changed buffers when leaving a buffer.
 augroup END

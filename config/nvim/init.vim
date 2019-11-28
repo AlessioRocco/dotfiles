@@ -90,6 +90,9 @@ inoremap jj <esc>
 " Reindent the entire file
 nnoremap <leader>f gg=G
 
+" Easy toggle between the current and the alternate file.
+nnoremap <leader><leader> <c-^>
+
 " Set movement keys to move by virtual line, i.e. get around wrapped lines
 nnoremap j gj
 nnoremap k gk

@@ -172,3 +172,9 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 10, 4)<CR>
 nmap <silent> <leader>r :TestNearest<CR>
 nmap <silent> <leader>R :TestFile<CR>
 
+"" Sneak
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+

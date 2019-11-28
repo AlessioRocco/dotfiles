@@ -158,3 +158,7 @@ nnoremap <C-t> :Buffers<cr>
 nnoremap <C-g> :GitFiles?<cr>
 nnoremap <leader>/ :Rg<space>
 
+" Use Esc to kill the fzf buffer (https://github.com/junegunn/fzf.vim/issues/544)
+au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+au FileType fzf tunmap <buffer> <Esc>
+

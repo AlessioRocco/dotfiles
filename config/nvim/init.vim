@@ -7,6 +7,7 @@ Plug 'airblade/vim-gitgutter'         " A Vim plugin which shows a git diff in t
 Plug 'christoomey/vim-tmux-navigator' " Seamless navigation between tmux panes and vim splits
 Plug 'cohama/lexima.vim'              " Automatically closing pair stuff
 Plug 'editorconfig/editorconfig-vim'  " EditorConfig plugin for Vim http://editorconfig.org
+Plug 'janko/vim-test'                 " Run your tests at the speed of thought
 Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'morhetz/gruvbox'                " Retro groove color scheme for Vim

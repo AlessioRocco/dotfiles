@@ -69,6 +69,7 @@ colorscheme gruvbox                   " Set gruvbox as default theme
 
 "" Airline
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1       " Automatically displays all buffers when there's only one tab open.
 
 "" NERDTree
 let NERDTreeAutoDeleteBuffer = 1      " Automatically delete the buffer of the file you just deleted with NerdTree

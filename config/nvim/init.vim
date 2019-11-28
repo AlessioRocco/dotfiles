@@ -56,8 +56,8 @@ set undofile                          " Automatically save your undo history
 
 augroup update_buffers
   au!
-  au FocusGained * :checktime          " Auto read files when focus is gained
-  au FocusLost * wall                  " Auto save files when focus is lost
+  au FocusGained * :checktime          " Auto read buffers when focus is gained
+  au FocusLost * wall                  " Auto save buffers when focus is lost
   au BufLeave * wall                   " Write all changed buffers when leaving a buffer.
 augroup END
 

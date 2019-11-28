@@ -33,6 +33,7 @@ set clipboard+=unnamed                " Copy and Paste from the system clipboard
 set list listchars=tab:»·,trail:·     " Display extra whitespace
 set mouse=a                           " Enable mouse
 set wildmode=list:longest,full        " Command Line configurations
+set updatetime=100                    " Reduce it to 100 milliseconds, default is 4000
 
 "" Number column preferences
 set number                            " Use absolute line numbers column

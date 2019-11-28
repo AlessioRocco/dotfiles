@@ -32,6 +32,9 @@ alias e "editor"
 # Edit host database file
 alias eh "sudo vim /etc/hosts"
 
+# Restart postgresql
+alias pgr "restart_postgresql"
+
 ### Abbreviations
 
 # Bundler

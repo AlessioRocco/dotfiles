@@ -144,6 +144,12 @@ nnoremap <silent> <Down> :resize -1<cr>
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 
+"" Fugitive
+nnoremap <leader>s :Gstatus<cr>
+nnoremap <leader>d :Gvdiff<cr>
+nnoremap <leader>c :Gcommit<cr>
+nnoremap <leader>b :Gbrowse<cr>
+
 "" FZF
 nnoremap <C-p> :Files<cr>
 nnoremap <C-t> :Buffers<cr>

@@ -110,6 +110,12 @@ nnoremap L $
 vnoremap H ^
 vnoremap L g_
 
+" Keep search matches in the middle of the screen.
+nnoremap n nzz
+nnoremap N Nzz
+vnoremap n nzz
+vnoremap N Nzz
+
 "" NERDTree
 nnoremap \ :NERDTreeToggle<cr>
 

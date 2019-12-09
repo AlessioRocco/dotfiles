@@ -15,6 +15,9 @@ set -U FZF_LEGACY_KEYBINDINGS 0
 # Use ripgrep as default command for fzf
 set -gx FZF_DEFAULT_COMMAND  'rg --files --hidden --no-ignore-vcs'
 
+# Set GPG TTY
+set -xg GPG_TTY (tty)
+
 # Set $PATH
 set PATH ~/.bin $PATH
 

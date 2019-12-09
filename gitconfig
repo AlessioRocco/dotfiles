@@ -10,6 +10,8 @@
   gitcommand = hub
   nogreeting = true
   defaultcommand = ss
+[gpg]
+  program = /usr/local/bin/gpg
 [commit]
   template = ~/.gitmessage
   gpgsign = true

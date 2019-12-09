@@ -1,2 +1,40 @@
-# dotfiles-new
-Dotfiles and shell scripts to set up my MacOS laptop/desktop for development and more.
+Dotfiles
+========
+
+Dotfiles and shell scripts to set up my macOS laptop for development.
+
+Install
+-------
+
+Download the script:
+
+```sh
+curl --remote-name https://raw.githubusercontent.com/AlessioRocco/dotfiles/master/bin/setup
+```
+
+Review the script (avoid running scripts you haven't read!):
+
+```sh
+less setup
+```
+
+Execute the downloaded script:
+
+```sh
+sh setup 2>&1 | tee ~/setup.log
+```
+
+Optionally, review the log:
+
+```sh
+less ~/setup.log
+```
+
+License
+-------
+
+Dotfiles is © 2011-2020 Alessio Rocco
+It is free software,
+and may be redistributed under the terms specified in the [LICENSE] file.
+
+[LICENSE]: LICENSE

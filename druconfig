@@ -1,0 +1,7 @@
+docker_projects_folder: ~/docker-projects
+alias:
+  do: run --rm --entrypoint 'sh -c' app
+  sh: do sh
+  gem: run --rm --entrypoint 'gem' app
+  rails: run --rm --entrypoint 'rails' app
+  spec: -e test run --rm app

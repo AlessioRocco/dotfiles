@@ -72,6 +72,8 @@
 
   ## branch
   b = branch
+  mv = branch -m
+  rename = branch -m
   bl = !fish -c 'fzf_git_branch | pbcopy'
   ba = !fish -c 'fzf_git_branch --all | pbcopy'
   bs = !fish -c 'fzf_git_branch | xargs git checkout'

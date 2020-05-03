@@ -14,3 +14,5 @@ tmp/**/*
 vim/view
 node_modules
 .tool-versions
+.solargraph.yml
+rails.rb

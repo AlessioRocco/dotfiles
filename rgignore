@@ -11,3 +11,4 @@ coverage
 perf
 spec/vcr
 *.min.*
+cassettes/

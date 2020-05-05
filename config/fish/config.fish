@@ -52,10 +52,8 @@ abbr bo "bundle open"
 
 ### Configurations
 
-# Automatically set gruvbox dark with medium contrast as theme
-if type -q theme_gruvbox
-  theme_gruvbox dark medium
-end
+# Automatically set nord as theme
+set theme_color_scheme nord
 
 # Asdf - leave this at the bottom of the file.
 source /usr/local/opt/asdf/asdf.fish

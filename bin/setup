@@ -82,8 +82,7 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."
 
-  curl -fsS \
-    'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # Upgrade Homebrew and install or upgrade formulae

@@ -5,8 +5,8 @@ function fancy_echo
 end
 
 # Install, update or delete fisher packages
-fancy_echo 'Installing fisher packages ...'
-fish -c fisher
+fancy_echo 'Installing, updating and cleaning fisher packages ...'
+fish -c "fisher update"
 
 # Install, update and clean Tmux Plugin Manager plugins
 fancy_echo 'Installing, updating and cleaning Tmux Plugin Manager plugins ...'

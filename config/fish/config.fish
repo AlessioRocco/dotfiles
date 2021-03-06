@@ -9,9 +9,6 @@ set -xg EDITOR "nvim"
 # Editor for opening gems
 set -xg BUNDLER_EDITOR "code"
 
-# Use fzf new keybindings
-set -U FZF_LEGACY_KEYBINDINGS 0
-
 # Use ripgrep as default command for fzf
 set -gx FZF_DEFAULT_COMMAND  'rg --files --hidden'
 

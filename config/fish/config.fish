@@ -21,6 +21,12 @@ set -xg GPG_TTY (tty)
 # Set $PATH
 set PATH ~/.bin $PATH
 
+# Add "/usr/local/sbin" to the user paths to fix the Homebrew doctor Warning:
+#
+# Warning: Homebrew's "sbin" was not found in your PATH but you have installed
+# formulae that put executables in /usr/local/sbin.
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+
 ### Aliases
 
 # Git/Hub

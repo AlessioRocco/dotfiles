@@ -11,7 +11,6 @@ Plug 'janko/vim-test'                 " Run your tests at the speed of thought
 Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'justinmk/vim-sneak'             " The missing motion for Vim
-Plug 'arcticicestudio/nord-vim'       " An arctic, north-bluish clean and elegant Vim color theme
 Plug 'edkolev/tmuxline.vim'           " Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim
 Plug 'Xuyuanp/nerdtree-git-plugin'    " A plugin of NERDTree showing git status
@@ -23,6 +22,9 @@ Plug 'tpope/vim-rails'                " rails.vim: Ruby on Rails power tools
 Plug 'tpope/vim-rhubarb'              " rhubarb.vim: GitHub extension for fugitive.vim
 Plug 'tpope/vim-surround'             " surround.vim: quoting/parenthesizing made simple
 Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
+
+" Install Dracula PRO theme
+Plug '~/Documents/DraculaPRO/themes/vim'
 
 " Initialize plugin system
 call plug#end()
@@ -70,7 +72,13 @@ augroup END
 
 "" Theme preferences
 set termguicolors                 " Set up true color support
-colorscheme nord                  " Set nord as default theme
+colorscheme dracula_pro           " Set Dracula Pro as default theme
+let g:dracula_bold = 1            " Include bold attributes in highlighting
+let g:dracula_italic = 1          " Include italic attributes in highlighting
+let g:dracula_underline = 1       " Include underline attributes in highlighting
+let g:dracula_undercurl = 1       " Include undercurl attributes in highlighting (only if underline enabled)
+let g:dracula_inverse = 1         " Include inverse attributes in highlighting
+let g:dracula_colorterm = 1       " Include background fill colors
 
 """ Plugin Settings
 
@@ -78,6 +86,10 @@ colorscheme nord                  " Set nord as default theme
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1               " Automatically displays all buffers when there's only one tab open
 let g:airline#extensions#tabline#formatter = 'unique_tail' " Use unique_tail as airline path formatter
+let g:airline_theme='dracula_pro'
+
+"" Tmuxline
+let g:tmuxline_preset = 'minimal'
 
 "" EditorConfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']    " Ensure that EditorConfig plugin works well with fugitive

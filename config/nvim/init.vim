@@ -12,6 +12,7 @@ Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'justinmk/vim-sneak'             " The missing motion for Vim
 Plug 'arcticicestudio/nord-vim'       " An arctic, north-bluish clean and elegant Vim color theme
+Plug 'edkolev/tmuxline.vim'           " Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim
 Plug 'Xuyuanp/nerdtree-git-plugin'    " A plugin of NERDTree showing git status
 Plug 'terryma/vim-smooth-scroll'      " Make scrolling in Vim more pleasant

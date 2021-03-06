@@ -13,7 +13,7 @@ set -xg BUNDLER_EDITOR "code"
 set -U FZF_LEGACY_KEYBINDINGS 0
 
 # Use ripgrep as default command for fzf
-set -gx FZF_DEFAULT_COMMAND  'rg --files --hidden --no-ignore-vcs'
+set -gx FZF_DEFAULT_COMMAND  'rg --files --hidden'
 
 # Set GPG TTY
 set -xg GPG_TTY (tty)

@@ -39,7 +39,7 @@ less ~/setup.log
 License
 -------
 
-Dotfiles is � 2011-2020 Alessio Rocco
+Dotfiles is (c) 2019-2021 Alessio Rocco
 It is free software,
 and may be redistributed under the terms specified in the [LICENSE] file.
 

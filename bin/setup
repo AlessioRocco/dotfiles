@@ -117,6 +117,7 @@ cask "font-jetbrains-mono"
 cask "font-victor-mono"
 
 # Apps
+cask "chromedriver"
 cask "cleanmymac"
 cask "docker"
 cask "firefox"

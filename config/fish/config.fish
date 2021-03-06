@@ -57,8 +57,5 @@ abbr bo "bundle open"
 
 ### Configurations
 
-# Automatically set nord as theme
-set theme_color_scheme nord
-
 # Asdf - leave this at the bottom of the file.
 source /usr/local/opt/asdf/asdf.fish

@@ -78,6 +78,11 @@ defaults write NSGlobalDomain _HIHideMenuBar -bool TRUE
 ## Add Spectacle app to login items
 osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Spectacle.app", hidden:true}'
 
+# Disable the Apple press and hold for VSCode.
+#
+# https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
 # Install Homebrew if the brew command is not found
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."

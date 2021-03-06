@@ -6,6 +6,12 @@ Dotfiles and shell scripts to set up my macOS laptop for development.
 Install
 -------
 
+Install the Command Line Tools:
+
+```sh
+xcode-select --install
+```
+
 Download the script:
 
 ```sh
@@ -33,7 +39,7 @@ less ~/setup.log
 License
 -------
 
-Dotfiles is © 2011-2020 Alessio Rocco
+Dotfiles is ï¿½ 2011-2020 Alessio Rocco
 It is free software,
 and may be redistributed under the terms specified in the [LICENSE] file.
 

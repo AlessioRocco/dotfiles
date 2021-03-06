@@ -14,7 +14,6 @@ Plug 'justinmk/vim-sneak'             " The missing motion for Vim
 Plug 'arcticicestudio/nord-vim'       " An arctic, north-bluish clean and elegant Vim color theme
 Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim
 Plug 'Xuyuanp/nerdtree-git-plugin'    " A plugin of NERDTree showing git status
-Plug 'sheerun/vim-polyglot'           " A solid language pack for Vim
 Plug 'terryma/vim-smooth-scroll'      " Make scrolling in Vim more pleasant
 Plug 'tpope/vim-bundler'              " bundler.vim: Lightweight support for Ruby's Bundler
 Plug 'tpope/vim-commentary'           " commentary.vim: comment stuff out

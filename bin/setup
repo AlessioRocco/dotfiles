@@ -124,6 +124,7 @@ cask "firefox"
 cask "google-chrome"
 cask "insomnia"
 cask "iterm2"
+cask "ngrok"
 cask "spectacle"
 cask "spotify"
 

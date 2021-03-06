@@ -151,6 +151,7 @@ fancy_echo "Installing Apps from Apple Store ..."
 mas install 1147396723 # WhatsApp Desktop
 mas install 1333542190 # 1Password 7
 mas install 506189836  # Harvest
+mas install 585829637  # Todoist: To-Do List & Tasks
 mas install 747648890  # Telegram
 mas install 803453959  # Slack
 mas install 960276676  # Taurine

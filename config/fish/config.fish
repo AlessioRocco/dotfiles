@@ -41,6 +41,11 @@ alias pgr "restart_postgresql"
 # Kill process
 alias kp "kill_process"
 
+# Rails
+alias r "bin_or_bundle_rails"
+alias rs "bin_or_bundle_rails server"
+alias rc "bin_or_bundle_rails console"
+
 ### Abbreviations
 
 # Bundler

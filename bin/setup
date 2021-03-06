@@ -92,6 +92,7 @@ brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
 tap "heroku/brew"
+tap "homebrew/cask-fonts"
 
 # Tools
 brew "asdf"
@@ -108,6 +109,12 @@ brew "neovim"
 brew "rcm"
 brew "ripgrep"
 brew "tmux"
+
+# Fonts
+cask "font-cascadia-code"
+cask "font-fira-code"
+cask "font-jetbrains-mono"
+cask "font-victor-mono"
 
 # Apps
 cask "cleanmymac"

@@ -127,6 +127,7 @@ cask "iterm2"
 cask "ngrok"
 cask "spectacle"
 cask "spotify"
+cask "visual-studio-code"
 
 # Services
 brew "postgres", restart_service: :changed

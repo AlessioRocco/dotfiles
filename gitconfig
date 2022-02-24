@@ -64,6 +64,7 @@
   cane = commit --amend --no-edit
   cm = commit -m
   fixup = !fish -c 'fzf_git_log | xargs git commit --fixup'
+  snapshot = !git add . && git commit -m [snapshot]
 
   ## checkout
   co = checkout
@@ -121,6 +122,7 @@
   ## reset
   unstage = reset
   uncommit = reset --soft HEAD^
+  unsnapshot = !git uncommit && git unstage
 
   ## config
   aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi

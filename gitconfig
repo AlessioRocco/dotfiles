@@ -7,7 +7,7 @@
   autocrlf = input
   pager = "diff-so-fancy | less --tabs=4 -RFX"
 [gitsh]
-  gitcommand = hub
+  gitcommand = git
   nogreeting = true
   defaultcommand = ss
 [gpg]

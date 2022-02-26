@@ -1,7 +1,7 @@
 [user]
   name = Alessio Rocco
-  email = alessio.rocco.lt@gmail.com
-  signingkey = 3C61B101B4FF0CB1
+  email = alessiorocco@nebulab.com
+  signingkey = AE9CB030188650AC
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input

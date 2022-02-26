@@ -123,6 +123,7 @@ cask "font-jetbrains-mono"
 cask "font-victor-mono"
 
 # Apps
+cask "alacritty"
 cask "chromedriver"
 cask "cleanmymac"
 cask "docker"

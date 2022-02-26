@@ -80,7 +80,7 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 
 # Disable the Apple press and hold for VSCode.
 #
-# https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode
+# https://github.com/VSCodeVim/Vim#mac
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 # Install Homebrew if the brew command is not found

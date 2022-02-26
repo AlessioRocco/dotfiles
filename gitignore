@@ -16,3 +16,4 @@ node_modules
 .tool-versions
 .solargraph.yml
 rails.rb
+.vscode/

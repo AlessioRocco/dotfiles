@@ -7,7 +7,7 @@ set -xg CDPATH . ~/code
 set -xg EDITOR "nvim"
 
 # Editor for opening gems
-set -xg BUNDLER_EDITOR "code"
+set -xg BUNDLER_EDITOR "nvim"
 
 # Use ripgrep as default command for fzf
 set -gx FZF_DEFAULT_COMMAND  'rg --files --hidden'

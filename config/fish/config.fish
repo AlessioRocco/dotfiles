@@ -22,14 +22,21 @@ set -xg GLAMOUR_STYLE 'dark'
 # Set GPG TTY
 set -xg GPG_TTY (tty)
 
-# Set $PATH
-set PATH ~/.bin $PATH
-
 # Add "/usr/local/sbin" to the user paths to fix the Homebrew doctor Warning:
 #
 # Warning: Homebrew's "sbin" was not found in your PATH but you have installed
 # formulae that put executables in /usr/local/sbin.
 set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+
+# Use asdf - https://asdf-vm.com/
+#
+# https://asdf-vm.com/guide/getting-started.html#_3-install-asdf
+source /usr/local/opt/asdf/libexec/asdf.fish
+
+# Use .git/safe to add trusted bin into the path
+#
+# https://thoughtbot.com/blog/git-safe
+fish_add_path --move .git/safe/../../bin
 
 ### Aliases
 
@@ -68,8 +75,3 @@ abbr be "bundle exec"
 abbr bi "bundle install"
 abbr bu "bundle update"
 abbr bo "bundle open"
-
-### Configurations
-
-# Asdf - leave this at the bottom of the file.
-source /usr/local/opt/asdf/asdf.fish

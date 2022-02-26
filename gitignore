@@ -17,3 +17,4 @@ node_modules
 .solargraph.yml
 rails.rb
 .vscode/
+.projections.json

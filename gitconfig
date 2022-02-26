@@ -99,8 +99,8 @@
   ha = stash apply
 
   ## push
-  pf = push --force-with-lease
-  ps = push
+  pf = push --set-upstream --force-with-lease
+  ps = push --set-upstream
 
   ## pull
   pl = pull

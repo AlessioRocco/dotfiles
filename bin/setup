@@ -124,6 +124,7 @@ cask "font-victor-mono"
 
 # Apps
 cask "alacritty"
+cask "alfred"
 cask "chromedriver"
 cask "cleanmymac"
 cask "docker"

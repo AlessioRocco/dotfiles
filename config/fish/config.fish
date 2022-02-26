@@ -1,4 +1,5 @@
 ### Variables
+set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
 
 # Add 'code' folder in the CDPATH.
 set -xg CDPATH . ~/code
@@ -74,3 +75,6 @@ abbr be "bundle exec"
 abbr bi "bundle install"
 abbr bu "bundle update"
 abbr bo "bundle open"
+
+# https://stackoverflow.com/questions/59632283/chromedriver-capybara-too-many-open-files-socket2-for-127-0-0-1-port-951
+ulimit -Sn 10240

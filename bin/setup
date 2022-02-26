@@ -83,6 +83,9 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 # https://github.com/VSCodeVim/Vim#mac
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
+# https://github.com/alacritty/alacritty/issues/4616
+defaults write io.alacritty CGFontRenderingFontSmoothingDisabled 0
+
 # Install Homebrew if the brew command is not found
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."
@@ -123,13 +126,14 @@ cask "font-jetbrains-mono"
 cask "font-victor-mono"
 
 # Apps
+cask "alfred"
 cask "alacritty"
 cask "alfred"
 cask "chromedriver"
 cask "cleanmymac"
 cask "docker"
 cask "firefox"
-cask "gemini"
+# cask "gemini"
 cask "google-chrome"
 cask "insomnia"
 cask "iterm2"

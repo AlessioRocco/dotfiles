@@ -129,10 +129,5 @@
   sync = !gh sync
   browse = !gh pr view --web
 
-  ## GitHub
-  h = !gh
-  sync = !gh sync
-  browse = !gh pr view --web
-
   ## config
   aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | fzf-tmux --ansi

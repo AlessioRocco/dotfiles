@@ -12,8 +12,8 @@ Plug '/usr/local/opt/fzf'             " fzf love vim
 Plug 'junegunn/fzf.vim'               " fzf love vim
 Plug 'justinmk/vim-sneak'             " The missing motion for Vim
 Plug 'edkolev/tmuxline.vim'           " Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
-Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim
-Plug 'Xuyuanp/nerdtree-git-plugin'    " A plugin of NERDTree showing git status
+" Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim
+" Plug 'Xuyuanp/nerdtree-git-plugin'    " A plugin of NERDTree showing git status
 Plug 'terryma/vim-smooth-scroll'      " Make scrolling in Vim more pleasant
 Plug 'tpope/vim-bundler'              " bundler.vim: Lightweight support for Ruby's Bundler
 Plug 'tpope/vim-commentary'           " commentary.vim: comment stuff out
@@ -22,6 +22,23 @@ Plug 'tpope/vim-rails'                " rails.vim: Ruby on Rails power tools
 Plug 'tpope/vim-rhubarb'              " rhubarb.vim: GitHub extension for fugitive.vim
 Plug 'tpope/vim-surround'             " surround.vim: quoting/parenthesizing made simple
 Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
+Plug 'SirVer/ultisnips'               " UltiSnips - The ultimate snippet solution for Vim. Send pull requests to SirVer/ultisnips!
+Plug 'honza/vim-snippets'             " vim-snipmate default snippets (Previously snipmate-snippets)
+Plug 'tpope/vim-projectionist'
+Plug 'sheerun/vim-polyglot'
+Plug 'folke/zen-mode.nvim'
+Plug 'kristijanhusak/vim-dirvish-git'
+Plug 'justinmk/vim-dirvish'
+
+Plug 'neoclide/coc.nvim', { 'branch': 'release' } " Make your Vim/Neovim as smart as VSCode.
+Plug 'vim-ruby/vim-ruby'
+Plug 'cocopon/inspecthi.vim' " Inspecthi is a small tool for inspecting highlighting link structure.
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
+
 
 " Install Dracula PRO theme
 Plug '~/Documents/DraculaPRO/themes/vim'
@@ -37,6 +54,7 @@ set list listchars=tab:»·,trail:· " Display extra whitespace
 set mouse=a                       " Enable mouse
 set wildmode=list:longest,full    " Command Line configurations
 set updatetime=100                " Reduce it to 100 milliseconds, default is 4000
+set hidden
 
 "" Number column preferences
 set number                        " Use absolute line numbers column
@@ -65,9 +83,9 @@ set undofile                      " Automatically save your undo history
 
 augroup update_buffers
   au!
-  au FocusGained * :checktime     " Auto read buffers when focus is gained
-  au FocusLost * wall             " Auto save buffers when focus is lost
-  au BufLeave * wall              " Write all changed buffers when leaving a buffer
+  au FocusGained * :checktime             " Auto read buffers when focus is gained
+  au FocusLost * silent! wall             " Auto save buffers when focus is lost
+  au BufLeave * silent! wall              " Write all changed buffers when leaving a buffer
 augroup END
 
 "" Theme preferences
@@ -79,6 +97,18 @@ let g:dracula_underline = 1       " Include underline attributes in highlighting
 let g:dracula_undercurl = 1       " Include undercurl attributes in highlighting (only if underline enabled)
 let g:dracula_inverse = 1         " Include inverse attributes in highlighting
 let g:dracula_colorterm = 1       " Include background fill colors
+
+let g:ruby_operators        = 1
+let g:ruby_pseudo_operators = 1
+
+" Dracula PRO customizations for Ruby
+augroup dracula_customization
+  au!
+
+  hi! link rubyInstanceVariable DraculaPurpleItalic
+  hi! link rubyCurlyBlockDelimiter DraculaOrange
+  hi! link rubyDotOperator DraculaOrange
+augroup END
 
 """ Plugin Settings
 
@@ -95,8 +125,8 @@ let g:tmuxline_preset = 'minimal'
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']    " Ensure that EditorConfig plugin works well with fugitive
 
 "" NERDTree
-let NERDTreeAutoDeleteBuffer = 1                           " Automatically delete the buffer of the file you just deleted with NerdTree
-let NERDTreeMinimalUI = 1                                  " Disable 'Press ? for help' text
+" let NERDTreeAutoDeleteBuffer = 1                           " Automatically delete the buffer of the file you just deleted with NerdTree
+" let NERDTreeMinimalUI = 1                                  " Disable 'Press ? for help' text
 
 "" vim-test
 let test#strategy = "neovim"                               " Use neovim terminal as strategy to run tests
@@ -159,19 +189,36 @@ xnoremap c "xc
 nnoremap <leader>\| :vsplit<cr>
 nnoremap <leader>- :split<cr>
 
-nnoremap <silent> <Right> :vertical-resize +1<cr>
-nnoremap <silent> <Left> :vertical-resize -1<cr>
-nnoremap <silent> <Up> :resize +1<cr>
-nnoremap <silent> <Down> :resize -1<cr>
+nnoremap <silent> <Left> :vertical-resize +1<cr>
+nnoremap <silent> <Right> :vertical-resize -1<cr>
+nnoremap <silent> <Up> :resize -1<cr>
+nnoremap <silent> <Down> :resize +1<cr>
+
+" Manage Tabs
+" nnoremap <c-a>c :tabedit term:///usr/local/bin/fish<cr>
+" nnoremap <c-a>n :tabnext<cr>
+" nnoremap <c-a>p :tabprev<cr>
+" tnoremap <c-a>c <c-\><c-n> :tabedit term:///usr/local/bin/fish<cr>
+" tnoremap <c-a>n <c-\><c-n> :tabnext<cr>
+" tnoremap <c-a>p <c-\><c-n> :tabprev<cr>
+
+" Terminal
+autocmd TermOpen * startinsert
+autocmd TermOpen * :set nonumber
+autocmd BufWinEnter,WinEnter term://* startinsert
+tnoremap <c-h> <c-\><c-n><c-w>h
+tnoremap <c-j> <c-\><c-n><c-w>j
+tnoremap <c-k> <c-\><c-n><c-w>k
+tnoremap <c-l> <c-\><c-n><c-w>l
 
 "" NERDTree
-nnoremap \ :NERDTreeToggle<cr>
+" nnoremap \ :NERDTreeToggle<cr>
 
 "" Fugitive
-nnoremap <leader>s :Gstatus<cr>
-nnoremap <leader>d :Gvdiff<cr>
-nnoremap <leader>c :Gcommit<cr>
-nnoremap <leader>b :Gbrowse<cr>
+nnoremap <leader>s :Git<cr>
+nnoremap <leader>d :Gvdiffsplit<cr>
+nnoremap <leader>c :Git commit<cr>
+nnoremap <leader>b :GBrowse<cr>
 
 "" FZF
 nnoremap <C-p> :Files<cr>
@@ -199,3 +246,40 @@ map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 
+"" Rails
+noremap <silent> ga :A<CR>
+noremap <silent> gr :R<CR>
+let g:rails_projections = {
+\   "app/components/*_component.rb": {
+\     "alternate": "app/components/{}_component/{basename}_component.html.erb"
+\   },
+\   "app/components/*_component.html.erb": {
+\     "alternate": "app/components/{dirname}/../{basename}_component.rb"
+\   }
+\ }
+
+" " Check if NERDTree is open or active
+" function! IsNERDTreeOpen()
+"   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+" endfunction
+
+" " Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" " file, and we're not in vimdiff
+" function! SyncTree()
+"   if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+"     NERDTreeFind
+"     wincmd p
+"   endif
+" endfunction
+
+" Highlight currently open buffer in NERDTree
+" autocmd BufRead * call SyncTree()
+
+nmap <silent> <leader>o :!open <cfile><CR>
+
+"" ZenMode
+nmap <silent> <leader>z :ZenMode <CR>
+
+lua <<EOF
+require('telescope').load_extension('fzy_native')
+EOF

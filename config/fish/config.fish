@@ -12,6 +12,13 @@ set -xg BUNDLER_EDITOR "nvim"
 # Use ripgrep as default command for fzf
 set -gx FZF_DEFAULT_COMMAND  'rg --files --hidden'
 
+# Force GitHub CLI to use colors
+set -xg CLICOLOR_FORCE true
+set -xg GH_FORCE_TTY true
+set -xg GLAMOUR_STYLE 'dark'
+
+### Configurations
+
 # Set GPG TTY
 set -xg GPG_TTY (tty)
 
@@ -26,8 +33,9 @@ set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 
 ### Aliases
 
-# Git/Hub
+# Git/GitHub CLI
 alias g "git_or_gitsh"
+alias pr "fzf_pull_requests"
 
 # Reload fish shell configuration
 alias reload "reload_configuration"
@@ -50,6 +58,9 @@ alias rs "bin_or_bundle_rails server"
 alias rc "bin_or_bundle_rails console"
 
 ### Abbreviations
+
+# GitHub CLI
+abbr h "gh"
 
 # Bundler
 abbr b "bundle"

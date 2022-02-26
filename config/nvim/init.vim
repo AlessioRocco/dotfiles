@@ -22,6 +22,7 @@ Plug 'tpope/vim-rails'                " rails.vim: Ruby on Rails power tools
 Plug 'tpope/vim-rhubarb'              " rhubarb.vim: GitHub extension for fugitive.vim
 Plug 'tpope/vim-surround'             " surround.vim: quoting/parenthesizing made simple
 Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
+Plug 'sheerun/vim-polyglot'           " A collection of language packs for Vim
 
 " Install Dracula PRO theme
 Plug '~/Documents/DraculaPRO/themes/vim'

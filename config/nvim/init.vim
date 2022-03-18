@@ -30,39 +30,38 @@ Plug '~/Documents/DraculaPRO/themes/vim'
 " Initialize plugin system
 call plug#end()
 
-""" General
-
-let g:mapleader = " "             " Set leader key to space
-set clipboard+=unnamed            " Copy and Paste from the system clipboard
-set list listchars=tab:»·,trail:· " Display extra whitespace
-set mouse=a                       " Enable mouse
-set wildmode=list:longest,full    " Command Line configurations
-set updatetime=100                " Reduce it to 100 milliseconds, default is 4000
-
-"" Number column preferences
-set number                        " Use absolute line numbers column
-set numberwidth=5                 " Change line numbers column width
-
-"" Split window preferences
-set splitbelow                    " Open new split panes to bottom, which feels more natural
-set splitright                    " Open new split panes to right, which feels more natural
-
-"" Wrap line preferences
-set nowrap                        " Lines will not wrap and only part of long lines will be displayed
-set scrolloff=2                   " Set minimal number of screen lines to keep above and below the cursor
-set sidescroll=1                  " Incrementally scroll one character at a time to reveal more text as needed
-set sidescrolloff=10              " Set minimal number of screen columns to keep to the left and to the right of the cursor
-
-"" Searching preferences
-set ignorecase                    " Searching is not case sensitive
-set smartcase                     " Make search case sensitive only if it contains uppercase letters
-
-"" Autoread and autowrite
-set autowrite                     " Write the contents of the file if it has been modified
-set autowriteall                  " Like 'autowrite' but also used for commands
-set noswapfile                    " Don't create a swapfile for a new buffer
-set nowritebackup                 " Don't backup before overwriting a file
-set undofile                      " Automatically save your undo history
+lua <<EOF
+-- General
+vim.g.mapleader       = " "                           -- Set leader key to space
+vim.opt.clipboard     = vim.opt.clipboard + "unnamed" -- Copy and Paste from the system clipboard
+vim.opt.list          = true                          -- Display extra whitespace
+vim.opt.listchars     = {
+  nbsp                = '⦸',                          -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
+  extends             = '»',                          -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+  precedes            = '«',                          -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
+  tab                 = '▷⋯',                         -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + MIDLINE HORIZONTAL ELLIPSIS (U+22EF, UTF-8: E2 8B AF)
+  trail               = '•',                          -- BULLET (U+2022, UTF-8: E2 80 A2)
+}
+vim.opt.mouse         = 'a'                           -- Enable mouse
+vim.opt.wildmode      = 'longest:full,full'           -- Shell-like autocomplete to unambiguous portion
+vim.opt.number        = true                          -- Use absolute line numbers column
+-- Split window
+vim.opt.splitbelow    = true                          -- Open new split panes to bottom, which feels more natural
+vim.opt.splitright    = true                          -- Open new split panes to right, which feels more natural
+-- Wrap line
+vim.opt.wrap          = false                         -- Lines will not wrap and only part of long lines will be displayed
+vim.opt.scrolloff     = 2                             -- Set minimal number of screen lines to keep above and below the cursor
+vim.opt.sidescrolloff = 10                            -- Set minimal number of screen columns to keep to the left and to the right of the cursor
+-- Searching
+vim.opt.ignorecase    = true                          -- Searching is not case sensitive
+vim.opt.smartcase     = true                          -- Make search case sensitive only if it contains uppercase letters
+-- Autoread and autowrite
+vim.opt.autowrite     = true                          -- Write the contents of the file if it has been modified
+vim.opt.autowriteall  = true                          -- Like 'autowrite' but also used for commands
+vim.opt.swapfile      = false                         -- Don't create a swapfile for a new buffer
+vim.opt.writebackup   = false                         -- Don't backup before overwriting a file
+vim.opt.undofile      = true                          -- Automatically save your undo history
+EOF
 
 augroup update_buffers
   au!

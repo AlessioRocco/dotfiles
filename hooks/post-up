@@ -22,4 +22,4 @@ $HOME/.tmux/plugins/tpm/bin/update_plugins all
 
 # Install, update and clean NeoVim plugins
 fancy_echo 'Installing, updating and cleaning NeoVim packages ...'
-nvim +PlugUpdate +PlugClean! +qa
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'

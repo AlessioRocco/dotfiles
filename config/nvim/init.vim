@@ -1,36 +1,6 @@
-""" Plugins
-
-call plug#begin()
-" Make sure you use single quotes
-
-Plug 'airblade/vim-gitgutter'         " A Vim plugin which shows a git diff in the gutter (sign column) and stages/undoes hunks
-Plug 'christoomey/vim-tmux-navigator' " Seamless navigation between tmux panes and vim splits
-Plug 'cohama/lexima.vim'              " Automatically closing pair stuff
-Plug 'editorconfig/editorconfig-vim'  " EditorConfig plugin for Vim http://editorconfig.org
-Plug 'janko/vim-test'                 " Run your tests at the speed of thought
-Plug '/usr/local/opt/fzf'             " fzf love vim
-Plug 'junegunn/fzf.vim'               " fzf love vim
-Plug 'justinmk/vim-sneak'             " The missing motion for Vim
-Plug 'edkolev/tmuxline.vim'           " Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
-Plug 'scrooloose/nerdtree'            " A tree explorer plugin for (neo)vim
-Plug 'Xuyuanp/nerdtree-git-plugin'    " A plugin of NERDTree showing git status
-Plug 'terryma/vim-smooth-scroll'      " Make scrolling in Vim more pleasant
-Plug 'tpope/vim-bundler'              " bundler.vim: Lightweight support for Ruby's Bundler
-Plug 'tpope/vim-commentary'           " commentary.vim: comment stuff out
-Plug 'tpope/vim-fugitive'             " fugitive.vim: a Git wrapper so awesome, it should be illegal
-Plug 'tpope/vim-rails'                " rails.vim: Ruby on Rails power tools
-Plug 'tpope/vim-rhubarb'              " rhubarb.vim: GitHub extension for fugitive.vim
-Plug 'tpope/vim-surround'             " surround.vim: quoting/parenthesizing made simple
-Plug 'vim-airline/vim-airline'        " Lean & mean status/tabline for vim that's light as air
-Plug 'sheerun/vim-polyglot'           " A collection of language packs for Vim
-
-" Install Dracula PRO theme
-Plug '~/Documents/DraculaPRO/themes/vim'
-
-" Initialize plugin system
-call plug#end()
-
 lua <<EOF
+require('plugins')
+
 -- General
 vim.g.mapleader       = " "                           -- Set leader key to space
 vim.opt.clipboard     = vim.opt.clipboard + "unnamed" -- Copy and Paste from the system clipboard

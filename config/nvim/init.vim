@@ -1,6 +1,7 @@
 lua <<EOF
 require('plugins')
 require('settings')
+require('keybindings')
 EOF
 
 augroup update_buffers
@@ -47,58 +48,6 @@ let g:sneak#label = 1                                      " Enable label-mode f
 
 """ Keymaps
 
-" jj exits to normal mode
-inoremap jj <esc>
-
-" Close buffer
-nnoremap <leader>q :bd<cr>
-
-" Exit NeoVim
-nnoremap <leader>Q :quitall<cr>
-
-" Reindent the entire file
-nnoremap <leader>f gg=G
-
-" Easy toggle between the current and the alternate file
-nnoremap <leader><leader> <c-^>
-
-" Set movement keys to move by virtual line, i.e. get around wrapped lines
-nnoremap j gj
-nnoremap k gk
-vnoremap j gj
-vnoremap k gk
-
-nnoremap $ g$
-nnoremap 0 g0
-vnoremap $ g$
-vnoremap 0 g0
-
-" 'D' to delete to the end of the line (by default, 'D' just does a 'dd').
-" This also catches up with 'C', which changes to the end of the line.
-" Also, do the exact same thing with 'Y'.
-nnoremap D d$
-nnoremap Y y$
-
-" H and L in order to move to the beginning/ending of the current line
-nnoremap H ^
-nnoremap L $
-vnoremap H ^
-vnoremap L g_
-
-" Keep search matches in the middle of the screen
-nnoremap n nzz
-nnoremap N Nzz
-vnoremap n nzz
-vnoremap N Nzz
-
-" Don't yank to default register when changing something
-nnoremap c "xc
-xnoremap c "xc
-
-" Split and resize panes
-nnoremap <leader>\| :vsplit<cr>
-nnoremap <leader>- :split<cr>
-
 nnoremap <silent> <Right> :vertical-resize +1<cr>
 nnoremap <silent> <Left> :vertical-resize -1<cr>
 nnoremap <silent> <Up> :resize +1<cr>
@@ -138,4 +87,3 @@ map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
-

@@ -117,6 +117,7 @@ brew "neovim"
 brew "rcm"
 brew "ripgrep"
 brew "tmux"
+brew "wget"
 
 # Fonts
 cask "font-cascadia-code"

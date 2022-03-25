@@ -62,16 +62,6 @@ nnoremap <leader>d :Gvdiff<cr>
 nnoremap <leader>c :Gcommit<cr>
 nnoremap <leader>b :Gbrowse<cr>
 
-"" FZF
-nnoremap <C-p> :Files<cr>
-nnoremap <C-t> :Buffers<cr>
-nnoremap <C-g> :GitFiles?<cr>
-nnoremap <leader>/ :Rg<space>
-
-" Use Esc to kill the fzf buffer (https://github.com/junegunn/fzf.vim/issues/544)
-au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
-au FileType fzf tunmap <buffer> <Esc>
-
 "" vim-smooth-scroll
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 10, 2)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 10, 2)<CR>

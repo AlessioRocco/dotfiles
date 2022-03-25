@@ -11,8 +11,6 @@ return require('packer').startup(function(use)
   use 'cohama/lexima.vim'                 -- Automatically closing pair stuff
   use 'editorconfig/editorconfig-vim'     -- EditorConfig plugin for Vim http://editorconfig.org
   use 'janko/vim-test'                    -- Run your tests at the speed of thought
-  use '/usr/local/opt/fzf'                -- fzf love vim
-  use 'junegunn/fzf.vim'                  -- fzf love vim
   use 'justinmk/vim-sneak'                -- The missing motion for Vim
   use 'edkolev/tmuxline.vim'              -- Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
   use 'scrooloose/nerdtree'               -- A tree explorer plugin for (neo)vim
@@ -27,6 +25,23 @@ return require('packer').startup(function(use)
   use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
   use 'sheerun/vim-polyglot'              -- A collection of language packs for Vim
   use '~/Documents/DraculaPRO/themes/vim' -- Install Dracula PRO theme
+
+  -- telescope.nvim is a highly extendable fuzzy finder over lists
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-fzy-native.nvim'
+    },
+    wants = {
+      'plenary.nvim',
+      'telescope-fzy-native.nvim',
+    },
+    setup = [[require('plugins.telescope_setup')]],
+    config = [[require('plugins.telescope')]],
+    cmd = 'Telescope',
+    module = 'telescope',
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

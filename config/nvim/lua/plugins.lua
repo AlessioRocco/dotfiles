@@ -25,6 +25,18 @@ return require('packer').startup(function(use)
   use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
   use '~/Documents/DraculaPRO/themes/vim' -- Install Dracula PRO theme
 
+  -- nvim-lspconfig is a collection of common configurations for Neovim's built-in language server client
+  use {
+    'neovim/nvim-lspconfig',
+    config = [[require('plugins.lsp_config')]],
+  }
+
+  -- williamboman/nvim-lsp-installer is a Neovim plugin that allows you to seamlessly install LSP servers locally (inside :echo stdpath("data"))
+  use {
+    'williamboman/nvim-lsp-installer',
+    config = [[require('plugins.lsp_installer')]],
+  }
+
   -- nvim-treesitter is a Treesitter configurations and abstraction layer for Neovim
   use {
     'nvim-treesitter/nvim-treesitter',

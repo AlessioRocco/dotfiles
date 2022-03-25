@@ -23,8 +23,14 @@ return require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
   use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
-  use 'sheerun/vim-polyglot'              -- A collection of language packs for Vim
   use '~/Documents/DraculaPRO/themes/vim' -- Install Dracula PRO theme
+
+  -- nvim-treesitter is a Treesitter configurations and abstraction layer for Neovim
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    config = [[require('plugins.treesitter')]],
+  }
 
   -- telescope.nvim is a highly extendable fuzzy finder over lists
   use {

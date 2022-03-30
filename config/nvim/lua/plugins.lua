@@ -6,7 +6,6 @@ end
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'            -- use-package inspired plugin/package management for Neovim.
-  use 'airblade/vim-gitgutter'            -- A Vim plugin which shows a git diff in the gutter (sign column) and stages/undoes hunks
   use 'christoomey/vim-tmux-navigator'    -- Seamless navigation between tmux panes and vim splits
   use 'cohama/lexima.vim'                 -- Automatically closing pair stuff
   use 'editorconfig/editorconfig-vim'     -- EditorConfig plugin for Vim http://editorconfig.org
@@ -24,6 +23,15 @@ return require('packer').startup(function(use)
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
   use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
   use '~/Documents/DraculaPRO/themes/vim' -- Install Dracula PRO theme
+
+  -- gitsigns is a super fast git decorations implemented purely in lua/teal
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    },
+    config = [[require('plugins.gitsigns')]],
+  }
 
   -- nvim-lspconfig is a collection of common configurations for Neovim's built-in language server client
   use {

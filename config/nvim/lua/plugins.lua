@@ -14,7 +14,6 @@ return require('packer').startup(function(use)
   use 'edkolev/tmuxline.vim'              -- Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
   use 'scrooloose/nerdtree'               -- A tree explorer plugin for (neo)vim
   use 'Xuyuanp/nerdtree-git-plugin'       -- A plugin of NERDTree showing git status
-  use 'terryma/vim-smooth-scroll'         -- Make scrolling in Vim more pleasant
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler
   use 'tpope/vim-commentary'              -- commentary.vim: comment stuff out
   use 'tpope/vim-fugitive'                -- fugitive.vim: a Git wrapper so awesome, it should be illegal
@@ -23,6 +22,12 @@ return require('packer').startup(function(use)
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
   use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
   use '~/Documents/DraculaPRO/themes/vim' -- Install Dracula PRO theme
+
+  -- Neoscroll is a smooth scrolling neovim plugin written in lua
+  use {
+    'karb94/neoscroll.nvim',
+    config = [[require('plugins.neoscroll')]]
+  }
 
   -- gitsigns is a super fast git decorations implemented purely in lua/teal
   use {

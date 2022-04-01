@@ -11,7 +11,6 @@ return require('packer').startup(function(use)
   use 'editorconfig/editorconfig-vim'     -- EditorConfig plugin for Vim http://editorconfig.org
   use 'janko/vim-test'                    -- Run your tests at the speed of thought
   use 'justinmk/vim-sneak'                -- The missing motion for Vim
-  use 'edkolev/tmuxline.vim'              -- Simple tmux statusline generator with support for powerline symbols and statusline / airline / lightline integration
   use 'scrooloose/nerdtree'               -- A tree explorer plugin for (neo)vim
   use 'Xuyuanp/nerdtree-git-plugin'       -- A plugin of NERDTree showing git status
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler

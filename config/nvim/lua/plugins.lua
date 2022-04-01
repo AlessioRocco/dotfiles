@@ -19,7 +19,13 @@ return require('packer').startup(function(use)
   use 'tpope/vim-rails'                   -- rails.vim: Ruby on Rails power tools
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
-  use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
+
+  -- Lualine is a blazing fast and easy to configure Neovim statusline written in Lua.
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    config = [[require('plugins.lualine')]]
+  }
 
   -- Dracula colorscheme for NEOVIM written in Lua
   use 'Mofiqul/dracula.nvim'

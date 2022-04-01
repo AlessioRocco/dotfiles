@@ -21,7 +21,9 @@ return require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
   use 'vim-airline/vim-airline'           -- Lean & mean status/tabline for vim that's light as air
-  use '~/Documents/DraculaPRO/themes/vim' -- Install Dracula PRO theme
+
+  -- Dracula colorscheme for NEOVIM written in Lua
+  use 'Mofiqul/dracula.nvim'
 
   -- Neoscroll is a smooth scrolling neovim plugin written in lua
   use {

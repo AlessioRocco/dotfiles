@@ -28,3 +28,6 @@ vim.opt.autowriteall  = true                          -- Like 'autowrite' but al
 vim.opt.swapfile      = false                         -- Don't create a swapfile for a new buffer
 vim.opt.writebackup   = false                         -- Don't backup before overwriting a file
 vim.opt.undofile      = true                          -- Automatically save your undo history
+-- Theme preferences
+vim.opt.termguicolors = true                          -- Set up true color support
+vim.cmd[[colorscheme dracula]]                        -- Set Dracula as default theme

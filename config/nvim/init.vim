@@ -13,10 +13,6 @@ augroup END
 
 """ Plugin Settings
 
-"" vim-test
-let test#strategy = "neovim"                               " Use neovim terminal as strategy to run tests
-let test#neovim#term_position = "vsplit"                   " Run test in a vertical split pane
-
 "" Sneak
 let g:sneak#label = 1                                      " Enable label-mode for a minimalist alternative to EasyMotion
 
@@ -33,9 +29,6 @@ nnoremap <leader>d :Gvdiff<cr>
 nnoremap <leader>c :Gcommit<cr>
 nnoremap <leader>b :Gbrowse<cr>
 
-"" vim-test
-nmap <silent> <leader>r :TestNearest<CR>
-nmap <silent> <leader>R :TestFile<CR>
 
 "" Sneak
 map f <Plug>Sneak_f

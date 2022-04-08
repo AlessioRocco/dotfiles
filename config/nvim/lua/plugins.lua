@@ -11,9 +11,14 @@ return require('packer').startup(function(use)
   use 'justinmk/vim-sneak'                -- The missing motion for Vim
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler
   use 'tpope/vim-commentary'              -- commentary.vim: comment stuff out
-  use 'tpope/vim-fugitive'                -- fugitive.vim: a Git wrapper so awesome, it should be illegal
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
+
+  -- fugitive.vim: a Git wrapper so awesome, it should be illegal
+  use {
+    'tpope/vim-fugitive',
+    config = [[require('plugins.fugitive')]]
+  }
 
   -- Run your tests at the speed of thought
   use {

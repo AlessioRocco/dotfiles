@@ -18,13 +18,6 @@ let g:sneak#label = 1                                      " Enable label-mode f
 
 """ Keymaps
 
-"" Fugitive
-nnoremap <leader>s :Gstatus<cr>
-nnoremap <leader>d :Gvdiff<cr>
-nnoremap <leader>c :Gcommit<cr>
-nnoremap <leader>b :Gbrowse<cr>
-
-
 "" Sneak
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F

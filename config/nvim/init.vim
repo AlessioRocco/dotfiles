@@ -13,9 +13,6 @@ augroup END
 
 """ Plugin Settings
 
-"" EditorConfig
-let g:EditorConfig_exclude_patterns = ['fugitive://.*']    " Ensure that EditorConfig plugin works well with fugitive
-
 "" vim-test
 let test#strategy = "neovim"                               " Use neovim terminal as strategy to run tests
 let test#neovim#term_position = "vsplit"                   " Run test in a vertical split pane

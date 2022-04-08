@@ -8,7 +8,6 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'            -- use-package inspired plugin/package management for Neovim.
   use 'christoomey/vim-tmux-navigator'    -- Seamless navigation between tmux panes and vim splits
   use 'cohama/lexima.vim'                 -- Automatically closing pair stuff
-  use 'editorconfig/editorconfig-vim'     -- EditorConfig plugin for Vim http://editorconfig.org
   use 'janko/vim-test'                    -- Run your tests at the speed of thought
   use 'justinmk/vim-sneak'                -- The missing motion for Vim
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler
@@ -16,6 +15,12 @@ return require('packer').startup(function(use)
   use 'tpope/vim-fugitive'                -- fugitive.vim: a Git wrapper so awesome, it should be illegal
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
+
+  -- EditorConfig plugin for Vim http://editorconfig.org
+  use {
+    'editorconfig/editorconfig-vim',
+    config = [[require('plugins.editorconfig')]]
+  }
 
   -- Projectionist provides granular project configuration using "projections"
   use {

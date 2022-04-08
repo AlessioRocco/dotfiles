@@ -16,10 +16,6 @@ augroup END
 "" EditorConfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']    " Ensure that EditorConfig plugin works well with fugitive
 
-"" NERDTree
-let NERDTreeAutoDeleteBuffer = 1                           " Automatically delete the buffer of the file you just deleted with NerdTree
-let NERDTreeMinimalUI = 1                                  " Disable 'Press ? for help' text
-
 "" vim-test
 let test#strategy = "neovim"                               " Use neovim terminal as strategy to run tests
 let test#neovim#term_position = "vsplit"                   " Run test in a vertical split pane
@@ -33,9 +29,6 @@ nnoremap <silent> <Right> :vertical-resize +1<cr>
 nnoremap <silent> <Left> :vertical-resize -1<cr>
 nnoremap <silent> <Up> :resize +1<cr>
 nnoremap <silent> <Down> :resize -1<cr>
-
-"" NERDTree
-nnoremap \ :NERDTreeToggle<cr>
 
 "" Fugitive
 nnoremap <leader>s :Gstatus<cr>

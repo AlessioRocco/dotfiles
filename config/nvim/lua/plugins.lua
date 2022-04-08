@@ -11,14 +11,21 @@ return require('packer').startup(function(use)
   use 'editorconfig/editorconfig-vim'     -- EditorConfig plugin for Vim http://editorconfig.org
   use 'janko/vim-test'                    -- Run your tests at the speed of thought
   use 'justinmk/vim-sneak'                -- The missing motion for Vim
-  use 'scrooloose/nerdtree'               -- A tree explorer plugin for (neo)vim
-  use 'Xuyuanp/nerdtree-git-plugin'       -- A plugin of NERDTree showing git status
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler
   use 'tpope/vim-commentary'              -- commentary.vim: comment stuff out
   use 'tpope/vim-fugitive'                -- fugitive.vim: a Git wrapper so awesome, it should be illegal
   use 'tpope/vim-rails'                   -- rails.vim: Ruby on Rails power tools
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
+
+  -- nvim-tree.lua is a file explorer for neovim written in lua
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = { 'kyazdani42/nvim-web-devicons' },
+    config = [[require('plugins.nvim_tree')]],
+    setup = [[require('plugins.nvim_tree_setup')]],
+    cmd = 'NvimTreeToggle',
+  }
 
   -- Lualine is a blazing fast and easy to configure Neovim statusline written in Lua.
   use {

@@ -17,6 +17,12 @@ return require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
 
+  -- Projectionist provides granular project configuration using "projections"
+  use {
+    'tpope/vim-projectionist',
+    config = [[require('plugins.projectionist')]]
+  }
+
   -- rails.vim are Ruby on Rails power tools
   use {
     'tpope/vim-rails',

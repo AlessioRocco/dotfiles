@@ -14,9 +14,14 @@ return require('packer').startup(function(use)
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler
   use 'tpope/vim-commentary'              -- commentary.vim: comment stuff out
   use 'tpope/vim-fugitive'                -- fugitive.vim: a Git wrapper so awesome, it should be illegal
-  use 'tpope/vim-rails'                   -- rails.vim: Ruby on Rails power tools
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
+
+  -- rails.vim are Ruby on Rails power tools
+  use {
+    'tpope/vim-rails',
+    config = [[require('plugins.rails')]]
+  }
 
   -- nvim-tree.lua is a file explorer for neovim written in lua
   use {

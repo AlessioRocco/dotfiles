@@ -3,6 +3,7 @@ local utils = require("utils")
 local nnoremap = utils.nnoremap
 local vnoremap = utils.vnoremap
 local xnoremap = utils.xnoremap
+local tnoremap = utils.tnoremap
 
 -- Leader
 g.mapleader = ' '
@@ -53,3 +54,6 @@ nnoremap('<Right>', '<cmd>vertical-resize -1<cr>')
 nnoremap('<Left>', '<cmd>vertical-resize +1<cr>')
 nnoremap('<Up>', '<cmd>resize +1<cr>')
 nnoremap('<Down>', '<cmd>resize -1<cr>')
+
+-- Terminal
+tnoremap('<esc>', '<c-\\><c-n>')

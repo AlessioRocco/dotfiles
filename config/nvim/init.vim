@@ -10,7 +10,3 @@ augroup update_buffers
   au FocusLost * wall             " Auto save buffers when focus is lost
   au BufLeave * wall              " Write all changed buffers when leaving a buffer
 augroup END
-
-""" Plugin Settings
-
-augroup TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>

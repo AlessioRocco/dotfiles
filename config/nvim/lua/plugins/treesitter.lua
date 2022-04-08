@@ -9,7 +9,3 @@ treesitter.setup{
     enable = true,                 -- Enable indentation
   }
 }
-
--- Enable folding capabilities
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

@@ -18,11 +18,6 @@ let g:sneak#label = 1                                      " Enable label-mode f
 
 """ Keymaps
 
-nnoremap <silent> <Right> :vertical-resize +1<cr>
-nnoremap <silent> <Left> :vertical-resize -1<cr>
-nnoremap <silent> <Up> :resize +1<cr>
-nnoremap <silent> <Down> :resize -1<cr>
-
 "" Fugitive
 nnoremap <leader>s :Gstatus<cr>
 nnoremap <leader>d :Gvdiff<cr>

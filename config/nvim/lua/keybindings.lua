@@ -48,3 +48,8 @@ xnoremap('c', '"xc')
 -- Split and resize panes
 nnoremap('<leader>|', ':vsplit<cr>')
 nnoremap('<leader>-', ':split<cr>')
+
+nnoremap('<Right>', '<cmd>vertical-resize -1<cr>')
+nnoremap('<Left>', '<cmd>vertical-resize +1<cr>')
+nnoremap('<Up>', '<cmd>resize +1<cr>')
+nnoremap('<Down>', '<cmd>resize -1<cr>')

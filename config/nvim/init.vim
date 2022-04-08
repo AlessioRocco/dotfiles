@@ -13,13 +13,4 @@ augroup END
 
 """ Plugin Settings
 
-"" Sneak
-let g:sneak#label = 1                                      " Enable label-mode for a minimalist alternative to EasyMotion
-
-""" Keymaps
-
-"" Sneak
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
+augroup TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>

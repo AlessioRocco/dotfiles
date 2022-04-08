@@ -1,5 +1,4 @@
 -- General
-vim.g.mapleader       = " "                           -- Set leader key to space
 vim.opt.clipboard     = vim.opt.clipboard + "unnamed" -- Copy and Paste from the system clipboard
 vim.opt.list          = true                          -- Display extra whitespace
 vim.opt.listchars     = {

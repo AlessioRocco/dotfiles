@@ -1,7 +1,7 @@
 lua <<EOF
+require('keybindings')
 require('plugins')
 require('settings')
-require('keybindings')
 EOF
 
 augroup update_buffers

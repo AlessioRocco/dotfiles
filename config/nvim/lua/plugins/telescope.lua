@@ -3,7 +3,10 @@ local actions = require('telescope.actions')
 
 telescope.setup{
   defaults = {
-    path_display = { 'truncate' },
+    file_ignore_patterns = {
+      '^spec/cassettes/',
+      '^db/migrate/',
+    },
     mappings = {
       i = {
         ["<esc>"] = require('telescope.actions').close,

@@ -5,6 +5,12 @@ let g:rails_projections = {
 \   },
 \   "app/components/*_component.html.erb": {
 \     "alternate": "app/components/{dirname}/../{basename}_component.rb"
-\   }
+\   },
+\   "app/extensions/*_extension.rb": {
+\     "alternate": "spec/{dirname}/{basename}_spec.rb"
+\   },
+\   "spec/*_spec.rb": {
+\     "alternate": "app/extensions/{dirname}/{basename}_extension.rb"
+\   },
 \ }
 ]]

@@ -90,6 +90,15 @@ return require('packer').startup(function(use)
     config = [[require('plugins.lsp_config')]],
   }
 
+  -- LuaSnip
+  use {
+    'L3MON4D3/LuaSnip',
+    config = [[require('plugins.luasnip')]],
+    requires = {
+      'rafamadriz/friendly-snippets'
+    }
+  }
+
   -- williamboman/nvim-lsp-installer is a Neovim plugin that allows you to seamlessly install LSP servers locally (inside :echo stdpath("data"))
   use {
     'williamboman/nvim-lsp-installer',

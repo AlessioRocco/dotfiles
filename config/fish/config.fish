@@ -31,7 +31,7 @@ set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 # Use asdf - https://asdf-vm.com/
 #
 # https://asdf-vm.com/guide/getting-started.html#_3-install-asdf
-source /usr/local/opt/asdf/libexec/asdf.fish
+source /opt/homebrew/opt/asdf/libexec/asdf.fish
 
 # Use .git/safe to add trusted bin into the path
 #

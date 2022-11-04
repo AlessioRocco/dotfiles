@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Open dotfiles
+
+cd ~/dotfiles
+tat

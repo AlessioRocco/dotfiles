@@ -74,3 +74,6 @@ abbr be "bundle exec"
 abbr bi "bundle install"
 abbr bu "bundle update"
 abbr bo "bundle open"
+
+### Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"

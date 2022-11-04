@@ -83,6 +83,13 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 # https://github.com/VSCodeVim/Vim#mac
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
+# Install the Command Line Tools
+if ! command -v xcode-select -p >/dev/null; then
+  fancy_echo "Installing the Command Line Tools ..."
+
+  xcode-select --install
+fi
+
 # Install Homebrew if the brew command is not found
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."

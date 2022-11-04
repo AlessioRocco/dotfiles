@@ -9,6 +9,7 @@ telescope.setup{
         ["<esc>"] = require('telescope.actions').close,
       },
     },
+    path_display = { 'truncate' },
   },
   pickers = {
     find_files = {

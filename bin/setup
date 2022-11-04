@@ -135,7 +135,6 @@ cask "firefox"
 cask "gemini"
 cask "google-chrome"
 cask "insomnia"
-cask "iterm2"
 cask "ngrok"
 cask "spectacle"
 cask "spotify"
@@ -214,14 +213,6 @@ rcup
 fancy_echo "Setting bundle number of cores ..."
 number_of_cores=$(sysctl -n hw.ncpu)
 bundle config --global jobs $((number_of_cores - 1))
-
-fancy_echo 'Applying iTerm2 configurations ...'
-
-# Specify the iTerm2 preferences directory
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/dotfiles/iterm2"
-
-# Tell iTerm2 to use the custom preferences in the directory
-defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
 # Run clean script
 clean

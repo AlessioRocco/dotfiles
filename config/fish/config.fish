@@ -22,11 +22,8 @@ set -xg GLAMOUR_STYLE 'dark'
 # Set GPG TTY
 set -xg GPG_TTY (tty)
 
-# Add "/usr/local/sbin" to the user paths to fix the Homebrew doctor Warning:
-#
-# Warning: Homebrew's "sbin" was not found in your PATH but you have installed
-# formulae that put executables in /usr/local/sbin.
-set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+# Add ~/bin to the $PATH
+fish_add_path --move ~/bin
 
 # Use asdf - https://asdf-vm.com/
 #

@@ -11,7 +11,7 @@
   nogreeting = true
   defaultcommand = ss
 [gpg]
-  program = /usr/local/bin/gpg
+  program = /opt/homebrew/bin/gpg
 [commit]
   template = ~/.gitmessage
   gpgsign = true

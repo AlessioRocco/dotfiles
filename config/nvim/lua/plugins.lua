@@ -99,6 +99,19 @@ return require('packer').startup(function(use)
     }
   }
 
+  -- nvim-cmp is a completion engine plugin for neovim written in Lua. Completion sources are installed from external repositories and "sourced"
+  use {
+    'hrsh7th/nvim-cmp',
+    config = [[require('plugins.cmp')]],
+    requires = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'saadparwaiz1/cmp_luasnip',
+    },
+  }
+
   -- williamboman/nvim-lsp-installer is a Neovim plugin that allows you to seamlessly install LSP servers locally (inside :echo stdpath("data"))
   use {
     'williamboman/nvim-lsp-installer',

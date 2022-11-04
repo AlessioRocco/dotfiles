@@ -187,7 +187,6 @@ install_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
 install_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
 
 # Install languages
-source "/usr/local/opt/asdf/asdf.sh"
 install_asdf_language "ruby"
 install_asdf_language "nodejs"
 

@@ -13,10 +13,10 @@ return require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
 
-  -- The missing motion for Vim
+  -- Leap is a general-purpose motion plugin for Neovim
   use {
-    'justinmk/vim-sneak',
-    setup = [[require('plugins.sneak_setup')]]
+    'ggandor/leap.nvim',
+    config = [[require('plugins.leap')]]
   }
 
   -- fugitive.vim: a Git wrapper so awesome, it should be illegal

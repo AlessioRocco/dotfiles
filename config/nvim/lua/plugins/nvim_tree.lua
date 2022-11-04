@@ -5,3 +5,5 @@ nvim_tree.setup({
     enable = true
   }
 })
+
+require'nvim-tree.view'.View.winopts.cursorline = true

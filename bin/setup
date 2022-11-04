@@ -126,6 +126,7 @@ cask "font-jetbrains-mono"
 cask "font-victor-mono"
 
 # Apps
+cask "1password"
 cask "alfred"
 cask "chromedriver"
 cask "cleanmymac"
@@ -163,7 +164,6 @@ EOF
 # Install Apps from Apple Store
 fancy_echo "Installing Apps from Apple Store ..."
 mas install 1147396723 # WhatsApp Desktop
-mas install 1333542190 # 1Password 7
 mas install 506189836  # Harvest
 mas install 568494494  # Pocket
 mas install 585829637  # Todoist: To-Do List & Tasks

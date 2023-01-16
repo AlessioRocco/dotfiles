@@ -1,59 +1,43 @@
-local g = vim.g
-local utils = require("utils")
-local nnoremap = utils.nnoremap
-local vnoremap = utils.vnoremap
-local xnoremap = utils.xnoremap
-local tnoremap = utils.tnoremap
-
--- Leader
-g.mapleader = ' '
-
-nnoremap('<leader>Q', ':quitall<cr>') -- Exit NeoVim
-nnoremap('<leader>q', ':bd<cr>')      -- Close buffer
-nnoremap('<leader>f', 'gg=G')         -- Reindent the entire file
-nnoremap('<leader><leader>', '<c-^>') -- Easy toggle between the current and the alternate file
+vim.g.mapleader = " "                             -- Leader
+vim.keymap.set('n', '<leader>Q', ':quitall<cr>')  -- Exit NeoVim
+vim.keymap.set('n', '<leader>q', ':bd<cr>')       -- Close buffer
+vim.keymap.set('n',  '<leader>f', 'gg=G')         -- Reindent the entire file
+vim.keymap.set('n',  '<leader><leader>', '<c-^>') -- Easy toggle between the current and the alternate file
 
 -- Set movement keys to move by virtual line, i.e. get around wrapped lines
-nnoremap('j', 'gj')
-nnoremap('k', 'gk')
-vnoremap('j', 'gj')
-vnoremap('k', 'gk')
+vim.keymap.set({ 'n', 'v' } , 'j', 'gj')
+vim.keymap.set({ 'n', 'v' } , 'k', 'gk')
 
-nnoremap('$', 'g$')
-nnoremap('0', 'g0')
-vnoremap('$', 'g$')
-vnoremap('0', 'g0')
+vim.keymap.set({ 'n', 'v' } , '$', 'g$')
+vim.keymap.set({ 'n', 'v' } , '0', 'g0')
 
 -- 'D' to delete to the end of the line (by default, 'D' just does a 'dd').
 -- This also catches up with 'C', which changes to the end of the line.
 -- Also, do the exact same thing with 'Y'.
-nnoremap('D', 'd$')
-nnoremap('Y', 'y$')
+vim.keymap.set('n', 'D', 'd$')
+vim.keymap.set('n', 'Y', 'y$')
 
 -- H and L in order to move to the beginning/ending of the current line
-nnoremap('H', '^')
-nnoremap('L', '$')
-vnoremap('H', '^')
-vnoremap('L', 'g_')
+vim.keymap.set({ 'n', 'v' } , 'H', '^')
+vim.keymap.set('n', 'L', '$')
+vim.keymap.set('v', 'L', 'g_')
 
--- Keep search matches in the middle of the screen
-nnoremap('n', 'nzz')
-nnoremap('N', 'Nzz')
-vnoremap('n', 'nzz')
-vnoremap('N', 'Nzz')
+-- Keep search matches in the middle of the screen and open just enough folds to
+-- make the line in which the cursor is located not folded
+vim.keymap.set({ 'n', 'v' } , 'n', 'nzzzv')
+vim.keymap.set({ 'n', 'v' } , 'N', 'Nzzzv')
 
 -- Don't yank to default register when changing something
-nnoremap('c', '"xc')
-xnoremap('c', '"xc')
+vim.keymap.set({ 'n', 'x' } , 'c', '"xc')
 
 -- Split and resize panes
-nnoremap('<leader>|', ':vsplit<cr>')
-nnoremap('<leader>-', ':split<cr>')
+vim.keymap.set('n', '<leader>|', ':vsplit<cr>')
+vim.keymap.set('n', '<leader>-', ':split<cr>')
 
-nnoremap('<Right>', '<cmd>vertical-resize -1<cr>')
-nnoremap('<Left>', '<cmd>vertical-resize +1<cr>')
-nnoremap('<Up>', '<cmd>resize +1<cr>')
-nnoremap('<Down>', '<cmd>resize -1<cr>')
+vim.keymap.set('n', '<Right>', '<cmd>vertical-resize -1<cr>')
+vim.keymap.set('n', '<Left>', '<cmd>vertical-resize +1<cr>')
+vim.keymap.set('n', '<Up>', '<cmd>resize +1<cr>')
+vim.keymap.set('n', '<Down>', '<cmd>resize -1<cr>')
 
 -- Terminal
-tnoremap('<esc>', '<c-\\><c-n>')
+vim.keymap.set('t', '<esc>', '<c-\\><c-n>')

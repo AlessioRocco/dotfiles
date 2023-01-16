@@ -1,5 +1,2 @@
-local utils = require("utils")
-local nnoremap = utils.nnoremap
-
-nnoremap('ga', ':A<cr>')
-nnoremap('gr', ':R<cr>')
+vim.keymap.set('n', 'ga', ':A<cr>')
+vim.keymap.set('n', 'gr', ':R<cr>')

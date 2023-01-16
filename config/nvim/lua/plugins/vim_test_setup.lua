@@ -1,5 +1,2 @@
-local utils = require("utils")
-local nnoremap = utils.nnoremap
-
-nnoremap('<leader>r', '<cmd>TestNearest<cr>')
-nnoremap('<leader>R', '<cmd>TestFile<cr>')
+vim.keymap.set('n', '<leader>r', '<cmd>TestNearest<cr>')
+vim.keymap.set('n', '<leader>R', '<cmd>TestFile<cr>')

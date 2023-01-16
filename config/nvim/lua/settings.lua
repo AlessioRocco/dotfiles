@@ -29,7 +29,6 @@ vim.opt.writebackup   = false                         -- Don't backup before ove
 vim.opt.undofile      = true                          -- Automatically save your undo history
 -- Theme preferences
 vim.opt.termguicolors = true                          -- Set up true color support
-vim.cmd[[colorscheme dracula]]                        -- Set Dracula as default theme
 
 -- Automatically save changes to disk without having to use :w
 vim.cmd([[

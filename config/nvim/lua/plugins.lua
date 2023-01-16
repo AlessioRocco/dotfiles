@@ -49,13 +49,12 @@ return require('packer').startup(function(use)
     config = [[require('plugins.rails')]]
   }
 
-  -- nvim-tree.lua is a file explorer for neovim written in lua
+  -- A vim-vinegar like file explorer that lets you edit your filesystem like a
+  -- normal Neovim buffer.
   use {
-    'nvim-tree/nvim-tree.lua',
-    requires = { 'nvim-tree/nvim-web-devicons' },
-    config = [[require('plugins.nvim_tree')]],
-    setup = [[require('plugins.nvim_tree_setup')]],
-    cmd = 'NvimTreeToggle',
+    'stevearc/oil.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons' },
+    config = [[require('plugins.oil')]]
   }
 
   -- Lualine is a blazing fast and easy to configure Neovim statusline written in Lua.

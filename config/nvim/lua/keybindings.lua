@@ -4,6 +4,10 @@ vim.keymap.set('n', '<leader>q', ':bd<cr>')       -- Close buffer
 vim.keymap.set('n',  '<leader>f', 'gg=G')         -- Reindent the entire file
 vim.keymap.set('n',  '<leader><leader>', '<c-^>') -- Easy toggle between the current and the alternate file
 
+-- Move lines of text up or down
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
 -- Set movement keys to move by virtual line, i.e. get around wrapped lines
 vim.keymap.set({ 'n', 'v' } , 'j', 'gj')
 vim.keymap.set({ 'n', 'v' } , 'k', 'gk')

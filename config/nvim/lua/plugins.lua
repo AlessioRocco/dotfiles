@@ -19,7 +19,6 @@ return require('packer').startup(function(use)
     config = [[require('plugins.leap')]]
   }
 
-  -- fugitive.vim: a Git wrapper so awesome, it should be illegal
   use {
     'tpope/vim-fugitive',
     config = [[require('plugins.fugitive')]]

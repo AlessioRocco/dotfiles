@@ -1,4 +1,4 @@
-vim.keymap.set('n', '<leader>b', '<cmd>GBrowse<cr>')
-vim.keymap.set('n', '<leader>c', '<cmd>Git commit<cr>')
-vim.keymap.set('n', '<leader>d', '<cmd>Gvdiff<cr>')
-vim.keymap.set('n', '<leader>s', '<cmd>Git<cr>')
+vim.keymap.set('n', '<leader>gb', '<cmd>GBrowse<cr>')
+vim.keymap.set('n', '<leader>gc', '<cmd>Git commit<cr>')
+vim.keymap.set('n', '<leader>gd', '<cmd>Gvdiff<cr>')
+vim.keymap.set('n', '<leader>gg', '<cmd>Git<cr>')

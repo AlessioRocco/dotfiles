@@ -144,6 +144,13 @@ return require('packer').startup(function(use)
     module = 'telescope',
   }
 
+  -- WhichKey is a Lua plugin that displays a popup with possible key bindings
+  -- of the command you started typing
+  use {
+    "folke/which-key.nvim",
+    config = function() require("which-key").setup() end
+  }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then

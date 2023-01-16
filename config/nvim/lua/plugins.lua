@@ -12,6 +12,7 @@ return require('packer').startup(function(use)
   use 'tpope/vim-commentary'              -- commentary.vim: comment stuff out
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
+  use 'EdenEast/nightfox.nvim'            -- A highly customizable theme for vim and neovim with support for lsp, treesitter and a variety of plugins.
 
   -- Leap is a general-purpose motion plugin for Neovim
   use {
@@ -64,8 +65,6 @@ return require('packer').startup(function(use)
     config = [[require('plugins.lualine')]]
   }
 
-  -- Dracula colorscheme for NEOVIM written in Lua
-  use 'Mofiqul/dracula.nvim'
 
   -- Neoscroll is a smooth scrolling neovim plugin written in lua
   use {

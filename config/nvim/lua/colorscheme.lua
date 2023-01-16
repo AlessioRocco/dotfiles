@@ -1,2 +1,2 @@
--- Set Dracula as default theme
-vim.cmd[[colorscheme dracula]]
+-- Set NordFox as default theme
+vim.cmd[[colorscheme NordFox]]

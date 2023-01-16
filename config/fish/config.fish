@@ -19,6 +19,9 @@ set -xg GLAMOUR_STYLE 'dark'
 
 ### Configurations
 
+# Use Nordfox color palette
+source ~/.config/fish/nordfox.fish
+
 # Set GPG TTY
 set -xg GPG_TTY (tty)
 

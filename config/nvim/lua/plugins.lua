@@ -81,38 +81,35 @@ return require('packer').startup(function(use)
     config = [[require('plugins.gitsigns')]],
   }
 
-  -- nvim-lspconfig is a collection of common configurations for Neovim's built-in language server client
+  -- The purpose of this plugin is to bundle all the "boilerplate code"
+  -- necessary to have nvim-cmp (a popular autocompletion plugin) and
+  -- nvim-lspconfig working together. And if you opt in, it can use mason.nvim
+  -- to let you install language servers from inside neovim.
   use {
-    'neovim/nvim-lspconfig',
-    config = [[require('plugins.lsp_config')]],
-  }
-
-  -- LuaSnip
-  use {
-    'L3MON4D3/LuaSnip',
-    config = [[require('plugins.luasnip')]],
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v1.x',
     requires = {
-      'rafamadriz/friendly-snippets'
-    }
-  }
+      -- LSP Support
+      {'neovim/nvim-lspconfig'},             -- Required
+      {'williamboman/mason.nvim'},           -- Optional
+      {'williamboman/mason-lspconfig.nvim'}, -- Optional
 
-  -- nvim-cmp is a completion engine plugin for neovim written in Lua. Completion sources are installed from external repositories and "sourced"
-  use {
-    'hrsh7th/nvim-cmp',
-    config = [[require('plugins.cmp')]],
-    requires = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'saadparwaiz1/cmp_luasnip',
+      -- Autocompletion
+      {'hrsh7th/nvim-cmp'},         -- Required
+      {'hrsh7th/cmp-nvim-lsp'},     -- Required
+      {'hrsh7th/cmp-buffer'},       -- Optional
+      {'hrsh7th/cmp-path'},         -- Optional
+      {'saadparwaiz1/cmp_luasnip'}, -- Optional
+      {'hrsh7th/cmp-nvim-lua'},     -- Optional
+
+      -- Useful status updates for LSP
+      {'j-hui/fidget.nvim'},
+
+      -- Snippets
+      {'L3MON4D3/LuaSnip'},             -- Required
+      {'rafamadriz/friendly-snippets'}, -- Optional
     },
-  }
-
-  -- williamboman/nvim-lsp-installer is a Neovim plugin that allows you to seamlessly install LSP servers locally (inside :echo stdpath("data"))
-  use {
-    'williamboman/nvim-lsp-installer',
-    config = [[require('plugins.lsp_installer')]],
+    config = [[require('plugins.lsp')]],
   }
 
   -- nvim-treesitter is a Treesitter configurations and abstraction layer for Neovim

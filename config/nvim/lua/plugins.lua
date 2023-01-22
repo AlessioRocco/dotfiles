@@ -14,12 +14,6 @@ return require('packer').startup(function(use)
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
   use 'EdenEast/nightfox.nvim'            -- A highly customizable theme for vim and neovim with support for lsp, treesitter and a variety of plugins.
 
-  -- Leap is a general-purpose motion plugin for Neovim
-  use {
-    'ggandor/leap.nvim',
-    config = [[require('plugins.leap')]]
-  }
-
   use {
     'tpope/vim-fugitive',
     config = [[require('plugins.fugitive')]]

@@ -1,5 +1,5 @@
 -- General
-vim.opt.clipboard     = vim.opt.clipboard + "unnamed" -- Copy and Paste from the system clipboard
+vim.opt.clipboard     = "unnamedplus"                 -- Copy and Paste from the system clipboard
 vim.opt.list          = true                          -- Display extra whitespace
 vim.opt.listchars     = {
   nbsp                = '⦸',                          -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)

@@ -37,6 +37,9 @@ vim.keymap.set({ 'n', 'v' } , 'N', 'Nzzzv')
 -- Don't yank to default register when changing something
 vim.keymap.set({ 'n', 'x' } , 'c', '"xc')
 
+-- Don't yank to default register when putting
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
 -- Split and resize panes
 vim.keymap.set('n', '<leader>|', ':vsplit<cr>')
 vim.keymap.set('n', '<leader>-', ':split<cr>')

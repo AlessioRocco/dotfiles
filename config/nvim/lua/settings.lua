@@ -10,7 +10,8 @@ vim.opt.listchars     = {
 }
 vim.opt.mouse         = 'a'                           -- Enable mouse
 vim.opt.wildmode      = 'longest:full,full'           -- Shell-like autocomplete to unambiguous portion
-vim.opt.number        = true                          -- Use absolute line numbers column
+vim.opt.number        = true                          -- Show line numbers column
+vim.opt.rnu           = true                          -- Use relative line numbers
 -- Split window
 vim.opt.splitbelow    = true                          -- Open new split panes to bottom, which feels more natural
 vim.opt.splitright    = true                          -- Open new split panes to right, which feels more natural

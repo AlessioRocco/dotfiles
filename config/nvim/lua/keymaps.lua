@@ -34,6 +34,10 @@ vim.keymap.set('v', 'L', 'g_')
 vim.keymap.set({ 'n', 'v' } , 'n', 'nzzzv')
 vim.keymap.set({ 'n', 'v' } , 'N', 'Nzzzv')
 
+-- Keep scroll in the middle of the screen
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
 -- Don't yank to default register when changing something
 vim.keymap.set({ 'n', 'x' } , 'c', '"xc')
 

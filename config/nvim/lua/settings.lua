@@ -20,6 +20,7 @@ vim.opt.wrap          = false                         -- Lines will not wrap and
 vim.opt.scrolloff     = 2                             -- Set minimal number of screen lines to keep above and below the cursor
 vim.opt.sidescrolloff = 10                            -- Set minimal number of screen columns to keep to the left and to the right of the cursor
 -- Searching
+vim.opt.hlsearch      = false                         -- Do not highlight all its matches when there is a previous search pattern
 vim.opt.ignorecase    = true                          -- Searching is not case sensitive
 vim.opt.smartcase     = true                          -- Make search case sensitive only if it contains uppercase letters
 -- Autoread and autowrite

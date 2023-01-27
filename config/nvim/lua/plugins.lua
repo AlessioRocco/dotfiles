@@ -59,13 +59,6 @@ return require('packer').startup(function(use)
     config = [[require('plugins.lualine')]]
   }
 
-
-  -- Neoscroll is a smooth scrolling neovim plugin written in lua
-  use {
-    'karb94/neoscroll.nvim',
-    config = [[require('plugins.neoscroll')]]
-  }
-
   -- gitsigns is a super fast git decorations implemented purely in lua/teal
   use {
     'lewis6991/gitsigns.nvim',

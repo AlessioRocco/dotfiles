@@ -22,8 +22,7 @@ return require('packer').startup(function(use)
   -- Run your tests at the speed of thought
   use {
     'janko/vim-test',
-    config = [[require('plugins.vim_test')]],
-    setup = [[require('plugins.vim_test_setup')]],
+    config = [[require('plugins.vim_test')]]
   }
 
   -- EditorConfig plugin for Vim http://editorconfig.org

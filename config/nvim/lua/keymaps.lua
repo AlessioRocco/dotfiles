@@ -47,6 +47,9 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 -- Don't yank to default register when deleting something
 vim.keymap.set({ 'n', 'v' } , '<leader>d', [["_d]])
 
+-- Search and replace the word
+vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
 -- Split and resize panes
 vim.keymap.set('n', '<leader>|', ':vsplit<cr>')
 vim.keymap.set('n', '<leader>-', ':split<cr>')

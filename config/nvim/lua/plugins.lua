@@ -121,10 +121,7 @@ return require('packer').startup(function(use)
       'plenary.nvim',
       'telescope-fzy-native.nvim',
     },
-    setup = [[require('plugins.telescope_setup')]],
-    config = [[require('plugins.telescope')]],
-    cmd = 'Telescope',
-    module = 'telescope',
+    config = [[require('plugins.telescope')]]
   }
 
   -- WhichKey is a Lua plugin that displays a popup with possible key bindings

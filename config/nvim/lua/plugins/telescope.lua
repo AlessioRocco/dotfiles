@@ -9,6 +9,7 @@ telescope.setup {
     mappings = {
       i = {
         ["<ESC>"] = actions.close,
+        ["<C-h>"] = "which_key"
       },
     },
     path_display = { 'truncate' },

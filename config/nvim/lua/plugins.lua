@@ -122,6 +122,12 @@ return require('packer').startup(function(use)
     },
   }
 
+  -- Additional text objects via treesitter
+  use {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+  }
+
   -- telescope.nvim is a highly extendable fuzzy finder over lists
   use {
     'nvim-telescope/telescope.nvim',

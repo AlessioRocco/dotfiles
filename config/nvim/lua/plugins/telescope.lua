@@ -2,6 +2,13 @@ local telescope = require 'telescope'
 local actions = require('telescope.actions')
 telescope.setup {
   defaults = {
+    layout_strategy = 'horizontal',
+    layout_config = {
+      horizontal = {
+        prompt_position = 'top',
+      },
+    },
+    sorting_strategy = 'ascending',
     file_ignore_patterns = {
       '^spec/cassettes/',
       '^db/migrate/',

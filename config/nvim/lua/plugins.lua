@@ -20,6 +20,12 @@ return require('packer').startup(function(use)
     end
   }
 
+  -- A super powerful autopair plugin for Neovim that supports multiple characters.
+  use {
+    "windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup() end
+  }
+
   use {
     'tpope/vim-fugitive',
     config = [[require('plugins.fugitive')]]

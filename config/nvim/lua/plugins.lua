@@ -111,6 +111,9 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = [[require('plugins.treesitter')]],
+    requires = {
+      'tree-sitter/tree-sitter-embedded-template'
+    },
   }
 
   -- telescope.nvim is a highly extendable fuzzy finder over lists

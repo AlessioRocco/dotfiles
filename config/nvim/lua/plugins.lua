@@ -124,6 +124,15 @@ return require('packer').startup(function(use)
     config = [[require('plugins.telescope')]]
   }
 
+  -- Harpoon - Getting you where you want with the fewest keystrokes.
+  use {
+    'ThePrimeagen/harpoon',
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = [[require('plugins.harpoon')]],
+  }
+
   -- WhichKey is a Lua plugin that displays a popup with possible key bindings
   -- of the command you started typing
   use {

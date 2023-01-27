@@ -73,6 +73,14 @@ return require('packer').startup(function(use)
     config = [[require('plugins.gitsigns')]],
   }
 
+  -- Single tabpage interface for easily cycling through diffs for all modified
+  -- files for any git rev.
+  use {
+    'sindrets/diffview.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+    config = [[require('plugins.diffview')]],
+  }
+
   -- The purpose of this plugin is to bundle all the "boilerplate code"
   -- necessary to have nvim-cmp (a popular autocompletion plugin) and
   -- nvim-lspconfig working together. And if you opt in, it can use mason.nvim

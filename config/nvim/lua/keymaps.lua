@@ -1,7 +1,6 @@
 vim.g.mapleader = " "                             -- Leader
 vim.keymap.set('n', '<leader>Q', ':quitall<cr>')  -- Exit NeoVim
 vim.keymap.set('n', '<leader>q', ':bd<cr>')       -- Close buffer
-vim.keymap.set('n',  '<leader>f', 'gg=G')         -- Reindent the entire file
 vim.keymap.set('n',  '<leader><leader>', '<c-^>') -- Easy toggle between the current and the alternate file
 
 -- Append next line to end of current and keep the cursor position

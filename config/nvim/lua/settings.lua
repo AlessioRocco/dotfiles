@@ -10,6 +10,7 @@ vim.opt.listchars     = {
 }
 vim.opt.mouse         = 'a'                           -- Enable mouse
 vim.opt.wildmode      = 'longest:full,full'           -- Shell-like autocomplete to unambiguous portion
+vim.opt.updatetime    = 250                           -- Decrease update time
 vim.opt.number        = true                          -- Show line numbers column
 vim.opt.rnu           = true                          -- Use relative line numbers
 -- Split window

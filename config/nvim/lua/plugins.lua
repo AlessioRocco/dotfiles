@@ -8,10 +8,17 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'            -- use-package inspired plugin/package management for Neovim.
   use 'christoomey/vim-tmux-navigator'    -- Seamless navigation between tmux panes and vim splits
   use 'tpope/vim-bundler'                 -- bundler.vim: Lightweight support for Ruby's Bundler
-  use 'tpope/vim-commentary'              -- commentary.vim: comment stuff out
   use 'tpope/vim-rhubarb'                 -- rhubarb.vim: GitHub extension for fugitive.vim
   use 'tpope/vim-surround'                -- surround.vim: quoting/parenthesizing made simple
   use 'EdenEast/nightfox.nvim'            -- A highly customizable theme for vim and neovim with support for lsp, treesitter and a variety of plugins.
+
+  -- Comment.nvim is a smart and powerful commenting plugin for neovim
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  }
 
   use {
     'tpope/vim-fugitive',

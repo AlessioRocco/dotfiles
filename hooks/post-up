@@ -19,7 +19,3 @@ sleep 0.1                                 # Wait for tmux server initialization 
 #########
 $HOME/.tmux/plugins/tpm/bin/clean_plugins
 $HOME/.tmux/plugins/tpm/bin/update_plugins all
-
-# Install, update and clean NeoVim plugins
-fancy_echo 'Installing, updating and cleaning NeoVim packages ...'
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'

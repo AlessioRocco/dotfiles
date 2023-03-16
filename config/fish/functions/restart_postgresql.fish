@@ -7,11 +7,11 @@
 # This helper function runs all the needed commands.
 
 function restart_postgresql
-  brew services stop postgresql
+    brew services stop postgresql
 
-  if test -e /usr/local/var/postgres/postmaster.pid
-    rm /usr/local/var/postgres/postmaster.pid
-  end
+    if test -e /opt/homebrew/var/postgres/postmaster.pid
+        rm /opt/homebrew/var/postgres/postmaster.pid
+    end
 
-  brew services start postgresql
+    brew services start postgresql
 end

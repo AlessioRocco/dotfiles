@@ -4,6 +4,7 @@ return {
   {
     "tpope/vim-projectionist",
     ft = { "ruby", "eruby" },
+    dependencies = { "tpope/vim-rails" },
     config = function()
       vim.cmd([[
       let g:rails_projections = {

@@ -3,6 +3,7 @@ return {
   -- https://github.com/tpope/vim-rails
   {
     "tpope/vim-rails",
+    ft = { "ruby", "eruby" },
     keys = {
       { "<leader>ra", "<cmd>A<cr>", desc = "Rails: Alternate" },
       { "<leader>rA", "<cmd>AV<cr>", desc = "Rails: Alternate split" },

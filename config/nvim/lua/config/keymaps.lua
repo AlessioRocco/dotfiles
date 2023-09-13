@@ -6,3 +6,8 @@
 vim.keymap.set("n", "<Left>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
 vim.keymap.set("n", "<Right>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 
+-- H and L in order to move to the beginning/ending of the current line
+vim.keymap.set("n", "<S-l>", "$")
+vim.keymap.set("n", "<S-h>", "^")
+vim.keymap.set("v", "<S-l>", "$")
+vim.keymap.set("v", "<S-h>", "^")

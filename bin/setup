@@ -148,7 +148,6 @@ cask "spotify"
 cask "visual-studio-code"
 
 # Services
-brew "postgresql@14", restart_service: :changed
 brew "redis", restart_service: :changed
 
 # Image manipulation

@@ -69,7 +69,7 @@
   ## checkout
   co = checkout
   cob = checkout -b
-  com = checkout master
+  com = checkout main
 
   ## branch
   b = branch
@@ -87,7 +87,7 @@
   rs = rebase --skip
   ra = rebase --abort
   ri = !fish -c 'fzf_git_log | xargs -I sha git rebase --interactive sha^'
-  rim = rebase --interactive master
+  rim = rebase --interactive main
 
   ## stash
   h = stash

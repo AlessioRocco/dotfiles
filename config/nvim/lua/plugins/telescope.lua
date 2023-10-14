@@ -13,13 +13,6 @@ return {
           "^spec/cassettes/",
           "^db/migrate/",
         },
-        mappings = {
-          i = {
-            ["<Esc>"] = function(...)
-              return require("telescope.actions").close(...)
-            end,
-          },
-        },
         path_display = { "truncate" },
       },
       pickers = {

@@ -1,10 +1,8 @@
-Dotfiles
-========
+# Dotfiles
 
 Dotfiles and shell scripts to set up my macOS laptop for development.
 
-Install
--------
+## Install
 
 Install the Command Line Tools:
 
@@ -36,8 +34,7 @@ Optionally, review the log:
 less ~/setup.log
 ```
 
-License
--------
+## License
 
 Dotfiles is (c) 2019-2021 Alessio Rocco
 It is free software,

@@ -13,7 +13,7 @@ return {
     config = true,
     keys = {
       { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
-      { "<leader>gb", "<cmd>Neogit branch<cr>", desc = "Branch" },
+      { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit commit" },
     },
   },
   -- Diffview.nvim

@@ -2,9 +2,9 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
-      "nvim-telescope/telescope-fzy-native.nvim",
+      "nvim-telescope/telescope-fzf-native.nvim",
       config = function()
-        require("telescope").load_extension("fzy_native")
+        require("telescope").load_extension("fzf")
       end,
     },
     opts = {

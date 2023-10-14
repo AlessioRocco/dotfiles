@@ -11,7 +11,6 @@ return {
       defaults = {
         file_ignore_patterns = {
           "^spec/cassettes/",
-          "^db/migrate/",
         },
         path_display = { "truncate" },
       },

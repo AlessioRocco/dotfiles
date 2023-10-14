@@ -7,6 +7,7 @@ return {
       "flake8",
       "js-debug-adapter",
       "json-lsp",
+      "ltex-ls",
       "lua-language-server",
       "prettierd",
       "rubocop",

@@ -22,4 +22,10 @@ return {
       },
     },
   },
+
+  -- cmp-git
+  -- https://github.com/petertriho/cmp-git/
+  {
+    "petertriho/cmp-git",
+  },
 }

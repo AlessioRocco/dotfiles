@@ -1,5 +1,5 @@
 return {
-  -- Add octo.vim
+  -- Octo.vim
   -- https://github.com/pwntester/octo.nvim
   {
     "pwntester/octo.nvim",
@@ -10,16 +10,10 @@ return {
     },
     cmd = "Octo",
     config = function()
-      require("octo").setup()
+      require("octo").setup({ enable_builtin = true })
     end,
     keys = {
-      { "<leader>hpl", "<cmd>Octo pr list<cr>", desc = "List" },
-      { "<leader>hpm", "<cmd>Octo pr search is:open author:@me <cr>", desc = "Created by me" },
-      {
-        "<leader>hpr",
-        "<cmd>Octo pr search is:open review-requested:@me<cr>",
-        desc = "Awaiting review from you or your team",
-      },
+      { "<leader>o", "<cmd>Octo<cr>", desc = "Octo" },
     },
   },
 

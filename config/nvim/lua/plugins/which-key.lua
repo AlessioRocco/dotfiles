@@ -4,7 +4,6 @@ return {
     opts = {
       defaults = {
         ["<leader>r"] = { name = "+rails" },
-        ["<leader>h"] = { name = "+octo" },
       },
     },
   },

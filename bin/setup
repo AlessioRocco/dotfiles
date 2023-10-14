@@ -6,18 +6,19 @@
 # Thanks to https://github.com/thoughtbot/laptop
 
 fancy_echo() {
-  local fmt="$1"; shift
+  local fmt="$1"
+  shift
 
   # shellcheck disable=SC2059
   printf "\\n$fmt\\n" "$@"
 }
 
 update_shell() {
-  local shell_path;
+  local shell_path
   shell_path="$(command -v fish)"
 
   fancy_echo "Changing your shell to fish ..."
-  if ! grep "$shell_path" /etc/shells > /dev/null 2>&1 ; then
+  if ! grep "$shell_path" /etc/shells >/dev/null 2>&1; then
     fancy_echo "Adding '$shell_path' to /etc/shells"
     sudo sh -c "echo $shell_path >> /etc/shells"
   fi
@@ -179,14 +180,14 @@ mas install 960276676  # Taurine
 
 # Change the shell to fish if needed
 case "$SHELL" in
-  */fish)
-    if [ "$(command -v fish)" != '/usr/local/bin/fish' ] ; then
-      update_shell
-    fi
-    ;;
-  *)
+*/fish)
+  if [ "$(command -v fish)" != '/usr/local/bin/fish' ]; then
     update_shell
-    ;;
+  fi
+  ;;
+*)
+  update_shell
+  ;;
 esac
 
 # Install asdf plugins

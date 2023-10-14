@@ -8,6 +8,24 @@ return {
       rubocop = {
         cmd = { os.getenv("HOME") .. "/.asdf/shims/rubocop", "--lsp" },
       },
+      ltex = {
+        settings = {
+          ltex = {
+            enabled = {
+              "bibtex",
+              "context",
+              "context.tex",
+              "gitcommit",
+              "html",
+              "latex",
+              "markdown",
+              "org",
+              "restructuredtext",
+              "rsweave",
+            },
+          },
+        },
+      },
     },
   },
 }

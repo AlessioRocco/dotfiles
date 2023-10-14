@@ -47,6 +47,9 @@ source /opt/homebrew/opt/asdf/libexec/asdf.fish
 # https://thoughtbot.com/blog/git-safe
 fish_add_path --move .git/safe/../../bin
 
+# Use Homebrew's OpenJDK
+fish_add_path /opt/homebrew/opt/openjdk/bin
+
 ### Aliases
 
 # Git/GitHub CLI

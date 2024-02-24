@@ -149,8 +149,6 @@ cask "spectacle"
 cask "spotify"
 cask "visual-studio-code"
 
-# Services
-brew "redis", restart_service: :changed
 
 # Image manipulation
 brew "imagemagick"

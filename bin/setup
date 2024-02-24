@@ -147,8 +147,6 @@ cask "kitty"
 cask "ngrok"
 cask "spectacle"
 cask "spotify"
-cask "visual-studio-code"
-
 
 # Image manipulation
 brew "imagemagick"

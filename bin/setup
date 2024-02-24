@@ -171,7 +171,6 @@ EOF
 # Install Apps from Apple Store
 fancy_echo "Installing Apps from Apple Store ..."
 mas install 1147396723 # WhatsApp Desktop
-mas install 506189836  # Harvest
 mas install 568494494  # Pocket
 mas install 585829637  # Todoist: To-Do List & Tasks
 mas install 747648890  # Telegram

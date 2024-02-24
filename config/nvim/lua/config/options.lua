@@ -4,3 +4,9 @@
 
 vim.opt.colorcolumn = "+1" -- Highlight the column next to the textwidth
 
+-- Filetype specific options
+vim.filetype.add({
+  extension = {
+    deface = "eruby",
+  },
+})

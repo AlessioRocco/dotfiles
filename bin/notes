@@ -1,6 +1,14 @@
 #!/bin/sh
 #
-# Open Notes
+# Open local notes if they exist or ~/Documents/Notes otherwise
 
-cd ~/Documents/Notes
-tat
+if [ -d .notes ]; then
+  $EDITOR .notes
+
+  if [ "$TERM_PROGRAM" = tmux ]; then
+    tmux rename-window "notes"
+  fi
+else
+  cd ~/Documents/Notes
+  tat
+fi

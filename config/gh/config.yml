@@ -15,3 +15,4 @@ aliases:
     prlm: '!fish -c "fzf_pull_requests --assignee @me"'
     prlw: '!fish -c "fzf_pull_requests --search review-requested:@me"'
     pro: '!fish -c "gh pr view --web"'
+version: "1"

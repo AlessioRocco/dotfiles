@@ -19,3 +19,6 @@ sleep 0.1                                 # Wait for tmux server initialization 
 #########
 $HOME/.tmux/plugins/tpm/bin/clean_plugins
 $HOME/.tmux/plugins/tpm/bin/update_plugins all
+
+# Reload fish
+reload

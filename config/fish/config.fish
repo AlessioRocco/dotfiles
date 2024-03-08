@@ -67,9 +67,6 @@ alias e editor
 # Edit host database file
 alias eh "sudo vim /etc/hosts"
 
-# Restart postgresql
-alias pgr restart_postgresql
-
 # Kill process
 alias kp kill_process
 

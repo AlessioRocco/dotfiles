@@ -125,6 +125,7 @@ brew "neovim"
 brew "rcm"
 brew "ripgrep"
 brew "tmux"
+brew "universal-ctags"
 brew "wget"
 
 # Fonts

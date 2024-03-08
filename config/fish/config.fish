@@ -9,6 +9,11 @@ set -xg EDITOR nvim
 # Editor for opening gems
 set -xg BUNDLER_EDITOR nvim
 
+# Set the default home directory for XDG
+# This is needed for lazygit to use the correct config directory
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
+set -xg XDG_CONFIG_HOME ~/.config
+
 # Use fd as default command for fzf
 # Also the author of rigrep recommends using fd
 # https://www.reddit.com/r/linux4noobs/comments/egb644/fzf_newcomer_fd_or_ripgrep/fc5li3r/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button

@@ -16,3 +16,6 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]
   fancy_echo "Installing Tmux Plugin Manager ..."
   git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 end
+
+# Install or update themes
+update_themes

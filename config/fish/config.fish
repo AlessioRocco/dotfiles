@@ -17,6 +17,8 @@ set -xg FZF_DEFAULT_COMMAND 'fd --type f --strip-cwd-prefix --hidden --follow --
 set -xg FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -xg FZF_DEFAULT_OPTS --ansi
 
+source ~/.config/fzf/themes/tokyonight_moon.fish
+
 # Force GitHub CLI to use colors
 set -xg CLICOLOR_FORCE true
 set -xg GH_FORCE_TTY true
@@ -28,8 +30,8 @@ set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
 
 ### Configurations
 
-# Use Nordfox color palette
-source ~/.config/fish/nordfox.fish
+# Set color palette
+fish_config theme choose tokyonight_moon
 
 # Set GPG TTY
 set -xg GPG_TTY (tty)

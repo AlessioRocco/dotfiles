@@ -38,9 +38,6 @@ set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
 # Set color palette
 fish_config theme choose tokyonight_moon
 
-# Set GPG TTY
-set -xg GPG_TTY (tty)
-
 # Add ~/bin to the $PATH
 fish_add_path --move ~/bin
 

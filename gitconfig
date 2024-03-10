@@ -1,7 +1,7 @@
 [user]
   name = Alessio Rocco
   email = alessiorocco@nebulab.com
-  signingkey = AE9CB030188650AC
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE3t2tB7XSUKZGgreUy0sNtALbesrvqoaFduW9JQ7l6r
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -18,7 +18,9 @@
   nogreeting = true
   defaultcommand = ss
 [gpg]
-  program = /opt/homebrew/bin/gpg
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [commit]
   template = ~/.gitmessage
   gpgsign = true

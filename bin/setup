@@ -155,10 +155,6 @@ brew "imagemagick"
 # Mac App Store command line interface
 brew "mas"
 
-# Using GPG to verify the git commit.
-brew "gpg2"
-brew "pinentry-mac"
-
 # Programming language prerequisites and package managers
 brew "gpg"
 brew "yarn", args: ["ignore-dependencies"]

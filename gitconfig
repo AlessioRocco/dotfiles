@@ -13,10 +13,6 @@
 [delta]
   navigate = true
   light = false
-[gitsh]
-  gitcommand = git
-  nogreeting = true
-  defaultcommand = ss
 [gpg]
   format = ssh
 [gpg "ssh"]

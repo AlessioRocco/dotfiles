@@ -57,7 +57,7 @@ fish_add_path /opt/homebrew/opt/openjdk/bin
 ### Aliases
 
 # Git/GitHub CLI
-alias g git_or_gitsh
+alias g git_or_lazygit
 alias pr fzf_pull_requests
 
 # Reload fish shell configuration

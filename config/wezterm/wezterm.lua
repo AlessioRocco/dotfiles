@@ -33,6 +33,16 @@ config.use_cap_height_to_scale_fallback_fonts = true
 -- https://wezfurlong.org/wezterm/config/lua/config/window_decorations.html
 config.window_decorations = "RESIZE"
 
+-- Set the window padding to zero.
+-- For more information, see:
+-- https://wezfurlong.org/wezterm/config/lua/config/window_padding.html
+config.window_padding = {
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
+}
+
 -- Maximize default window on startup.
 -- For more information, see:
 -- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html

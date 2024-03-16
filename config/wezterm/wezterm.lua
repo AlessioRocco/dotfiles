@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
+local mux = wezterm.mux
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -31,6 +32,14 @@ config.use_cap_height_to_scale_fallback_fonts = true
 -- For more information, see:
 -- https://wezfurlong.org/wezterm/config/lua/config/window_decorations.html
 config.window_decorations = "RESIZE"
+
+-- Maximize default window on startup.
+-- For more information, see:
+-- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
+wezterm.on("gui-startup", function(cmd)
+  local tab, pane, window = mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
 
 -- and finally, return the configuration to wezterm
 return config

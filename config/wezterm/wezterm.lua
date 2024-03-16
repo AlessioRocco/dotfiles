@@ -25,5 +25,12 @@ config.font = wezterm.font_with_fallback({
 -- https://wezfurlong.org/wezterm/config/lua/config/use_cap_height_to_scale_fallback_fonts.html
 config.use_cap_height_to_scale_fallback_fonts = true
 
+-- Window settings:
+
+-- Disable the title bar but enable the resizable border.
+-- For more information, see:
+-- https://wezfurlong.org/wezterm/config/lua/config/window_decorations.html
+config.window_decorations = "RESIZE"
+
 -- and finally, return the configuration to wezterm
 return config

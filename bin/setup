@@ -105,7 +105,6 @@ brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
 tap "heroku/brew"
-tap "homebrew/cask-fonts"
 
 # Tools
 brew "asdf"
@@ -126,12 +125,6 @@ brew "ripgrep"
 brew "tmux"
 brew "universal-ctags"
 brew "wget"
-
-# Fonts
-cask "font-cascadia-code"
-cask "font-fira-code-nerd-font"
-cask "font-jetbrains-mono"
-cask "font-victor-mono"
 
 # Apps
 cask "1password"

@@ -22,7 +22,8 @@ set -xg FZF_DEFAULT_COMMAND 'fd --type f --strip-cwd-prefix --hidden --follow --
 set -xg FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -xg FZF_DEFAULT_OPTS --ansi
 
-source ~/.config/fzf/themes/tokyonight_moon.fish
+# Set the theme for fzf
+source ~/.config/fzf/themes/catppuccin_macchiato.fish
 
 # Force GitHub CLI to use colors
 set -xg CLICOLOR_FORCE true

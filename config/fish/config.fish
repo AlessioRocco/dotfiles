@@ -36,8 +36,7 @@ set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
 
 ### Configurations
 
-# Set color palette
-fish_config theme choose tokyonight_moon
+### Configurations
 
 # Add ~/bin to the $PATH
 fish_add_path --move ~/bin

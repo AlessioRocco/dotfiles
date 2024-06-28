@@ -21,7 +21,6 @@ cd "$THEMES_TEMP_DIR" || exit
 
 # Clone the repository with a depth of 1
 git clone --depth 1 --single-branch --branch main https://github.com/catppuccin/fish
-git clone --depth 1 --single-branch --branch main https://github.com/catppuccin/delta
 
 mkdir -p ~/.config/fish/themes
 mkdir -p ~/.config/delta/themes
@@ -29,7 +28,9 @@ mkdir -p "$(bat --config-dir)/themes"
 
 # Move the desired folder to your desired location
 mv "$THEMES_TEMP_DIR/fish/themes/"* ~/.config/fish/themes
-mv "$THEMES_TEMP_DIR/delta/catppuccin.gitconfig*" ~/.config/delta/themes
+
+# Delta
+wget -P ~/.config/delta/themes https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig
 
 # Bat
 wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Latte.tmTheme

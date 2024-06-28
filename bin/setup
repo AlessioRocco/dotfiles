@@ -125,6 +125,7 @@ brew "ripgrep"
 brew "tmux"
 brew "universal-ctags"
 brew "wget"
+brew "zoxide"
 
 # Apps
 cask "1password"

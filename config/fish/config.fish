@@ -92,3 +92,6 @@ abbr bo "bundle open"
 
 ### Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+### Zoxide
+zoxide init fish | source

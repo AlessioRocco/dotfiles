@@ -10,24 +10,16 @@ fancy_echo() {
 
 fancy_echo "Updating themes ..."
 
-THEMES_TEMP_DIR="$HOME/.themes_temp_dir"
-
-# Create a temporary directory
-rm -rf "$THEMES_TEMP_DIR"
-mkdir -p "$THEMES_TEMP_DIR"
-
-# Navigate into the temporary directory
-cd "$THEMES_TEMP_DIR" || exit
-
-# Clone the repository with a depth of 1
-git clone --depth 1 --single-branch --branch main https://github.com/catppuccin/fish
-
+# Create configuration directories
 mkdir -p ~/.config/fish/themes
 mkdir -p ~/.config/delta/themes
 mkdir -p "$(bat --config-dir)/themes"
 
-# Move the desired folder to your desired location
-mv "$THEMES_TEMP_DIR/fish/themes/"* ~/.config/fish/themes
+# Fish
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Frappe.theme
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Latte.theme
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Macchiato.theme
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Mocha.theme
 
 # Delta
 wget -P ~/.config/delta/themes https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig
@@ -40,8 +32,5 @@ wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/
 
 # Build bat cache
 bat cache --build
-
-# Clean up - remove the temporary directory
-rm -rf "$THEMES_TEMP_DIR"
 
 fancy_echo "Themes updated!"

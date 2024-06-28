@@ -7,12 +7,12 @@
   autocrlf = input
   pager = delta
 [include]
-  path = ~/.config/delta/themes/tokyonight_moon.gitconfig
+  path = ~/.config/delta/themes/catppuccin.gitconfig
 [interactive]
   diffFilter = delta --color-only
 [delta]
+  features = catppuccin-macchiato
   navigate = true
-  light = false
 [gpg]
   format = ssh
 [gpg "ssh"]

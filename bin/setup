@@ -162,7 +162,6 @@ mas install 568494494 # Pocket
 mas install 585829637 # Todoist: To-Do List & Tasks
 mas install 747648890 # Telegram
 mas install 803453959 # Slack
-mas install 960276676 # Taurine
 
 # Change the shell to fish if needed
 case "$SHELL" in

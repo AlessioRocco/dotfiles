@@ -106,7 +106,7 @@ tap "thoughtbot/formulae"
 tap "homebrew/services"
 tap "heroku/brew"
 
-# Tools
+# Tools and libraries
 brew "asdf"
 brew "awscli"
 brew "bat"
@@ -118,6 +118,7 @@ brew "gh"
 brew "git"
 brew "git-delta"
 brew "heroku"
+brew "libpq"
 brew "ltex-ls"
 brew "neovim"
 brew "rcm"

@@ -43,6 +43,9 @@ set -xg PGGSSENCMODE disable
 # Add ~/bin to the $PATH
 fish_add_path --move ~/bin
 
+# Add libpq to the $PATH
+fish_add_path /opt/homebrew/opt/libpq/bin
+
 # Use asdf - https://asdf-vm.com/
 #
 # https://asdf-vm.com/guide/getting-started.html#_3-install-asdf

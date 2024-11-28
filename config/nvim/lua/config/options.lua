@@ -10,6 +10,6 @@ vim.filetype.add({
     gitconfig = "git_config",
   },
   extension = {
-    deface = "eruby",
+    deface = "eruby.html",
   },
 })

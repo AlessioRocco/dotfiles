@@ -23,5 +23,8 @@ $HOME/.tmux/plugins/tpm/bin/update_plugins all
 # Set Fish color palette
 fish_config theme choose "Catppuccin Macchiato"
 
+# Set up ASDF shell completions
+asdf completion fish >~/.config/fish/completions/asdf.fish
+
 # Reload fish
 reload

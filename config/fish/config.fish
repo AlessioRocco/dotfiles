@@ -46,10 +46,20 @@ fish_add_path --move ~/bin
 # Add libpq to the $PATH
 fish_add_path /opt/homebrew/opt/libpq/bin
 
-# Use asdf - https://asdf-vm.com/
-#
-# https://asdf-vm.com/guide/getting-started.html#_3-install-asdf
-source /opt/homebrew/opt/asdf/libexec/asdf.fish
+# ASDF configuration code - https://asdf-vm.com/
+# https://asdf-vm.com/guide/getting-started.html#_2-configure-asdf
+if test -z $ASDF_DATA_DIR
+    set _asdf_shims "$HOME/.asdf/shims"
+else
+    set _asdf_shims "$ASDF_DATA_DIR/shims"
+end
+
+# Do not use fish_add_path (added in Fish 3.2) because it
+# potentially changes the order of items in PATH
+if not contains $_asdf_shims $PATH
+    set -gx --prepend PATH $_asdf_shims
+end
+set --erase _asdf_shims
 
 # Use .git/safe to add trusted bin into the path
 #

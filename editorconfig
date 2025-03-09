@@ -11,3 +11,8 @@ max_line_length = 80
 
 [*.{sh,markdown}]
 indent_size = 4
+
+[COMMIT_EDITMSG]
+trim_trailing_whitespace = false
+insert_final_newline = false
+max_line_length = 72

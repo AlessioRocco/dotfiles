@@ -108,7 +108,6 @@ brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
 tap "heroku/brew"
-tap "shopify/shopify"
 
 # Tools and libraries
 brew "asdf"
@@ -131,7 +130,6 @@ brew "tmux"
 brew "universal-ctags"
 brew "wget"
 brew "zoxide"
-brew "shopify-cli"
 
 # Apps
 cask "1password"

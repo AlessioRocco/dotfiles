@@ -19,3 +19,4 @@ rails.rb
 .vscode/
 .projections.json
 .notes
+.lazy.lua

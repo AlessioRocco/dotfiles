@@ -133,7 +133,6 @@ brew "zoxide"
 
 # Apps
 cask "1password"
-cask "alfred"
 cask "chromedriver"
 cask "cleanmymac"
 cask "docker"
@@ -143,7 +142,7 @@ cask "google-chrome"
 cask "insomnia"
 cask "wezterm"
 cask "ngrok"
-cask "spectacle"
+cask "raycast"
 cask "spotify"
 
 # Image manipulation

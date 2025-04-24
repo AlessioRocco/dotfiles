@@ -79,9 +79,6 @@ defaults write NSGlobalDomain _HIHideMenuBar -bool TRUE
 ## Change the default screenshots location
 defaults write com.apple.screencapture location ~/Desktop/screenshots/
 
-## Add Spectacle app to login items
-osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Spectacle.app", hidden:true}'
-
 # Disable the Apple press and hold for VSCode.
 #
 # https://github.com/VSCodeVim/Vim#mac

@@ -140,10 +140,10 @@ cask "firefox"
 cask "gemini"
 cask "google-chrome"
 cask "insomnia"
-cask "wezterm"
 cask "ngrok"
 cask "raycast"
 cask "spotify"
+cask "wezterm"
 
 # Image manipulation
 brew "imagemagick"

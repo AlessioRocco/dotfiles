@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Define the directories to exclude
+EXCLUDED_DIRS=("$HOME/code" "$HOME/Pictures" "$HOME/Library" "$HOME/Applications" "$HOME/.Trash")
+
+# Convert excluded directories into a `find` compatible expression
+EXCLUDE_EXPR=""
+for dir in "${EXCLUDED_DIRS[@]}"; do
+  EXCLUDE_EXPR="$EXCLUDE_EXPR -path '$dir' -prune -o"
+done
+
+# Find and remove broken symlinks, skipping the excluded directories
+eval "find \"$HOME\" $EXCLUDE_EXPR -type l ! -exec test -e {} \; -print -exec rm {} \;"

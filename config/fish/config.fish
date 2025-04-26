@@ -3,11 +3,11 @@
 # Add 'code' folder in the CDPATH.
 set -xg CDPATH . ~/code
 
-# Set NeoVim as the default editor.
-set -xg EDITOR nvim
+# Set LazyVim as the default editor.
+set -xg EDITOR "NVIM_APPNAME=lazyvim nvim"
 
-# Editor for opening gems
-set -xg BUNDLER_EDITOR nvim
+# Set LazyVim as editor for opening gems
+set -xg BUNDLER_EDITOR $EDITOR
 
 # Set the default home directory for XDG
 # This is needed for lazygit to use the correct config directory
@@ -79,6 +79,7 @@ alias pr fzf_pull_requests
 alias reload reload_configuration
 
 # Editor
+alias editor $EDITOR
 alias e editor
 
 # Edit host database file

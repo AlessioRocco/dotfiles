@@ -3,6 +3,8 @@
 -- Add any additional options here
 
 vim.opt.colorcolumn = "+1" -- Highlight the column next to the textwidth
+vim.opt.swapfile = false
+-- vim.g.lazyvim_picker = "snacks"
 
 -- Filetype specific options
 vim.filetype.add({

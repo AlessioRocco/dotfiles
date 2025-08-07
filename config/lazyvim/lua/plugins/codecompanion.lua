@@ -27,6 +27,7 @@ return {
         end,
       },
       extensions = {
+        spinner = {},
         history = {
           enabled = true,
         },
@@ -51,5 +52,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "ravitemer/mcphub.nvim",
     "ravitemer/codecompanion-history.nvim",
+    "franco-ruggeri/codecompanion-spinner.nvim",
   },
 }

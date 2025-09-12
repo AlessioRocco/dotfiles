@@ -99,3 +99,6 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 ### Zoxide
 zoxide init fish | source
+
+# Mise
+~/.local/bin/mise activate fish | source

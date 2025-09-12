@@ -15,6 +15,30 @@ return {
               return string.format([[<prompt>%s</prompt>]], message)
             end,
           },
+          variables = {
+            ["staged_diff"] = {
+              callback = function()
+                local staged_diff = vim.fn.system("GIT_PAGER=cat git diff --no-ext-diff --staged --no-color")
+
+                return string.format(
+                  [[
+The following is the diff of all code changes currently staged for commit in this branch:
+
+```diff
+%s
+```
+]],
+                  staged_diff
+                )
+              end,
+              description = "Shares the current staged code changes",
+              opts = {
+                contains_code = false,
+              },
+            },
+          },
+        },
+      },
         },
       },
       adapters = {

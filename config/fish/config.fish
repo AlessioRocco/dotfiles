@@ -1,5 +1,10 @@
 ### Variables
 
+# Load secrets if present
+if test -f ~/.config/fish/secrets.fish
+    source ~/.config/fish/secrets.fish
+end
+
 # Add 'code' folder in the CDPATH.
 set -xg CDPATH . ~/code
 

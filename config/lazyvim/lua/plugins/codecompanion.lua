@@ -16,6 +16,33 @@ return {
             end,
           },
           variables = {
+            ["jira_issue_context"] = {
+              callback = function()
+                -- Get current branch name
+                local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("%s+", "")
+                -- Extract JIRA issue key (e.g., FWMD-3505)
+                local issue = branch:match("([A-Z]+%-%d+)")
+                if not issue then
+                  return "No JIRA issue found in branch name."
+                end
+                -- Fetch JIRA issue details
+                local cmd = string.format("JIRA_PAGER=cat jira issue view %s --comments 100 --plain", issue)
+                local jira_context = vim.fn.system(cmd)
+                return string.format(
+                  [[
+JIRA issue context for `%s`:
+
+%s
+]],
+                  issue,
+                  jira_context
+                )
+              end,
+              description = "Shares the JIRA issue context based on the current branch",
+              opts = {
+                contains_code = false,
+              },
+            },
             ["previous_commits"] = {
               callback = function()
                 local previous_commits = vim.fn.system("get_commits_with_clean_diffs")

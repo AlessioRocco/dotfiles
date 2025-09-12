@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Determine base branch: main or master
+if git show-ref --verify --quiet refs/heads/main; then
+  BASE_BRANCH=main
+elif git show-ref --verify --quiet refs/heads/master; then
+  BASE_BRANCH=master
+else
+  echo "Error: Neither 'main' nor 'master' branch exists."
+  exit 1
+fi
+
+COMMITS=$(git rev-list --reverse "${BASE_BRANCH}..HEAD")
+
+if [ -z "$COMMITS" ]; then
+  echo "No unique commits were found in this branch compared to \`$BASE_BRANCH\`."
+  exit 0
+fi
+
+echo "--- BEGIN PREVIOUS COMMITS ---"
+
+for COMMIT in $COMMITS; do
+  echo "---"
+  git show -s --format="## %h %s%n%n%b" "$COMMIT"
+  echo
+  echo '```diff'
+  git diff-tree --no-commit-id --patch --no-color --no-ext-diff -U3 "$COMMIT^" "$COMMIT"
+  echo '```'
+  echo
+done
+
+echo "--- END PREVIOUS COMMITS ---"

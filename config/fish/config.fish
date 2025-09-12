@@ -8,8 +8,8 @@ end
 # Add 'code' folder in the CDPATH.
 set -xg CDPATH . ~/code
 
-# Set LazyVim as the default editor.
-set -xg EDITOR "NVIM_APPNAME=lazyvim nvim"
+# Set NeoVim as the default editor.
+set -xg EDITOR nvim
 
 # Set LazyVim as editor for opening gems
 set -xg BUNDLER_EDITOR $EDITOR

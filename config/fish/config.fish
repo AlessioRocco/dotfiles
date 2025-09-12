@@ -41,8 +41,8 @@ set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
 
 ### Configurations
 
-# Add ~/bin to the $PATH
-fish_add_path --move ~/bin
+# Add ~/.bin to the $PATH
+fish_add_path --move ~/.bin
 
 # Add libpq to the $PATH
 fish_add_path /opt/homebrew/opt/libpq/bin

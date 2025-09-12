@@ -18,4 +18,28 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]
 end
 
 # Install or update themes
-update_themes
+
+# Create configuration directories
+mkdir -p ~/.config/fish/themes
+mkdir -p ~/.config/delta/themes
+mkdir -p "$(bat --config-dir)/themes"
+
+# Fish
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Frappe.theme
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Latte.theme
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Macchiato.theme
+wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Mocha.theme
+
+# Delta
+wget -P ~/.config/delta/themes https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig
+
+# Bat
+wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Latte.tmTheme
+wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Frappe.tmTheme
+wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme
+wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme
+
+# Build bat cache
+bat cache --build
+
+fancy_echo "Themes updated!"

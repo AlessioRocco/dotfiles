@@ -51,11 +51,6 @@ fish_add_path --move ~/bin
 # Add libpq to the $PATH
 fish_add_path /opt/homebrew/opt/libpq/bin
 
-# Use .git/safe to add trusted bin into the path
-#
-# https://thoughtbot.com/blog/git-safe
-fish_add_path --move .git/safe/../../bin
-
 # Use Homebrew's OpenJDK
 fish_add_path /opt/homebrew/opt/openjdk/bin
 

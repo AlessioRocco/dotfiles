@@ -39,10 +39,6 @@ set -xg GLAMOUR_STYLE dark
 # https://github.com/rails/rails/issues/38560
 set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
 
-# Fix for Postgres Segmentation fault
-# https://github.com/ged/ruby-pg/issues/538#issuecomment-1591629049
-set -xg PGGSSENCMODE disable
-
 ### Configurations
 
 # Add ~/bin to the $PATH

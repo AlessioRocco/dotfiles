@@ -25,28 +25,6 @@ update_shell() {
   sudo chsh -s "$shell_path" "$USER"
 }
 
-install_asdf_plugin() {
-  local name="$1"
-  local url="$2"
-
-  if ! asdf plugin list | grep -Fq "$name"; then
-    fancy_echo "Installing $name asdf plugin ..."
-    asdf plugin add "$name" "$url"
-  fi
-}
-
-install_asdf_language() {
-  local language="$1"
-  local version
-  version="$(asdf list all "$language" | grep -v "[a-z]" | tail -1)"
-
-  if ! asdf list "$language" | grep -Fq "$version"; then
-    fancy_echo "Installing latest $language ..."
-    asdf install "$language" "$version"
-    asdf set "$language" "$version"
-  fi
-}
-
 # Add a failed message if setup fails.
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "\nSetup failed!\n\n" >&2; exit $ret' EXIT
@@ -106,7 +84,6 @@ tap "thoughtbot/formulae"
 tap "heroku/brew"
 
 # Tools and libraries
-brew "asdf"
 brew "awscli"
 brew "bat"
 brew "fd"
@@ -168,14 +145,6 @@ case "$SHELL" in
   update_shell
   ;;
 esac
-
-# Install asdf plugins
-install_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
-install_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
-
-# Install languages
-install_asdf_language "ruby"
-install_asdf_language "nodejs"
 
 # Create code folder
 CODE_DIR="$HOME/code"

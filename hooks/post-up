@@ -23,9 +23,6 @@ $HOME/.tmux/plugins/tpm/bin/update_plugins all
 # Set Fish color palette
 fish_config theme choose "Catppuccin Macchiato"
 
-# Set up ASDF shell completions
-asdf completion fish >~/.config/fish/completions/asdf.fish
-
 # Execute the function to clean symlinks
 fancy_echo 'Clean symlinks'
 clean_symlinks

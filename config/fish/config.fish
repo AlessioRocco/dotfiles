@@ -30,10 +30,6 @@ set -xg CLICOLOR_FORCE true
 set -xg GH_FORCE_TTY true
 set -xg GLAMOUR_STYLE dark
 
-# Fix Rails issue with MacOS
-# https://github.com/rails/rails/issues/38560
-set -xg OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
-
 ### Configurations
 
 # Add ~/.bin to the $PATH

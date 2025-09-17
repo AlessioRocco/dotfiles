@@ -87,3 +87,10 @@ zoxide init fish | source
 
 # Mise
 ~/.local/bin/mise activate fish | source
+
+# Atuin
+if status is-interactive
+    atuin init fish | source
+
+    bind up _atuin_bind_up
+end

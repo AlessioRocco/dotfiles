@@ -136,8 +136,13 @@ mas "WhatsApp Messenger", id: 310633997
 EOF
 
 # Install Mise
-fancy_echo "Installing Mise ..."
-curl https://mise.run | sh
+if ! command -v mise >/dev/null 2>&1; then
+  fancy_echo "Installing Mise ..."
+  curl https://mise.run | sh
+else
+  fancy_echo "Updating Mise ..."
+  mise self-update
+fi
 
 # Install Atuin
 if ! command -V atuin >/dev/null 2>&1; then

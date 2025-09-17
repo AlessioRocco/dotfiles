@@ -45,7 +45,7 @@ JIRA issue context for `%s`:
             },
             ["previous_commits"] = {
               callback = function()
-                local previous_commits = vim.fn.system("get_commits_with_clean_diffs")
+                local previous_commits = vim.fn.system("get_commits_with_diffs")
 
                 return [[
 The following are previous commits in this branch that are not present in `main`.

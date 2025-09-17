@@ -3,6 +3,9 @@
 # Add 'code' folder in the CDPATH.
 set -xg CDPATH . ~/code
 
+# Set LazyVim as the default nvim app
+set -xg NVIM_APPNAME nvim-lazyvim
+
 # Set NeoVim as the default editor.
 set -xg EDITOR nvim
 

@@ -21,7 +21,7 @@ return {
                 -- Get current branch name
                 local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("%s+", "")
                 -- Extract JIRA issue key (e.g., FWMD-3505)
-                local issue = branch:match("([A-Z]+%-%d+)")
+                local issue = branch:match("([A-Za-z]+%-%d+)")
                 if not issue then
                   return "No JIRA issue found in branch name."
                 end

@@ -28,6 +28,10 @@ return {
       },
       strategies = {
         chat = {
+          adapter = {
+            name = "copilot",
+            model = "claude-sonnet-4",
+          },
           opts = {
             ---Decorate the user message before it's sent to the LLM
             ---@param message string

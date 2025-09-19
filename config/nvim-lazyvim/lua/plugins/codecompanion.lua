@@ -3,6 +3,29 @@ return {
   lazy = false,
   opts = function()
     return {
+      adapters = {
+        acp = {
+          opts = {
+            show_defaults = false,
+            show_model_choices = true,
+          },
+          gemini_cli = function()
+            return require("codecompanion.adapters").extend("gemini_cli")
+          end,
+        },
+        http = {
+          opts = {
+            show_defaults = false,
+            show_model_choices = true,
+          },
+          copilot = function()
+            return require("codecompanion.adapters").extend("copilot")
+          end,
+          gemini = function()
+            return require("codecompanion.adapters").extend("gemini")
+          end,
+        },
+      },
       strategies = {
         chat = {
           opts = {

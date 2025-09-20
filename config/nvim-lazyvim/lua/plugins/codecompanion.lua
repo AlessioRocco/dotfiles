@@ -199,15 +199,6 @@ Output only the commit message, wrapped in a ```gitcommit``` code block.
           },
         },
       },
-      adapters = {
-        gemini = function()
-          return require("codecompanion.adapters").extend("gemini", {
-            env = {
-              api_key = "cmd:op read op://Nebulab/Gemini/credential --no-newline",
-            },
-          })
-        end,
-      },
       extensions = {
         spinner = {},
         history = {

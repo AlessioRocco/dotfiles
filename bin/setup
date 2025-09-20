@@ -129,7 +129,6 @@ brew "yarn", args: ["ignore-dependencies"]
 # Install Apps from Apple Store
 mas "Bitwarden", id: 1352778147
 mas "Home Assistant", id: 1099568401
-mas "Perplexity: Ask Anything", id: 6714467650
 mas "Slack for Desktop", id: 803453959
 mas "Telegram", id: 747648890 #
 mas "WhatsApp Messenger", id: 310633997

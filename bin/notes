@@ -9,124 +9,52 @@ NOTE_EXTENSION=".md"
 # Preferred text editor
 EDITOR="${EDITOR:-vim}" # Use $EDITOR environment variable if set, otherwise default to vim
 
-# Function to display usage information
-usage() {
-  echo "Usage: notes [-n|--new] <note name> | [-o|--open-editor] | [-h|--help] | [no args: open/create daily note]"
-}
-
-# Determine the notes directory
-if [ -d .notes ]; then
-  NOTES_DIR=".notes"
-else
-  NOTES_DIR="$DEFAULT_NOTES_DIR"
-fi
+# Always use the default notes directory
+NOTES_DIR="$DEFAULT_NOTES_DIR"
 
 # Create the notes directory if it doesn't exist
 if [ ! -d "$NOTES_DIR" ]; then
-  mkdir -p "$NOTES_DIR"
-  if [ $? -ne 0 ]; then
+  if ! mkdir -p "$NOTES_DIR"; then
     echo "Error creating notes directory: $NOTES_DIR" >&2
     exit 1
   fi
   echo "Created notes directory: $NOTES_DIR"
 fi
 
-# Function to create a new note
-new_note() {
-  local note_name="$1"
-  if [ -z "$note_name" ]; then
-    echo "Error: No note name specified for --new." >&2
-    usage
-    exit 1
-  fi
-
-  # Normalize the note name
-  local normalized_name=$(echo "$note_name" | tr ' ' '_' | tr '[:upper:]' '[:lower:]')$NOTE_EXTENSION
-  local note_path="$NOTES_DIR/$normalized_name"
-
-  # Create an empty file if it doesn't exist.  This ensures it's saved.
-  if [ ! -f "$note_path" ]; then
-    touch "$note_path" # Create the file.
-    if [ $? -ne 0 ]; then
-      echo "Error creating file: $note_path" >&2
-      exit 1
-    fi
-  fi
-
-  echo "Opening note: $note_path"
-  "$EDITOR" "$note_path"
-  exit 0 # Exit after new note
-
-}
-
-# Function to open the notes folder using the text editor
-open_editor() {
-  echo "Opening notes folder in editor: $NOTES_DIR"
-  "$EDITOR" "$NOTES_DIR"
-  exit 0 # Exit after open editor
-}
-
-# Function to open/create the daily note
-daily_note() {
+# Create and open the daily note
+open_daily_note() {
   # Use daily folder structure
   local daily_dir="$NOTES_DIR/daily"
-  local year=$(date +%Y)
-  local month=$(date +%m)
-  local day=$(date +%d)
+  local year
+  local month
+  local day
+  year=$(date +%Y)
+  month=$(date +%m)
+  day=$(date +%d)
   local daily_note_name="$year-$month-$day$NOTE_EXTENSION" # e.g., 2024-10-27.md
   local daily_note_path="$daily_dir/$daily_note_name"
 
   # Create daily directory if it doesn't exist
   if [ ! -d "$daily_dir" ]; then
-    mkdir -p "$daily_dir"
-    if [ $? -ne 0 ]; then
+    if ! mkdir -p "$daily_dir"; then
       echo "Error creating daily note directory: $daily_dir" >&2
       exit 1
     fi
   fi
 
-  echo "Opening/creating daily note: $daily_note_path"
+  echo "Opening daily note: $daily_note_path"
 
-  # Check if the file exists.  If it does not, create it and add a timestamp.
+  # Create the file with a timestamp if it doesn't exist
   if [ ! -f "$daily_note_path" ]; then
-    echo "# Daily Note - $(date)" >"$daily_note_path" #  Create with a timestamp.
+    echo "# Daily Note - $(date)" >"$daily_note_path"
   fi
 
-  "$EDITOR" "$daily_note_path" # Open in the editor, regardless.
-  exit 0                       # Exit after open/create daily
+  # Open the note in the editor
+  cd "$NOTES_DIR" || exit
+  "$EDITOR" "$daily_note_path"
 }
 
-# Process command line options
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-  -n | --new)
-    if [ -n "$2" ]; then
-      new_note "$2"
-      shift 2
-    else
-      echo "Error: --new option requires an argument." >&2
-      usage
-      exit 1
-    fi
-    ;;
-  -o | --open-editor)
-    open_editor
-    ;;
-  -h | --help)
-    usage
-    exit 0
-    ;;
-  *)
-    echo "Error: Unknown option: $1" >&2
-    usage
-    exit 1
-    ;;
-  esac
-done
+# Open the daily note
+open_daily_note
 
-# If no options were specified, open/create the daily note.
-if [ $# -eq 0 ]; then
-  daily_note
-fi
-
-exit 0 #  Clean exit at the end.
+exit 0

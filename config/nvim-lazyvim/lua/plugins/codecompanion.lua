@@ -10,7 +10,11 @@ return {
             show_model_choices = true,
           },
           gemini_cli = function()
-            return require("codecompanion.adapters").extend("gemini_cli")
+            return require("codecompanion.adapters").extend("gemini_cli", {
+              env = {
+                api_key = "GEMINI_API_KEY",
+              },
+            })
           end,
         },
         http = {

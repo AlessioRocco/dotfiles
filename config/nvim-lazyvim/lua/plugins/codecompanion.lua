@@ -30,6 +30,19 @@ return {
           end,
         },
       },
+      memory = {
+        default = {
+          files = {
+            "AGENTS.md",
+            { path = "AGENTS.md", parser = "claude" },
+          },
+        },
+        opts = {
+          chat = {
+            enabled = true,
+          },
+        },
+      },
       strategies = {
         chat = {
           adapter = {

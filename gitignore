@@ -22,3 +22,4 @@ rails.rb
 .lazy.lua
 codecompanion-workspace.json
 mise.toml
+.ignore

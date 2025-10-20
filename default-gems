@@ -1,8 +1,2 @@
 bundler
 pry
-solargraph
-rubocop
-rubocop-rake
-rubocop-performance
-rubocop-rspec
-solargraph-rails

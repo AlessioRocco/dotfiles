@@ -55,20 +55,9 @@ Follow the Git commit message convention documented in
 
 @./gitmessage
 
-Write commit messages that:
-
-- Use imperative mood in the subject line (max 50 chars): "Fix bug", "Add feature"
-- Capitalize the subject line and don't end with a period
-- Separate subject from body with a blank line
-- Wrap the body at 72 characters
-- Explain what and why, not how - focus on reasoning, user impact, and context
-- Complete the sentence: "If applied, this commit will [your subject line]"
-
-Good commit descriptions should answer:
-
-- Why is it necessary?
-- How does it address the issue?
-- What effects does the change have?
+Refer to the `gitmessage` file for detailed rules, examples, and best practices.
+All contributors should ensure their commit messages follow these guidelines to
+maintain clarity and consistency in project history.
 
 ## Common tasks
 

@@ -10,7 +10,6 @@
 
 setBackgroundColor()
 {
-    #printf '\x1bPtmux;\x1b\x1b[48;2;%s;%s;%sm' $1 $2 $3
     printf '\x1b[48;2;%s;%s;%sm' $1 $2 $3
 }
 

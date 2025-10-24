@@ -8,18 +8,6 @@ end
 fancy_echo 'Installing, updating and cleaning fisher packages ...'
 fish -c "fisher update"
 
-# Install, update and clean Tmux Plugin Manager plugins
-fancy_echo 'Installing, updating and cleaning Tmux Plugin Manager plugins ...'
-#########
-# Workaround for a tpm bug that doesn't allow to run scripts when tmux server is not running
-# See this issue for more info: https://github.com/tmux-plugins/tpm/issues/151
-
-tmux new-session -d "sleep 1" # Make sure tmux server is running, but that the created session will clean itself.
-sleep 0.1 # Wait for tmux server initialization to complete.
-#########
-$HOME/.tmux/plugins/tpm/bin/clean_plugins
-$HOME/.tmux/plugins/tpm/bin/update_plugins all
-
 # Set Fish color palette
 fish_config theme choose "Catppuccin Macchiato"
 

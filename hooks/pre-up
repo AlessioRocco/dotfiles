@@ -11,12 +11,6 @@ if not functions -q fisher
     curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
 end
 
-# Install Tmux Plugin Manager
-if [ ! -d "$HOME/.tmux/plugins/tpm" ]
-    fancy_echo "Installing Tmux Plugin Manager ..."
-    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-end
-
 # Install or update themes
 
 # Create configuration directories

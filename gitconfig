@@ -57,7 +57,6 @@
   ca = commit --amend
   cane = commit --amend --no-edit
   cm = commit -m
-  fixup = !fish -c 'fzf_git_log | xargs git commit --fixup'
   snapshot = !git add . && git commit -m [snapshot]
 
   ## checkout
@@ -69,26 +68,17 @@
   b = branch
   mv = branch -m
   rename = branch -m
-  bl = !fish -c 'fzf_git_branch | pbcopy'
-  ba = !fish -c 'fzf_git_branch --all | pbcopy'
-  bs = !fish -c 'fzf_git_branch | xargs git checkout'
-  br = !fish -c 'fzf_git_branch --remote | xargs git checkout --track'
-  bd = !fish -c 'fzf_git_branch | xargs git branch --delete'
 
   ## rebase
   r = rebase
   rc = rebase --continue
   rs = rebase --skip
   ra = rebase --abort
-  ri = !fish -c 'fzf_git_log | xargs -I sha git rebase --interactive sha^'
   rim = rebase --interactive main
 
   ## stash
   h = stash
   hh = stash --include-untracked
-  hl = !fish -c 'fzf_git_stash_list | pbcopy'
-  hlp = !fish -c 'fzf_git_stash_list | xargs git stash pop'
-  hla = !fish -c 'fzf_git_stash_list | xargs git stash apply'
   hp = stash pop
   ha = stash apply
 
@@ -99,15 +89,8 @@
   ## pull
   pl = pull
 
-  ## show
-  sh = !fish -c 'fzf_git_log | xargs git show --format=medium'
-
   ## log
   l = log
-  ll = !fish -c 'fzf_git_log | pbcopy'
-  la = !fish -c 'fzf_git_log --graph | pbcopy'
-  glog = !fish -c 'fzf_git_log -R -i --grep '$1' | pbcopy'
-  slog = !fish -c 'fzf_git_log -G '$1' | pbcopy'
 
   ## diff
   d = diff --color-words

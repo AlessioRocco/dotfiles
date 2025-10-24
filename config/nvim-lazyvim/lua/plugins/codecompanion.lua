@@ -162,7 +162,6 @@ Output only the commit message, wrapped in a ```gitcommit``` code block.
         },
       },
       extensions = {
-        spinner = {},
         history = {
           enabled = true,
         },
@@ -187,6 +186,5 @@ Output only the commit message, wrapped in a ```gitcommit``` code block.
     "nvim-treesitter/nvim-treesitter",
     "ravitemer/mcphub.nvim",
     "ravitemer/codecompanion-history.nvim",
-    "franco-ruggeri/codecompanion-spinner.nvim",
   },
 }

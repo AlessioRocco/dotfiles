@@ -35,6 +35,9 @@ set -xg GLAMOUR_STYLE dark
 
 ### Configurations
 
+# Theme
+fish_config theme choose "Catppuccin Macchiato"
+
 # Add ~/.bin to the $PATH
 fish_add_path --move ~/.bin
 

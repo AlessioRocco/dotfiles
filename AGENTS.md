@@ -49,16 +49,6 @@ No automated tests. Manual verification required:
 4. Restart affected applications (WezTerm, Neovim, etc.)
 5. Verify configuration changes take effect
 
-## Commit guidelines
-
-Follow the Git commit message convention documented in
-
-@./gitmessage
-
-Refer to the `gitmessage` file for detailed rules, examples, and best practices.
-All contributors should ensure their commit messages follow these guidelines to
-maintain clarity and consistency in project history.
-
 ## Common tasks
 
 - **Add Homebrew package**: Edit brew bundle in `bin/setup`

@@ -4,6 +4,11 @@ return {
   opts = function()
     return {
       cli = {
+        win = {
+          keys = {
+            prompt = false, -- Disable Ctrl+P to avoid conflict with OpenCode
+          },
+        },
         prompts = {
           commit_message = "Write the commit message based on the staged changes.",
           pull_request = "Write a pull request description based on the commits and changes.",

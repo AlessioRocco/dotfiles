@@ -140,7 +140,7 @@ config.inactive_pane_hsb = {
 -- Disables the 'modern' look of the tab bar
 config.use_fancy_tab_bar = false
 config.show_new_tab_button_in_tab_bar = false
-config.tab_max_width = 60
+config.tab_max_width = 16
 
 wezterm.on(
   "format-tab-title",
@@ -153,7 +153,31 @@ wezterm.on(
         and wezterm.nerdfonts.cod_zoom_in .. " "
       or ""
 
-    local title = string.format(" %s ~ %s %s", process, cwd, zoom_icon)
+    local process_name = basename(tab.active_pane.foreground_process_name)
+    local pane = wezterm.mux.get_pane(active_pane.pane_id)
+    if pane then
+      local proc_info = pane:get_foreground_process_info()
+      if proc_info and proc_info.argv then
+        local argv = table.concat(proc_info.argv, " ")
+        local known = {
+          "rails",
+          "puma",
+          "sidekiq",
+          "webpack",
+          "redis",
+          "postgres",
+          "docker",
+        }
+        for _, pattern in ipairs(known) do
+          if argv:lower():find(pattern) then
+            process_name = pattern
+            break
+          end
+        end
+      end
+    end
+
+    local title = string.format(" %s %s %s", process, process_name, zoom_icon)
     return {
       { Text = title },
     }

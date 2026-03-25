@@ -40,6 +40,7 @@ end
 local function get_process(tab)
   local process_icons = {
     ["bash"] = wezterm.nerdfonts.cod_terminal_bash,
+    ["claude"] = wezterm.nerdfonts.oct_hubot,
     ["btm"] = wezterm.nerdfonts.mdi_chart_donut_variant,
     ["cargo"] = wezterm.nerdfonts.dev_rust,
     ["curl"] = wezterm.nerdfonts.mdi_flattr,
@@ -160,6 +161,7 @@ wezterm.on(
       if proc_info and proc_info.argv then
         local argv = table.concat(proc_info.argv, " ")
         local known = {
+          "claude",
           "rails",
           "puma",
           "sidekiq",
@@ -171,6 +173,7 @@ wezterm.on(
         for _, pattern in ipairs(known) do
           if argv:lower():find(pattern) then
             process_name = pattern
+            process = get_process({ active_pane = { foreground_process_name = pattern } })
             break
           end
         end

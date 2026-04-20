@@ -14,15 +14,8 @@ end
 # Install or update themes
 
 # Create configuration directories
-mkdir -p ~/.config/fish/themes
 mkdir -p ~/.config/delta/themes
 mkdir -p "$(bat --config-dir)/themes"
-
-# Fish
-wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Frappe.theme
-wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Latte.theme
-wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Macchiato.theme
-wget -P ~/.config/fish/themes https://github.com/catppuccin/fish/raw/main/themes/Catppuccin%20Mocha.theme
 
 # Delta
 wget -P ~/.config/delta/themes https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig

@@ -1,0 +1,14 @@
+version = 1
+agents = ["opencode"]
+
+[trust]
+github_repos = [ "getsentry/dotagents" ]
+
+
+[[skills]]
+name = "dotagents"
+source = "getsentry/dotagents"
+
+[[skills]]
+name = "git-commit"
+source = "path:.agents/skills/git-commit"

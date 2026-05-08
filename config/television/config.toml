@@ -161,7 +161,7 @@ ctrl-s = "cycle_sources"
 ctrl-t = "toggle_remote_control"
 ctrl-x = "toggle_action_picker"
 ctrl-o = "toggle_preview"
-ctrl-h = "toggle_help"
+ctrl-b = "toggle_help"
 f12 = "toggle_status_bar"
 ctrl-l = "toggle_layout"
 

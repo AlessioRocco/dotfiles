@@ -1,0 +1,29 @@
+[metadata]
+name = "jira-issues"
+description = "Browse Jira issues (Ctrl+S to cycle: mine → sprint → all)"
+requirements = ["jira"]
+
+[source]
+ansi = true
+command = [
+  "jira sprint list --current -a$(jira me) --plain --columns key,summary,status,type --no-headers | awk -F'\\t' '{key=$1; summary=$2; if(length(summary)>52) summary=substr(summary,1,52)\"...\"; type=$NF; for(i=NF-1;i>=3;i--){if($i!=\"\"){status=$i;break}} printf \"\\033[34m%-15s\\033[0m %-55s \\033[33m%-25s\\033[0m \\033[35m%-s\\033[0m\\n\", key, summary, status, type}'",
+  "jira sprint list --current --plain --columns key,summary,status,assignee --no-headers | awk -F'\\t' '{key=$1; summary=$2; if(length(summary)>52) summary=substr(summary,1,52)\"...\"; type=$NF; for(i=NF-1;i>=3;i--){if($i!=\"\"){status=$i;break}} printf \"\\033[34m%-15s\\033[0m %-55s \\033[33m%-25s\\033[0m \\033[35m%-s\\033[0m\\n\", key, summary, status, type}'",
+  "jira issue list -a$(jira me) -s~Done -s~Live -s~\"Won't Fix\" --plain --columns key,summary,status,type --no-headers | awk -F'\\t' '{key=$1; summary=$2; if(length(summary)>52) summary=substr(summary,1,52)\"...\"; type=$NF; for(i=NF-1;i>=3;i--){if($i!=\"\"){status=$i;break}} printf \"\\033[34m%-15s\\033[0m %-55s \\033[33m%-25s\\033[0m \\033[35m%-s\\033[0m\\n\", key, summary, status, type}'",
+]
+
+[preview]
+ansi = true
+command = "jira issue view '{strip_ansi|split: :0}' 2>/dev/null"
+
+[ui]
+
+[ui.preview_panel]
+size = 60
+
+[keybindings]
+enter = "actions:open"
+
+[actions.open]
+description = "Open issue in browser"
+command = "jira open '{strip_ansi|split: :0}'"
+mode = "fork"

@@ -1,14 +1,13 @@
 [metadata]
 name = "jira-issues"
-description = "Browse Jira issues (Ctrl+S to cycle: mine → sprint → all)"
+description = "Browse Jira issues (Ctrl+S to cycle: sprint → project)"
 requirements = ["jira"]
 
 [source]
 ansi = true
 command = [
-  "jira sprint list --current -a$(jira me) --plain --columns key,summary,status,type --no-headers | awk -F'\\t' '{key=$1; summary=$2; if(length(summary)>52) summary=substr(summary,1,52)\"...\"; type=$NF; for(i=NF-1;i>=3;i--){if($i!=\"\"){status=$i;break}} printf \"\\033[34m%-15s\\033[0m %-55s \\033[33m%-25s\\033[0m \\033[35m%-s\\033[0m\\n\", key, summary, status, type}'",
-  "jira sprint list --current --plain --columns key,summary,status,assignee --no-headers | awk -F'\\t' '{key=$1; summary=$2; if(length(summary)>52) summary=substr(summary,1,52)\"...\"; type=$NF; for(i=NF-1;i>=3;i--){if($i!=\"\"){status=$i;break}} printf \"\\033[34m%-15s\\033[0m %-55s \\033[33m%-25s\\033[0m \\033[35m%-s\\033[0m\\n\", key, summary, status, type}'",
-  "jira issue list -a$(jira me) -s~Done -s~Live -s~\"Won't Fix\" --plain --columns key,summary,status,type --no-headers | awk -F'\\t' '{key=$1; summary=$2; if(length(summary)>52) summary=substr(summary,1,52)\"...\"; type=$NF; for(i=NF-1;i>=3;i--){if($i!=\"\"){status=$i;break}} printf \"\\033[34m%-15s\\033[0m %-55s \\033[33m%-25s\\033[0m \\033[35m%-s\\033[0m\\n\", key, summary, status, type}'",
+  "jira sprint list --current --order-by rank --reverse --plain --columns key,summary,status,priority,type,assignee --no-headers --delimiter '|' | awk -F'|' '{key=$1; summary=$2; if(length(summary)>45) summary=substr(summary,1,45)\"...\"; status=$3; priority=$4; type=$5; assignee=$6; if(status==\"To Do\") prio=1; else if(status==\"In Progress\") prio=2; else if(status==\"Ready for Review\") prio=3; else if(status==\"Ready for Design QA\") prio=4; else if(status==\"Ready for QA\") prio=5; else if(status==\"Ready for Production\") prio=6; else prio=7; printf \"%d~%s~%s~%s~%s~%s~%s\\n\", prio, key, summary, status, priority, type, assignee}' | sort -t'~' -k1,1n -s | awk -F'~' '{pc=\"\\033[0m\"; if($5==\"High\") pc=\"\\033[31m\"; else if($5==\"Medium\") pc=\"\\033[33m\"; else if($5==\"Low\") pc=\"\\033[32m\"; printf \"\\033[34m%-15s\\033[0m %-48s \\033[33m%-22s\\033[0m %s%-8s\\033[0m \\033[35m%-10s\\033[0m %-s\\n\", $2, $3, $4, pc, $5, $6, $7}'",
+  "jira issue list -p$JIRA_EXTRA_PROJECT --order-by rank --reverse --plain --columns key,summary,status,priority,type,assignee --no-headers --delimiter '|' | awk -F'|' '{key=$1; summary=$2; if(length(summary)>45) summary=substr(summary,1,45)\"...\"; status=$3; priority=$4; type=$5; assignee=$6; if(status==\"New\") prio=1; else if(status==\"In Progress\") prio=2; else if(status==\"Ready for Review\") prio=3; else prio=4; printf \"%d~%s~%s~%s~%s~%s~%s\\n\", prio, key, summary, status, priority, type, assignee}' | sort -t'~' -k1,1n -s | awk -F'~' '{pc=\"\\033[0m\"; if($5==\"High\") pc=\"\\033[31m\"; else if($5==\"Medium\") pc=\"\\033[33m\"; else if($5==\"Low\") pc=\"\\033[32m\"; printf \"\\033[34m%-15s\\033[0m %-48s \\033[33m%-22s\\033[0m %s%-8s\\033[0m \\033[35m%-10s\\033[0m %-s\\n\", $2, $3, $4, pc, $5, $6, $7}'",
 ]
 
 [preview]

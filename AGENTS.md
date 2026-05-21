@@ -24,7 +24,6 @@ Uses `rcm` for symlink management and shell scripts for idempotent setup.
 - **Homebrew**: Package management (bundle in `bin/setup`)
 - **fish**: Default shell with custom configurations
 - **mise**: Runtime and environment variable management
-- **atuin**: Shell history synchronization
 
 ## Code style
 

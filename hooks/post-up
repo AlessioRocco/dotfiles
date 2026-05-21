@@ -8,6 +8,11 @@ end
 fancy_echo 'Installing, updating and cleaning fisher packages ...'
 fish -c "fisher update"
 
+# Install, update and clean Tmux Plugin Manager plugins
+$HOME/.tmux/plugins/tpm/bin/install_plugins
+$HOME/.tmux/plugins/tpm/bin/clean_plugins
+$HOME/.tmux/plugins/tpm/bin/update_plugins all
+
 # Set Fish color palette
 fish_config theme choose "Catppuccin Macchiato"
 

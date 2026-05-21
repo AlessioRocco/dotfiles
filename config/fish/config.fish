@@ -17,17 +17,6 @@ set -xg BUNDLER_EDITOR $EDITOR
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 set -xg XDG_CONFIG_HOME ~/.config
 
-# Use fd as default command for fzf
-# Also the author of rigrep recommends using fd
-# https://www.reddit.com/r/linux4noobs/comments/egb644/fzf_newcomer_fd_or_ripgrep/fc5li3r/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-# https://github.com/sharkdp/fd#using-fd-with-fzf
-set -xg FZF_DEFAULT_COMMAND 'fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --color=always'
-set -xg FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
-set -xg FZF_DEFAULT_OPTS --ansi
-
-# Set the theme for fzf
-source ~/.config/fzf/themes/catppuccin_macchiato.fish
-
 # Force GitHub CLI to use colors
 set -xg CLICOLOR_FORCE true
 set -xg GH_FORCE_TTY true

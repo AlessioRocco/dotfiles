@@ -1,8 +1,7 @@
-# Kill process with fzf
+# Kill process with television
 
 function kill_process --description "Kill process"
-  set -l __kp__pid (ps -ef | sed 1d | eval "fzf $FZF_DEFAULT_OPTS  -m --header='[kill:process]'" | awk '{print $2}')
-  set -l __kp__kc $argv[1]
+  set -l __kp__pid (tv --source-command "ps -ef | sed 1d" --no-preview | awk '{print $2}')
 
   if test "x$__kp__pid" != "x"
     if test "x$argv[1]" != "x"

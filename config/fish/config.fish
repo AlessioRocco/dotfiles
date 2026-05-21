@@ -1,5 +1,8 @@
 ### Variables
 
+# Disable the fish welcome message
+set -g fish_greeting
+
 # Add 'code' folder in the CDPATH.
 set -xg CDPATH . ~/code
 

@@ -62,6 +62,16 @@ defaults write com.apple.screencapture location ~/Desktop/screenshots/
 # https://github.com/VSCodeVim/Vim#mac
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
+# Disable Mission Control grouping windows by application
+#
+# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
+defaults write com.apple.dock expose-group-apps -bool true && killall Dock
+
+# Disable Displays have separate Spaces
+#
+# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
+defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
+
 # Install the Command Line Tools
 if ! command -v xcode-select -p >/dev/null; then
   fancy_echo "Installing the Command Line Tools ..."

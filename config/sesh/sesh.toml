@@ -1,0 +1,13 @@
+[[session]]
+name = "home"
+path = "~"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "tmux split-window -h opencode && nvim"
+
+[[session]]
+name = "notes"
+path = "~/Documents/Notes"
+startup_command = "tmux split-window -h opencode && nvim"

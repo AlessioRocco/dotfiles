@@ -23,3 +23,5 @@ rails.rb
 codecompanion-workspace.json
 mise.toml
 .ignore
+.mcp.json
+.claude/settings.local.json

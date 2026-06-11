@@ -1,2 +1,2 @@
 DOTFILES_DIRS="$HOME/dotfiles"
-EXCLUDES="README.md LICENSE"
+EXCLUDES="README.md LICENSE agents.toml agents.lock"

@@ -20,11 +20,6 @@ set -xg BUNDLER_EDITOR $EDITOR
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 set -xg XDG_CONFIG_HOME ~/.config
 
-# Force GitHub CLI to use colors
-set -xg CLICOLOR_FORCE true
-set -xg GH_FORCE_TTY true
-set -xg GLAMOUR_STYLE dark
-
 ### Configurations
 
 # Theme

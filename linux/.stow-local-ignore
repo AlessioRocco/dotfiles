@@ -1,0 +1,3 @@
+# Stow ignore list for the linux package.
+# The setup script is run directly from the repo by bin/setup, not symlinked.
+^/bin

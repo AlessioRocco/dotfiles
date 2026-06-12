@@ -1,193 +1,108 @@
 #!/bin/sh
 
-# Welcome to the Alessio Rocco laptop script!
-# Be prepared to turn your laptop (or desktop, no haters here)
-# into an awesome development machine.
-# Thanks to https://github.com/thoughtbot/laptop
+# Dotfiles setup orchestrator (macOS + Linux).
+#
+# Responsibilities:
+#   1. Ensure the repo is cloned at ~/dotfiles.
+#   2. Ensure GNU Stow is installed.
+#   3. Symlink the shared `common` package into $HOME with Stow.
+#   4. Detect the OS, symlink the matching package (`macos`/`linux`) and source
+#      its OS-specific setup script.
+#   5. Run the shared post-install steps (bin/post-install).
+#
+# Safe to re-run.
 
 fancy_echo() {
-  local fmt="$1"
-  shift
-
   # shellcheck disable=SC2059
-  printf "\\n$fmt\\n" "$@"
-}
-
-update_shell() {
-  local shell_path
-  shell_path="$(command -v fish)"
-
-  fancy_echo "Changing your shell to fish ..."
-  if ! grep "$shell_path" /etc/shells >/dev/null 2>&1; then
-    fancy_echo "Adding '$shell_path' to /etc/shells"
-    sudo sh -c "echo $shell_path >> /etc/shells"
-  fi
-  sudo chsh -s "$shell_path" "$USER"
+  printf "\\n$1\\n"
 }
 
 # Add a failed message if setup fails.
 # shellcheck disable=SC2154
-trap 'ret=$?; test $ret -ne 0 && printf "\nSetup failed!\n\n" >&2; exit $ret' EXIT
+trap 'ret=$?; test $ret -ne 0 && fancy_echo "Setup failed!" >&2; exit $ret' EXIT
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-fancy_echo 'Applying MacOS configurations ...'
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/AlessioRocco/dotfiles}"
 
-# Map 'caps lock' key to 'control'
-hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}' >/dev/null
-
-# Dock configurations
-
-## Show only active apps.
-defaults write com.apple.dock static-only -bool TRUE
-
-## Automatically hide and show the Dock.
-defaults write com.apple.dock autohide -bool TRUE
-
-## Set Dock position to the left of the screen.
-defaults write com.apple.dock orientation right
-
-## Restart the Dock to apply the changes
-killall Dock
-
-## Automatically hide and show the Menubar.
-defaults write NSGlobalDomain _HIHideMenuBar -bool TRUE
-
-## Change the default screenshots location
-defaults write com.apple.screencapture location ~/Desktop/screenshots/
-
-# Disable the Apple press and hold for VSCode.
-#
-# https://github.com/VSCodeVim/Vim#mac
-defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
-
-# Disable Mission Control grouping windows by application
-#
-# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
-defaults write com.apple.dock expose-group-apps -bool true && killall Dock
-
-# Disable Displays have separate Spaces
-#
-# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
-defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
-
-# Install the Command Line Tools
-if ! command -v xcode-select -p >/dev/null; then
-  fancy_echo "Installing the Command Line Tools ..."
-
-  xcode-select --install
+# 1. Clone the repo if it is not already present.
+if [ ! -d "$DOTFILES_DIR" ]; then
+  fancy_echo "Cloning dotfiles into $DOTFILES_DIR ..."
+  git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
 fi
 
-# Install Homebrew if the brew command is not found
-if ! command -v brew >/dev/null; then
-  fancy_echo "Installing Homebrew ..."
+OS="$(uname -s)"
 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-# Upgrade Homebrew and install or upgrade formulae
-fancy_echo "Updating Homebrew formulae ..."
-brew update
-brew bundle --file=- <<EOF
-tap "thoughtbot/formulae"
-tap "heroku/brew"
-
-# Tools and libraries
-brew "awscli"
-brew "bat"
-brew "fd"
-brew "fish"
-brew "geckodriver"
-brew "gh"
-brew "git"
-brew "git-delta"
-brew "heroku"
-brew "libpq"
-brew "ltex-ls"
-brew "neovim"
-brew "rcm"
-brew "ripgrep"
-brew "television"
-brew "tree-sitter-cli"
-brew "universal-ctags"
-brew "wget"
-brew "zoxide"
-
-# Apps
-cask "1password"
-cask "chromedriver"
-cask "cleanmymac"
-cask "docker"
-cask "firefox"
-cask "gemini"
-cask "google-chrome"
-cask "insomnia"
-cask "ngrok"
-cask "raycast"
-cask "spotify"
-cask "wezterm"
-
-# Image manipulation
-brew "imagemagick"
-
-# Programming language prerequisites and package managers
-brew "gpg"
-brew "yarn", args: ["ignore-dependencies"]
-
-# Install Apps from Apple Store
-mas "Bitwarden", id: 1352778147
-mas "Home Assistant", id: 1099568401
-mas "Slack for Desktop", id: 803453959
-mas "Telegram", id: 747648890 #
-mas "WhatsApp Messenger", id: 310633997
-EOF
-
-# Install Mise
-if ! command -v mise >/dev/null 2>&1; then
-  fancy_echo "Installing Mise ..."
-  curl https://mise.run | sh
-else
-  fancy_echo "Updating Mise ..."
-  mise self-update
-fi
-
-# Change the shell to fish if needed
-case "$SHELL" in
-*/fish)
-  if [ "$(command -v fish)" != '/usr/local/bin/fish' ]; then
-    update_shell
+# 2. Ensure GNU Stow is available (needed before we can stow anything).
+ensure_stow() {
+  if command -v stow >/dev/null 2>&1; then
+    return
   fi
+
+  fancy_echo "Installing GNU Stow ..."
+  case "$OS" in
+  Darwin)
+    if [ -x /opt/homebrew/bin/brew ]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+    if ! command -v brew >/dev/null 2>&1; then
+      fancy_echo "Installing Homebrew ..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+    brew install stow
+    ;;
+  Linux)
+    if command -v apt-get >/dev/null 2>&1; then
+      sudo apt-get update && sudo apt-get install -y stow
+    elif command -v dnf >/dev/null 2>&1; then
+      sudo dnf install -y stow
+    elif command -v pacman >/dev/null 2>&1; then
+      sudo pacman -S --noconfirm stow
+    else
+      fancy_echo "Could not find a supported package manager to install stow." >&2
+      exit 1
+    fi
+    ;;
+  *)
+    fancy_echo "Unsupported OS: $OS" >&2
+    exit 1
+    ;;
+  esac
+}
+
+ensure_stow
+
+# 3. Stow the shared package.
+fancy_echo "Stowing 'common' ..."
+stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow common
+
+# 4. Stow the OS-specific package and run its setup script.
+#    The OS script installs packages (Homebrew bundle, apt, etc.), so it runs
+#    before the shared steps below that depend on those tools. It is sourced
+#    (not executed) so any environment it sets up (e.g. `brew shellenv`)
+#    persists for the shared steps.
+case "$OS" in
+Darwin)
+  fancy_echo "Stowing 'macos' ..."
+  stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow macos
+  . "$DOTFILES_DIR/macos/bin/setup"
+  ;;
+Linux)
+  fancy_echo "Stowing 'linux' ..."
+  stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow linux
+  . "$DOTFILES_DIR/linux/bin/setup"
   ;;
 *)
-  update_shell
+  fancy_echo "Unsupported OS: $OS" >&2
+  exit 1
   ;;
 esac
 
-# Create code folder
-CODE_DIR="$HOME/code"
-
-if [ ! -d "$CODE_DIR" ]; then
-  fancy_echo "Creating code folder ..."
-  mkdir "$CODE_DIR"
-fi
-
-# Clone the repo if not present then install dotfiles with rcup
-DOTFILES_DIR="$HOME/dotfiles"
-
-fancy_echo "Installing dotfiles ..."
-if [ ! -d "$DOTFILES_DIR" ]; then
-  git clone https://github.com/AlessioRocco/dotfiles-new "$DOTFILES_DIR"
-fi
-rcup -K -d "$DOTFILES_DIR" rcrc
-rcup
-
-# Set bundle number of cores
-fancy_echo "Setting bundle number of cores ..."
-number_of_cores=$(sysctl -n hw.ncpu)
-bundle config --global jobs $((number_of_cores - 1))
-
-# Run clean script
-clean
+# 5. Shared post-install steps.
+fancy_echo "Running post-install steps ..."
+. "$DOTFILES_DIR/bin/post-install"
 
 fancy_echo 'Setup completed!'

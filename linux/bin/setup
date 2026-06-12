@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Linux-specific setup.
+# Sourced by the top-level bin/setup orchestrator after `stow common linux`.
+# Assumes the dotfiles repo is already cloned and stowed, and inherits the
+# orchestrator's `set -e`, failure trap, and `fancy_echo`.
+#
+# Placeholder: a dedicated Linux provisioning script will go here.
+# Does not use Homebrew.
+
+fancy_echo 'Linux setup is not implemented yet.'
+fancy_echo 'Add your Linux provisioning steps to linux/bin/setup.'

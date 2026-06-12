@@ -1,0 +1,98 @@
+#!/bin/sh
+
+# Shared post-install steps for both macOS and Linux.
+# Installs Mise, creates the code folder, and installs/updates fish plugins
+# (fisher), tmux plugins (tpm) and editor themes.
+# Safe to re-run; sourced by the top-level bin/setup orchestrator.
+
+# Install or update Mise (https://mise.jdx.dev/getting-started.html).
+if ! command -v mise >/dev/null 2>&1; then
+  fancy_echo "Installing Mise ..."
+  curl https://mise.run | sh
+else
+  fancy_echo "Updating Mise ..."
+  mise self-update
+fi
+
+# Create the code folder.
+CODE_DIR="$HOME/code"
+if [ ! -d "$CODE_DIR" ]; then
+  fancy_echo "Creating code folder ..."
+  mkdir "$CODE_DIR"
+fi
+
+# Resolve fish from PATH.
+FISH_BIN="$(command -v fish || true)"
+
+# Install or update fisher and the declared fish plugins.
+if [ -n "$FISH_BIN" ]; then
+  fancy_echo 'Installing/updating fisher and fish plugins ...'
+  "$FISH_BIN" -c '
+    if not functions -q fisher
+      set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+      curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+      and fisher install jorgebucaran/fisher
+    end
+    fisher update
+  '
+else
+  fancy_echo 'fish not found; skipping fisher setup.'
+fi
+
+# Install the Tmux Plugin Manager and sync plugins.
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+if [ ! -d "$TPM_DIR" ]; then
+  fancy_echo 'Installing Tmux Plugin Manager ...'
+  git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+fi
+if [ -x "$TPM_DIR/bin/install_plugins" ]; then
+  fancy_echo 'Installing/updating tmux plugins ...'
+  "$TPM_DIR/bin/install_plugins"
+  "$TPM_DIR/bin/clean_plugins"
+  "$TPM_DIR/bin/update_plugins" all
+fi
+
+# Editor / pager themes (Catppuccin).
+fancy_echo 'Installing themes ...'
+mkdir -p ~/.config/delta/themes
+
+# Delta
+wget -N -P ~/.config/delta/themes \
+  https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig
+
+# Bat
+if command -v bat >/dev/null 2>&1; then
+  BAT_THEME_DIR="$(bat --config-dir)/themes"
+  mkdir -p "$BAT_THEME_DIR"
+  wget -N -P "$BAT_THEME_DIR" \
+    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Latte.tmTheme" \
+    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Frappe.tmTheme" \
+    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme" \
+    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme"
+  bat cache --build
+fi
+
+# Change the default shell to fish if needed.
+update_shell() {
+  shell_path="$(command -v fish)"
+
+  fancy_echo "Changing your shell to fish ..."
+  if ! grep "$shell_path" /etc/shells >/dev/null 2>&1; then
+    fancy_echo "Adding '$shell_path' to /etc/shells"
+    sudo sh -c "echo $shell_path >> /etc/shells"
+  fi
+  sudo chsh -s "$shell_path" "$USER"
+}
+
+case "$SHELL" in
+*/fish)
+  if [ "$SHELL" != "$(command -v fish)" ]; then
+    update_shell
+  fi
+  ;;
+*)
+  update_shell
+  ;;
+esac
+
+fancy_echo 'Post-install completed!'

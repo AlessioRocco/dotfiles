@@ -28,12 +28,6 @@ fish_config theme choose catppuccin-macchiato
 # Add ~/.bin to the $PATH
 fish_add_path --move ~/.bin
 
-# Add libpq to the $PATH
-fish_add_path /opt/homebrew/opt/libpq/bin
-
-# Use Homebrew's OpenJDK
-fish_add_path /opt/homebrew/opt/openjdk/bin
-
 ### Aliases
 
 # Git/GitHub CLI
@@ -69,7 +63,7 @@ abbr bu "bundle update"
 abbr bo "bundle open"
 
 ### Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Homebrew environment is set up per-OS in conf.d/os.fish.
 
 ### Zoxide
 zoxide init fish | source

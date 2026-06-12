@@ -1,0 +1,133 @@
+#!/bin/sh
+
+# macOS-specific setup.
+# Sourced by the top-level bin/setup orchestrator after `stow common macos`.
+# Assumes the dotfiles repo is already cloned and stowed, and inherits the
+# orchestrator's `set -e` and failure trap.
+
+fancy_echo 'Applying macOS configurations ...'
+
+# Map 'caps lock' key to 'control'
+hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}' >/dev/null
+
+# Dock configurations
+
+## Show only active apps.
+defaults write com.apple.dock static-only -bool TRUE
+
+## Automatically hide and show the Dock.
+defaults write com.apple.dock autohide -bool TRUE
+
+## Set Dock position to the left of the screen.
+defaults write com.apple.dock orientation right
+
+## Restart the Dock to apply the changes
+killall Dock
+
+## Automatically hide and show the Menubar.
+defaults write NSGlobalDomain _HIHideMenuBar -bool TRUE
+
+## Change the default screenshots location
+defaults write com.apple.screencapture location ~/Desktop/screenshots/
+
+# Disable the Apple press and hold for VSCode.
+#
+# https://github.com/VSCodeVim/Vim#mac
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
+# Disable Mission Control grouping windows by application
+#
+# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
+defaults write com.apple.dock expose-group-apps -bool true && killall Dock
+
+# Install the Command Line Tools
+if ! command -v xcode-select -p >/dev/null; then
+  fancy_echo "Installing the Command Line Tools ..."
+
+  xcode-select --install
+fi
+
+# Install Homebrew if the brew command is not found
+if ! command -v brew >/dev/null; then
+  fancy_echo "Installing Homebrew ..."
+
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Make brew available in this shell (Apple Silicon prefix).
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# Upgrade Homebrew and install or upgrade formulae
+fancy_echo "Updating Homebrew formulae ..."
+brew update
+brew bundle --file=- <<EOF
+tap "heroku/brew"
+
+# Tools and libraries
+brew "awscli"
+brew "bat"
+brew "fd"
+brew "fish"
+brew "geckodriver"
+brew "gh"
+brew "git"
+brew "git-delta"
+brew "heroku"
+brew "libpq"
+brew "ltex-ls"
+brew "neovim"
+brew "ripgrep"
+brew "stow"
+brew "television"
+brew "tree-sitter-cli"
+brew "universal-ctags"
+brew "wget"
+brew "zoxide"
+
+# Apps
+cask "1password"
+cask "chromedriver"
+cask "cleanmymac"
+cask "docker-desktop"
+cask "firefox"
+cask "gemini"
+cask "google-chrome"
+cask "insomnia"
+cask "ngrok"
+cask "raycast"
+cask "spotify"
+cask "wezterm"
+
+# Image manipulation
+brew "imagemagick"
+
+# Programming language prerequisites and package managers
+brew "gpg"
+brew "yarn", args: ["ignore-dependencies"]
+
+# Install Apps from Apple Store
+mas "Bitwarden", id: 1352778147
+mas "Home Assistant", id: 1099568401
+mas "Slack for Desktop", id: 803453959
+mas "Telegram", id: 747648890 #
+mas "WhatsApp Messenger", id: 310633997
+EOF
+
+# Set the number of cores Bundler may use.
+if command -v bundle >/dev/null 2>&1; then
+  fancy_echo "Setting bundle number of cores ..."
+  number_of_cores=$(sysctl -n hw.ncpu)
+  bundle config set --global jobs $((number_of_cores - 1))
+fi
+
+# Homebrew maintenance.
+fancy_echo "Cleaning Homebrew ..."
+brew cleanup -s
+
+fancy_echo "Homebrew Diagnostic ..."
+brew doctor || true
+brew missing || true
+
+fancy_echo 'macOS setup completed!'

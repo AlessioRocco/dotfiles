@@ -8,6 +8,8 @@
   pager = delta
 [include]
   path = ~/.config/delta/themes/catppuccin.gitconfig
+  ; OS-specific settings (e.g. SSH signing program), stowed per platform.
+  path = ~/.gitconfig.os
 [interactive]
   diffFilter = delta --color-only
 [delta]
@@ -15,8 +17,6 @@
   navigate = true
 [gpg]
   format = ssh
-[gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [commit]
   template = ~/.gitmessage
   gpgsign = true

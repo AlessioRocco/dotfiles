@@ -5,9 +5,9 @@ path = "~"
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
-startup_command = "tmux split-window -h opencode && nvim"
+startup_command = "nvim"
 
 [[session]]
 name = "notes"
 path = "~/Documents/Notes"
-startup_command = "tmux split-window -h opencode && nvim"
+startup_command = "nvim"

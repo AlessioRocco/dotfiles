@@ -7,6 +7,8 @@
 # - macOS/Linux: `~/.config/worktrunk/config.toml` (or `$XDG_CONFIG_HOME` if set)
 # - Windows: `%APPDATA%\worktrunk\config.toml`
 #
+worktree-path = "../{{ branch | sanitize }}"
+
 # ## Worktree path template
 #
 # Controls where new worktrees are created.

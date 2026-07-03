@@ -1,0 +1,61 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(~/.local/share/mise/installs/**)",
+      "mcp__avatax__get_transactions",
+      "mcp__avatax__get_transaction",
+      "mcp__avatax__get_companies",
+      "mcp__jira__getJiraIssue",
+      "mcp__jira__getAccessibleAtlassianResources",
+      "mcp__jira__searchJiraIssuesUsingJql",
+      "mcp__jira__getTransitionsForJiraIssue",
+      "mcp__jira__getJiraIssueTypeMetaWithFields",
+      "mcp__jira__getJiraIssueRemoteIssueLinks",
+      "mcp__jira__atlassianUserInfo",
+      "mcp__jira__fetch",
+      "mcp__datadog__search_datadog_logs",
+      "mcp__datadog__search_datadog_spans",
+      "mcp__datadog__aggregate_spans",
+      "mcp__datadog__load_datadog_skill",
+      "mcp__datadog__list_datadog_skills",
+      "mcp__sentry__search_issues",
+      "mcp__sentry__get_sentry_resource",
+      "mcp__sentry__find_organizations",
+      "mcp__circleci__find_flaky_tests",
+      "mcp__circleci__get_build_failure_logs",
+      "mcp__circleci__get_job_test_results",
+      "mcp__circleci__get_latest_pipeline_status",
+      "mcp__slite__get-note",
+      "mcp__heroku__list_apps",
+      "mcp__claude_ai_Google_Calendar__list_events",
+      "mcp__claude_ai_Google_Calendar__get_event",
+      "mcp__claude_ai_Slack__slack_search_channels",
+      "mcp__claude_ai_Slack__slack_search_public_and_private",
+      "Bash(gws chat spaces messages list *)",
+      "Bash(gws chat spaces list *)",
+      "Bash(heroku config --app *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git rebase *)",
+      "Bash(git reset *)",
+      "Bash(git checkout *)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr edit *)",
+      "Bash(bundle exec *)",
+      "Bash(mise exec *)",
+      "Bash(rspec *)",
+      "Bash(bin/rspec *)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/alessio/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "ruby-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true
+  },
+  "tui": "fullscreen",
+  "agentPushNotifEnabled": true,
+  "voiceEnabled": true
+}

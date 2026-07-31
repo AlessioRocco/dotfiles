@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Focus the herdr workspace carrying `label`, creating it at `path` when it
+# isn't open yet. Bound to prefix chords in herdr's config.toml for the
+# projects worth a dedicated shortcut. Workspace ids are handed out per
+# session, so the label is the only stable handle to look one up by.
+
+set -euo pipefail
+
+label=$1
+path=$2
+
+herdr=${HERDR_BIN_PATH:-herdr}
+
+id=$("$herdr" workspace list | jq -r --arg label "$label" \
+  'first(.result.workspaces[] | select(.label == $label) | .workspace_id) // empty')
+
+if [[ -n $id ]]; then
+  "$herdr" workspace focus "$id"
+else
+  "$herdr" workspace create --cwd "$path" --label "$label" --focus
+fi

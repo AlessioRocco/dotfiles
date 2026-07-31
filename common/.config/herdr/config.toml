@@ -20,6 +20,20 @@ prefix = "ctrl+a"
 settings = "prefix+,"
 copy_mode = "prefix+enter"
 
+# Jump straight to the two spaces I live in. Workspace ids are per-session, so
+# these go through a label lookup rather than a fixed index.
+[[keys.command]]
+key = "prefix+space"
+type = "shell"
+command = "herdr-open-space starship \"$HOME/starship\""
+description = "Space: starship"
+
+[[keys.command]]
+key = "prefix+period"
+type = "shell"
+command = "herdr-open-space dotfiles \"$HOME/dotfiles\""
+description = "Space: dotfiles"
+
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"

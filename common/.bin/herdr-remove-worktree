@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# Remove a worktree via worktrunk, then close its herdr workspace (if one is
+# open). Used by lazygit's worktree-remove custom command instead of a bare
+# `wt remove`, so the workspace doesn't linger after the checkout is gone.
+
+set -euo pipefail
+
+path=$1
+herdr=${HERDR_BIN_PATH:-herdr}
+in_herdr=${HERDR_ENV:-}
+
+# Resolve the open workspace, if any, before removal — once the worktree is
+# gone, `herdr worktree list` no longer reports it.
+wsid=""
+if [[ -n $in_herdr ]]; then
+  wsid=$("$herdr" worktree list --cwd "$path" --json 2>/dev/null \
+    | jq -r --arg p "$path" '[.result.worktrees[] | select(.path == $p) | .open_workspace_id] | first // empty')
+fi
+
+wt remove --foreground "$path"
+
+[[ -n $wsid ]] && "$herdr" workspace close "$wsid"
+
+exit 0

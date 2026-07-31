@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Open (or focus, if already open) a herdr workspace for an existing worktree
+# checkout path. Used by lazygit custom commands instead of `sesh connect`.
+
+set -euo pipefail
+
+path=$1
+label=${2:-$(basename "$path")}
+
+if [[ -z ${HERDR_ENV:-} ]]; then
+  echo "not running inside herdr" >&2
+  exit 1
+fi
+
+herdr=${HERDR_BIN_PATH:-herdr}
+
+# `worktree open` needs the repo's root workspace, not a linked worktree's own
+# workspace — herdr resolves the root from any checkout path in the repo.
+root_ws=$("$herdr" worktree list --cwd "$path" --json | jq -r '.result.source.source_workspace_id // empty')
+[[ -z $root_ws ]] && root_ws=$HERDR_WORKSPACE_ID
+
+"$herdr" worktree open --workspace "$root_ws" --path "$path" --label "$label" --focus --json

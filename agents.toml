@@ -2,7 +2,7 @@ version = 1
 agents = ["opencode", "claude"]
 
 [trust]
-github_repos = [ "getsentry/dotagents" ]
+github_repos = [ "getsentry/dotagents", "nebulab/skills-internal" ]
 
 
 [[skills]]
@@ -10,5 +10,7 @@ name = "dotagents"
 source = "getsentry/dotagents"
 
 [[skills]]
-name = "git-commit"
-source = "path:.agents/skills/git-commit"
+name = "nebulab-git-commit"
+source = "nebulab/skills-internal"
+# Upstream nests it under skills/nebulab/commons/git/, so the path is explicit.
+path = "skills/nebulab/commons/git/commit"

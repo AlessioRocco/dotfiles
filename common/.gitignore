@@ -26,3 +26,5 @@ rerun.txt
 tags
 tmp/**/*
 vim/view
+
+**/.claude/settings.local.json

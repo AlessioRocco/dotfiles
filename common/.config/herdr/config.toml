@@ -14,6 +14,14 @@ prompt_new_tab_name = false
 prefix = "ctrl+space"
 next_agent = "prefix+a"
 previous_agent = "prefix+shift+a"
+switch_workspace = "prefix+shift+1..9"
+
+# Navigate mode: j/k walk the space list, arrows walk panes.
+# Pane navigation already lives on ctrl+h/j/k/l via vim-herdr-navigation.
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+navigate_pane_up = "up"
+navigate_pane_down = "down"
 
 [[keys.command]]
 key = "ctrl+h"

@@ -1,9 +1,9 @@
 ---
-name: write-as-me
+name: alessio-voice
 description: Write or improve any text in Alessio's voice. Use whenever the AI drafts or edits something on Alessio's behalf (PR descriptions, issue trackers, chat messages, email, docs, comments).
 ---
 
-# Write As Me
+# Alessio's Voice
 
 Use this skill whenever you write or edit text that goes out under Alessio's
 name. The goal is twofold: produce text that genuinely sounds like Alessio, and

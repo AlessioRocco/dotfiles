@@ -71,7 +71,25 @@ zoxide init fish | source
 # Mise
 ~/.local/bin/mise activate fish | source
 
-# Auto-attach to tmux on shell startup
-if status is-interactive && not set -q TMUX
-    sesh connect home
+# Herdr: rename the tab to the running foreground command, falling back to
+# $PWD's directory name while the shell is idle at the prompt.
+if status is-interactive && set -q HERDR_ENV && set -q HERDR_TAB_ID
+    function _herdr_tab_name_idle --on-variable PWD
+        set -l label (basename $PWD)
+        if test "$PWD" = "$HOME"
+            set label "~"
+        end
+        herdr tab rename "$HERDR_TAB_ID" "$label" >/dev/null 2>&1
+    end
+
+    function _herdr_tab_name_running --on-event fish_preexec
+        set -l label (string split -m1 ' ' -- (string trim -- $argv[1]))[1]
+        herdr tab rename "$HERDR_TAB_ID" "$label" >/dev/null 2>&1
+    end
+
+    function _herdr_tab_name_reset --on-event fish_postexec
+        _herdr_tab_name_idle
+    end
+
+    _herdr_tab_name_idle
 end

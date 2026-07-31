@@ -52,8 +52,17 @@
     "command": "bash /Users/alessio/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
   },
   "tui": "fullscreen",
   "agentPushNotifEnabled": true,

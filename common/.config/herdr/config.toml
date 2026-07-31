@@ -11,10 +11,9 @@ agent_panel_sort = "spaces"
 prompt_new_tab_name = false
 
 [keys]
-prefix = "ctrl+space"
-next_agent = "prefix+a"
-previous_agent = "prefix+shift+a"
-switch_workspace = "prefix+shift+1..9"
+prefix = "ctrl+a"
+settings = "prefix+,"
+copy_mode = "prefix+enter"
 
 [[keys.command]]
 key = "ctrl+h"

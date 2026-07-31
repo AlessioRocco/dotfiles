@@ -47,6 +47,7 @@
       "Bash(bin/rspec *)"
     ]
   },
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {

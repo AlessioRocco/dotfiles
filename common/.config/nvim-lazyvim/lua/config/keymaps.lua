@@ -19,3 +19,10 @@ end, { desc = "Copy relative file path" })
 vim.keymap.set("n", "<leader>fY", function()
   vim.fn.setreg(vim.v.register, vim.fn.expand("%:.") .. ":" .. vim.fn.line("."))
 end, { desc = "Copy filename+line to clipboard" })
+
+-- Seamless herdr/Vim split navigation (paulbkim-dev/vim-herdr-navigation).
+-- Loaded here, after LazyVim's own <C-h/j/k/l> defaults, so it wins.
+local herdr_nav = vim.fn.stdpath("data") .. "/lazy/vim-herdr-navigation/editor/nvim.lua"
+if (vim.uv or vim.loop).fs_stat(herdr_nav) then
+  dofile(herdr_nav)
+end

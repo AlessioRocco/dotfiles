@@ -6,7 +6,6 @@
 .DS_Store
 .bundle
 .byebug_history
-.claude/settings.local.json
 .config/wt.toml
 .env
 .ignore

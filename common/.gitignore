@@ -14,6 +14,7 @@
 .solargraph.yml
 .tool-versions
 .vscode/
+/tags
 CLAUDE.local.md
 codecompanion-workspace.json
 db/*.sqlite3
@@ -22,7 +23,6 @@ mise.toml
 node_modules
 rails.rb
 rerun.txt
-tags
 tmp/**/*
 vim/view
 

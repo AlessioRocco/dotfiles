@@ -32,11 +32,14 @@ Each package mirrors `$HOME`. Example: `common/.config/fish/config.fish` links
 to `~/.config/fish/config.fish`. `--no-folding` keeps real directories with
 per-file symlinks so tools (fisher, mise, LazyVim) don't write into the repo.
 
-**This repo is public.** Personal AI-assistant configuration — `~/AGENTS.md`,
-`~/.claude/`, `~/.agents/`, `~/.config/opencode/` — lives in the private
-`agentfiles` repo instead, stowed the same way. Don't add it back here. The
-root-level `AGENTS.md`/`agents.toml`/`.agents/` are this repo's own tooling and
-do stay. `common/.config/herdr/` is terminal config and also stays.
+**This repo is public.** Anything that would be a problem for the world to read
+belongs in the private `dotfiles-private` repo, which is stowed the same way.
+That currently covers the AI-assistant configuration — `~/AGENTS.md`,
+`~/.claude/`, `~/.agents/`, `~/.config/opencode/` — so don't add it back here.
+
+The root-level `AGENTS.md`/`agents.toml`/`.agents/` are this repo's own tooling
+and do stay, as does `common/.config/herdr/`: it is terminal config and
+public-safe.
 
 ## OS-specific differences
 

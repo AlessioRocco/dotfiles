@@ -1,5 +1,3 @@
-!tags/
-!tmp/cache/.keep
 **/.claude/settings.local.json
 *.pyc
 *.sw[nop]
@@ -27,3 +25,8 @@ rerun.txt
 tags
 tmp/**/*
 vim/view
+
+# Negations must stay last: git applies the final matching pattern, so
+# sorting these in with the rest silently disables them.
+!tmp/cache/
+!tmp/cache/.keep

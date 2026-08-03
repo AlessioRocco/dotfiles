@@ -1,5 +1,6 @@
 !tags/
 !tmp/cache/.keep
+**/.claude/settings.local.json
 *.pyc
 *.sw[nop]
 .DS_Store
@@ -16,6 +17,7 @@
 .solargraph.yml
 .tool-versions
 .vscode/
+CLAUDE.local.md
 codecompanion-workspace.json
 db/*.sqlite3
 log/*.log
@@ -26,5 +28,3 @@ rerun.txt
 tags
 tmp/**/*
 vim/view
-
-**/.claude/settings.local.json

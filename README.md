@@ -32,8 +32,16 @@ git clone https://github.com/AlessioRocco/dotfiles ~/dotfiles
 ~/dotfiles/bin/setup
 ```
 
-`bin/setup` installs Stow, links the `common` package, then links and runs the
-setup for the current OS (`macos` or `linux`).
+`bin/setup` installs Stow, links the `common` package, links and runs the setup
+for the current OS (`macos` or `linux`), then clones [`dotfiles-private`][private]
+into `~/dotfiles-private` and runs that repo's own `bin/setup`. What happens to
+the private dotfiles is defined there, not here.
+
+The private clone uses SSH, so the machine needs a key with access to that
+repo. Without it, setup warns and carries on with the public dotfiles only:
+add the key and re-run `bin/setup` to pick up the private half.
+
+[private]: https://github.com/AlessioRocco/dotfiles-private
 
 ## Managing symlinks
 
@@ -50,6 +58,9 @@ stow -n -v common    # dry-run (preview without changing anything)
 
 `--no-folding` keeps real directories with per-file symlinks, so tools that
 write into their config dirs (fisher, mise, LazyVim) don't write into the repo.
+
+The private dotfiles are their own repo with a single `home` package: run
+`stow home` from `~/dotfiles-private` to re-link them.
 
 ## Notes
 

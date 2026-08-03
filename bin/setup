@@ -8,7 +8,8 @@
 #   3. Symlink the shared `common` package into $HOME with Stow.
 #   4. Detect the OS, symlink the matching package (`macos`/`linux`) and source
 #      its OS-specific setup script.
-#   5. Run the shared post-install steps (bin/post-install).
+#   5. Clone dotfiles-private and run its own setup script.
+#   6. Run the shared post-install steps (bin/post-install).
 #
 # Safe to re-run.
 
@@ -26,6 +27,8 @@ set -e
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/AlessioRocco/dotfiles}"
+PRIVATE_DIR="${PRIVATE_DIR:-$HOME/dotfiles-private}"
+PRIVATE_REPO="${PRIVATE_REPO:-git@github.com:AlessioRocco/dotfiles-private.git}"
 
 # 1. Clone the repo if it is not already present.
 if [ ! -d "$DOTFILES_DIR" ]; then
@@ -101,7 +104,26 @@ Linux)
   ;;
 esac
 
-# 5. Shared post-install steps.
+# 5. Clone the private dotfiles and hand over to their own setup script, which
+#    owns what happens to them (stow, agent skills). The clone needs an SSH key
+#    with access to the repo, so a failure here only warns: the public setup
+#    stays usable on a machine where the key is not there yet.
+if [ ! -d "$PRIVATE_DIR" ]; then
+  fancy_echo "Cloning dotfiles-private into $PRIVATE_DIR ..."
+  if ! git clone "$PRIVATE_REPO" "$PRIVATE_DIR"; then
+    fancy_echo "Could not clone $PRIVATE_REPO." >&2
+    fancy_echo "Add an SSH key with access to it and re-run this script." >&2
+  fi
+fi
+
+if [ -x "$PRIVATE_DIR/bin/setup" ]; then
+  fancy_echo "Running dotfiles-private setup ..."
+  "$PRIVATE_DIR/bin/setup"
+elif [ -d "$PRIVATE_DIR" ]; then
+  fancy_echo "$PRIVATE_DIR has no executable bin/setup; skipping." >&2
+fi
+
+# 6. Shared post-install steps.
 fancy_echo "Running post-install steps ..."
 . "$DOTFILES_DIR/bin/post-install"
 

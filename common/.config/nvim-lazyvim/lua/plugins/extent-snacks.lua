@@ -1,5 +1,11 @@
 return {
   "folke/snacks.nvim",
+  opts = {
+    -- lazygit is themed from ~/.config/lazygit/config.yml so the herdr popup and
+    -- this one look the same. Letting snacks regenerate a theme would override it
+    -- here only, which is the difference we were trying to remove.
+    lazygit = { configure = false },
+  },
   keys = {
     {
       "<leader>gp",

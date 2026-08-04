@@ -29,7 +29,7 @@ wezterm.on("gui-startup", function(cmd)
   window:gui_window():maximize()
 end)
 
--- Hide tab bar (tmux handles this)
+-- Hide tab bar (herdr handles this)
 config.enable_tab_bar = false
 
 return config

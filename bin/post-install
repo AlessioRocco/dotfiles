@@ -2,7 +2,7 @@
 
 # Shared post-install steps for both macOS and Linux.
 # Installs Mise, creates the code folder, and installs/updates fish plugins
-# (fisher), tmux plugins (tpm) and editor themes.
+# (fisher) and editor themes.
 # Safe to re-run; sourced by the top-level bin/setup orchestrator.
 
 # Install or update Mise (https://mise.jdx.dev/getting-started.html).
@@ -37,19 +37,6 @@ if [ -n "$FISH_BIN" ]; then
   '
 else
   fancy_echo 'fish not found; skipping fisher setup.'
-fi
-
-# Install the Tmux Plugin Manager and sync plugins.
-TPM_DIR="$HOME/.tmux/plugins/tpm"
-if [ ! -d "$TPM_DIR" ]; then
-  fancy_echo 'Installing Tmux Plugin Manager ...'
-  git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
-fi
-if [ -x "$TPM_DIR/bin/install_plugins" ]; then
-  fancy_echo 'Installing/updating tmux plugins ...'
-  "$TPM_DIR/bin/install_plugins"
-  "$TPM_DIR/bin/clean_plugins"
-  "$TPM_DIR/bin/update_plugins" all
 fi
 
 # Editor / pager themes (Catppuccin).

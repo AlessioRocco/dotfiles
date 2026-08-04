@@ -74,3 +74,11 @@ command = "herdr-worktree-remove"
 width = "70%"
 height = "50%"
 description = "Worktree: remove the current one"
+
+[[keys.command]]
+key = "prefix+shift+g"
+type = "popup"
+command = 'lazygit --path "$(herdr-worktree-current)"'
+width = "90%"
+height = "90%"
+description = "Git: lazygit on the current worktree"

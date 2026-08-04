@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/sh
 
 # This file was originally taken from:
 # https://gist.github.com/elijahmanor/c10e5787bf9ac6b8c276e47e6745826c

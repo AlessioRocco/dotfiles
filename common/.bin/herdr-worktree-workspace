@@ -1,0 +1,108 @@
+#!/bin/bash
+#
+# Mirror worktrunk's worktree lifecycle onto herdr workspaces. Driven by
+# worktrunk hooks rather than by each tool that creates worktrees, so lazygit,
+# gh-dash, the `wt switch` picker and a bare `wt` in a terminal all land on the
+# same sidebar entry — and so does anything that removes one, `wt merge`
+# included.
+#
+#   open  <worktree_path> <branch> <primary_worktree_path> [pr_number]
+#   stash <worktree_path>
+#   close <worktree_path>
+#
+# `stash` runs from pre-remove because that is the last moment the mapping still
+# exists: once the checkout is gone, `herdr worktree list` no longer reports it
+# and its workspace id is unrecoverable. pre-remove is a blocking hook, so this
+# script must never fail a removal — every herdr call is best-effort and the
+# exit status is always 0.
+
+set -uo pipefail
+
+mode=$1
+wtpath=$2
+
+# The hooks are user-level, so they fire in every repository: plain terminals,
+# ssh sessions and CI included. Everywhere but herdr this is a no-op.
+[[ -z ${HERDR_ENV:-} ]] && exit 0
+
+herdr=${HERDR_BIN_PATH:-herdr}
+
+# One file per checkout, keyed by its path: `close` runs in the primary
+# worktree, so cwd tells it nothing about what was just removed.
+stash_file="${TMPDIR:-/tmp}/herdr-worktree-ws-$(printf '%s' "$wtpath" | cksum | cut -d' ' -f1)"
+
+# The workspace a checkout is open in, if any.
+workspace_of() {
+  "$herdr" worktree list --cwd "$1" --json 2>/dev/null \
+    | jq -r --arg p "$1" \
+      'first(.result.worktrees[] | select(.path == $p) | .open_workspace_id) // empty'
+}
+
+case $mode in
+  open)
+    branch=$3
+    primary=$4
+    pr=${5:-}
+
+    # `worktree open` has to be addressed to the repo's ROOT workspace: from
+    # inside a linked worktree, $HERDR_WORKSPACE_ID is that worktree's own
+    # workspace and herdr rejects it with `linked_worktree_source`. herdr
+    # resolves the root from any checkout path in the repo; when it can't, the
+    # repo simply isn't open in herdr and there is nothing to attach to.
+    root_ws=$("$herdr" worktree list --cwd "$wtpath" --json 2>/dev/null \
+      | jq -r '.result.source.source_workspace_id // empty')
+    [[ -z $root_ws ]] && exit 0
+
+    # Agents run `wt switch` in panes nobody is watching, and stealing focus
+    # mid-task is worse than a workspace you have to click — so they, and only
+    # they, opt out. The signal has to come from the environment: a popup picker
+    # inherits $HERDR_PANE_ID from whatever pane it was opened over, so asking
+    # herdr which pane is focused answers a question about the pane behind the
+    # popup, not about the person driving it. Add other runners' markers here.
+    focus=--focus
+    [[ -n ${CLAUDECODE:-} ]] && focus=--no-focus
+
+    # The primary checkout already owns the root workspace, so there is nothing to
+    # open — but switching to it still means "take me back there", which is what
+    # picking the main branch in the picker asks for.
+    if [[ $wtpath == "$primary" ]]; then
+      [[ $focus == --focus ]] && "$herdr" workspace focus "$root_ws" >/dev/null
+      exit 0
+    fi
+
+    # `pr:N` resolves to the PR's own branch, and every other worktree view — the
+    # `wt switch` picker included — keys off that branch name. Keep both, so the
+    # sidebar entry and the picker row can be matched by eye.
+    label=$branch
+    [[ -n $pr ]] && label="pr-$pr · $branch"
+
+    command -v zoxide >/dev/null && zoxide add "$wtpath"
+
+    # --path and --branch are mutually exclusive; the path is what identifies
+    # this checkout, and the label is what carries the branch. Already-open
+    # checkouts come back `already_open` and get focused, so this is the switch
+    # path too. Only stdout is dropped: stderr belongs in worktrunk's hook log,
+    # which is the only place a failure here would ever be seen.
+    "$herdr" worktree open --workspace "$root_ws" --path "$wtpath" \
+      --label "$label" "$focus" --json >/dev/null
+    ;;
+  stash)
+    wsid=$(workspace_of "$wtpath")
+    [[ -n $wsid ]] && printf '%s\n' "$wsid" >"$stash_file"
+    ;;
+  close)
+    wsid=$(cat "$stash_file" 2>/dev/null)
+    # No stash means the removal skipped pre-remove (--no-hooks, or a worktree
+    # created before these hooks existed); the live lookup still works when the
+    # checkout is somehow still around.
+    [[ -z $wsid ]] && wsid=$(workspace_of "$wtpath")
+    [[ -n $wsid ]] && "$herdr" workspace close "$wsid" >/dev/null 2>&1
+    rm -f "$stash_file"
+    ;;
+  *)
+    echo "usage: ${0##*/} open|stash|close <worktree_path> [...]" >&2
+    exit 2
+    ;;
+esac
+
+exit 0

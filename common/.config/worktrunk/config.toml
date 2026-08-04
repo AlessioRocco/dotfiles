@@ -1,3 +1,7 @@
+post-switch = "herdr-worktree-workspace open '{{ worktree_path }}' '{{ branch }}' '{{ primary_worktree_path }}' '{{ pr_number | default(\"\") }}'"
+pre-remove = "herdr-worktree-workspace stash '{{ worktree_path }}'"
+post-remove = "herdr-worktree-workspace close '{{ worktree_path }}'"
+
 # # User Configuration
 #
 # Create with `wt config create`. Values shown are defaults unless noted otherwise.

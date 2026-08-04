@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Print the checkout you are looking at, so the gestures that act on "here" —
+# create, remove — all agree on what "here" means.
+#
+# The focused workspace wins over $PWD, because these run from herdr popups and a
+# popup's working directory is herdr's business rather than the workspace's: it
+# can sit on the repo root while you are looking at one of its worktrees. But it
+# only wins within the same repository, so running one of them straight from a
+# shell can never reach across into whatever repo happens to be on screen.
+
+set -uo pipefail
+
+herdr=${HERDR_BIN_PATH:-herdr}
+
+repo_of() {
+  git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null
+}
+
+focused=$("$herdr" workspace list 2>/dev/null \
+  | jq -r 'first(.result.workspaces[]
+      | select(.focused == true and .worktree != null)
+      | .worktree.checkout_path) // empty')
+
+here=$(repo_of "$PWD")
+
+if [[ -n $focused ]] && { [[ -z $here ]] || [[ $(repo_of "$focused") == "$here" ]]; }; then
+  printf '%s\n' "$focused"
+  exit 0
+fi
+
+git rev-parse --show-toplevel 2>/dev/null

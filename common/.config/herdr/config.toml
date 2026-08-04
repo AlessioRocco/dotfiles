@@ -19,6 +19,7 @@ switch_ascii_input_source_in_prefix = true
 prefix = "ctrl+a"
 settings = "prefix+,"
 copy_mode = "prefix+enter"
+new_worktree = ""
 
 # Jump straight to the two spaces I live in. Workspace ids are per-session, so
 # these go through a label lookup rather than a fixed index.
@@ -59,20 +60,17 @@ command = "vim-herdr-navigation.right"
 description = "navigate right (vim/herdr)"
 
 [[keys.command]]
-key = "prefix+shift+g"
-type = "plugin_action"
-command = "worktrunk.open"
-description = "Worktree: switch / create from default branch"
-
-# Optional: bind current-branch creation separately.
-[[keys.command]]
 key = "prefix+shift+c"
-type = "plugin_action"
-command = "worktrunk.open-current"
-description = "Worktree: switch / create from current branch"
+type = "popup"
+command = "herdr-worktree-create"
+width = "70%"
+height = "5%"
+description = "Worktree: create from the current one"
 
 [[keys.command]]
 key = "prefix+shift+d"
-type = "plugin_action"
-command = "worktrunk.remove"
-description = "Worktree: remove"
+type = "popup"
+command = "herdr-worktree-remove"
+width = "70%"
+height = "50%"
+description = "Worktree: remove the current one"

@@ -5,7 +5,7 @@ git:
       pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 customCommands:
   - key: "n"
-    command: 'bash -c ''path=$(wt -C "{{.SelectedWorktree.Path}}" switch --create --no-cd --base @ --format json "{{index .PromptResponses 0}}" | jq -r .path) && zoxide add "$path" && herdr-open-worktree "$path" "{{index .PromptResponses 0}}"'''
+    command: 'wt -C "{{.SelectedWorktree.Path}}" switch --create --no-cd --base @ "{{index .PromptResponses 0}}"'
     context: "worktrees"
     description: "Worktrunk: create worktree from selected"
     output: terminal
@@ -14,17 +14,17 @@ customCommands:
         title: "New branch name"
         key: Branch
   - key: "<space>"
-    command: "herdr-open-worktree '{{.SelectedWorktree.Path}}' '{{.SelectedWorktree.Branch}}'"
+    command: 'wt switch --no-cd "{{.SelectedWorktree.Branch}}"'
     context: "worktrees"
     description: "Worktrunk: open in herdr"
     output: terminal
   - key: "W"
-    command: 'bash -c ''branch="{{.SelectedRemoteBranch.Name}}" && path=$(wt switch --no-cd --format json "$branch" | jq -r .path) && zoxide add "$path" && herdr-open-worktree "$path" "$branch"'''
+    command: 'wt switch --no-cd "{{.SelectedRemoteBranch.Name}}"'
     context: "remoteBranches"
     description: "Worktrunk: create worktree from remote branch"
     output: terminal
   - key: "d"
-    command: "herdr-remove-worktree '{{.SelectedWorktree.Path}}'"
+    command: 'wt remove --foreground "{{.SelectedWorktree.Path}}"'
     context: "worktrees"
     description: "Worktrunk: remove worktree"
     output: terminal

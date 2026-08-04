@@ -63,7 +63,7 @@ keybindings:
         - key: W
           name: review in worktree
           command: >
-              gh-dash-review-pr {{.RepoPath}} {{.PrNumber}}
+              wt -C {{.RepoPath}} switch pr:{{.PrNumber}} --no-cd
 repoPaths: {}
 theme:
     ui:

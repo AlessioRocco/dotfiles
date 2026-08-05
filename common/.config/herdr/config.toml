@@ -82,3 +82,11 @@ command = 'lazygit --path "$(herdr-worktree-current)"'
 width = "90%"
 height = "90%"
 description = "Git: lazygit on the current worktree"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "popup"
+command = "gh dash"
+width = "90%"
+height = "90%"
+description = "GitHub: dashboard"

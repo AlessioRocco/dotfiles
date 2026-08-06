@@ -5,7 +5,7 @@
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
-  pager = delta
+  pager = hunk pager
 [include]
   path = ~/.config/delta/themes/catppuccin.gitconfig
   ; OS-specific settings (e.g. SSH signing program), stowed per platform.
@@ -39,6 +39,7 @@
   autosquash = true
 [diff]
   colorMoved = default
+  tool = hunk
 [format]
   pretty = %C(yellow)%h%C(reset) %C(green)%ar%C(reset) %C(bold blue)%an%C(reset) %C(red)%d%C(reset) %s%C(reset)
 [alias]
@@ -114,3 +115,7 @@
 
   ## config
   aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | tv
+[difftool "hunk"]
+  cmd = hunk difftool \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[difftool]
+  prompt = false

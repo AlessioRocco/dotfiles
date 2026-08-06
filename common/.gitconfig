@@ -27,12 +27,12 @@
 [merge]
   conflictstyle = diff3
   ff = only
-	tool = codediff
+  tool = codediff
 [mergetool]
   prompt = false
   keepBackup = false
 [mergetool "codediff"]
-	cmd = nvim \"$MERGED\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
+  cmd = nvim \"$MERGED\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
 [fetch]
   prune = true
 [rebase]

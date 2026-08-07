@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
-# Print the checkout you are looking at, so the gestures that act on "here" —
-# create, remove — all agree on what "here" means.
+# Print the checkout you are looking at, so the lazygit popup knows what "here"
+# means.
 #
-# The focused workspace wins over $PWD, because these run from herdr popups and a
-# popup's working directory is herdr's business rather than the workspace's: it
+# The focused workspace wins over $PWD, because this runs from a herdr popup and
+# a popup's working directory is herdr's business rather than the workspace's: it
 # can sit on the repo root while you are looking at one of its worktrees. But it
-# only wins within the same repository, so running one of them straight from a
-# shell can never reach across into whatever repo happens to be on screen.
+# only wins within the same repository, so running it straight from a shell can
+# never reach across into whatever repo happens to be on screen.
 
 set -uo pipefail
 

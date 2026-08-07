@@ -60,22 +60,6 @@ command = "vim-herdr-navigation.right"
 description = "navigate right (vim/herdr)"
 
 [[keys.command]]
-key = "prefix+shift+c"
-type = "popup"
-command = "herdr-worktree-create"
-width = "70%"
-height = "5%"
-description = "Worktree: create from the current one"
-
-[[keys.command]]
-key = "prefix+shift+d"
-type = "popup"
-command = "herdr-worktree-remove"
-width = "70%"
-height = "50%"
-description = "Worktree: remove the current one"
-
-[[keys.command]]
 key = "prefix+shift+g"
 type = "popup"
 command = 'lazygit --path "$(herdr-worktree-current)"'

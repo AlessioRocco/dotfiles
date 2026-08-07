@@ -63,7 +63,7 @@ keybindings:
     - key: W
       name: review in worktree
       command: >
-        wt -C {{.RepoPath}} switch pr:{{.PrNumber}} --no-cd
+        set result (wt -C {{.RepoPath}} switch pr:{{.PrNumber}} --no-cd --format=json); and set path (echo $result | jq -r .path); and set branch (echo $result | jq -r .branch); and sleep 1; and set root_ws (herdr worktree list --cwd "$path" --json | jq -r ".result.source.source_workspace_id"); and herdr worktree open --workspace "$root_ws" --path "$path" --label "pr-{{.PrNumber}} · $branch" --focus
 repoPaths: {}
 theme:
   ui:

@@ -46,9 +46,9 @@ customCommands:
         title: "New branch name"
         key: Branch
   - key: "<space>"
-    command: 'wt switch --no-cd "{{.SelectedWorktree.Branch}}"'
+    command: 'wt switch --no-cd "{{.SelectedWorktree.Branch}}"; and kill (ps -o ppid= -p %self | string trim)'
     context: "worktrees"
-    description: "Worktrunk: open in herdr"
+    description: "Worktrunk: open in herdr, closing this popup"
     output: terminal
   - key: "W"
     command: 'wt switch --no-cd "{{.SelectedRemoteBranch.Name}}"'

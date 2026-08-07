@@ -51,9 +51,9 @@ customCommands:
     description: "Worktrunk: open in herdr, closing this popup"
     output: terminal
   - key: "W"
-    command: 'wt switch --no-cd "{{.SelectedRemoteBranch.Name}}"'
+    command: 'wt switch --no-cd "{{.SelectedRemoteBranch.Name}}"; and kill (ps -o ppid= -p %self | string trim)'
     context: "remoteBranches"
-    description: "Worktrunk: create worktree from remote branch"
+    description: "Worktrunk: create worktree from remote branch, closing this popup"
     output: terminal
   - key: "d"
     command: 'set -e GIT_DIR GIT_WORK_TREE; set primary (git -C "{{.SelectedWorktree.Path}}" worktree list --porcelain | head -1 | string replace "worktree " ""); and wt remove --foreground -C "$primary" "{{.SelectedWorktree.Path}}"'

@@ -82,4 +82,13 @@ case "$SHELL" in
   ;;
 esac
 
+# Install the crontab tracked at common/.config/cron/crontab. This REPLACES
+# the whole crontab with that file's contents, so scheduled jobs belong
+# there, not added through `crontab -e` — those would be gone on the next
+# setup run.
+if command -v crontab >/dev/null 2>&1; then
+  fancy_echo "Installing crontab ..."
+  crontab "$HOME/.config/cron/crontab"
+fi
+
 fancy_echo 'Post-install completed!'

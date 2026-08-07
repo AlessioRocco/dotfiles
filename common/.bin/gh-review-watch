@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# Poll GitHub-wide for open, non-draft PRs where I'm requested to review.
+# For each one, derive its local checkout from `~/code/<owner>/<repo>` and,
+# only if that checkout actually exists, `wt switch pr:N` into it. When that
+# creates a new worktree (as opposed to finding one already open from a
+# previous run), register it as its own herdr workspace — labeled the same
+# way as gh-dash's "W" review command — and fire a herdr notification. A PR
+# whose repo has no local checkout is skipped silently; there's nowhere to
+# put its worktree. Meant to run on a schedule (cron, every 15m).
+#
+# No separate "seen" state: `wt switch`'s own `.action` field (`created` vs
+# `existing`) is already exactly the signal needed, so there's nothing to
+# track that worktrunk doesn't already know. Closing the worktree while the
+# PR is still open review-requested means it reopens (and renotifies) next
+# run — deliberately; the alternative is a state file to keep in sync with
+# reality by hand.
+#
+# Deliberately contains no repo names: the search is account-wide and the
+# checkout path is derived from the PR's own repository field, so this
+# script stays identical regardless of which (possibly client-confidential)
+# repos it ends up touching on a given machine.
+#
+# Deliberately leaves $HERDR_ENV unset: worktrunk's post-switch hook
+# (herdr-worktree-workspace) checks it and no-ops otherwise, so `wt switch`
+# below registers nothing on its own and this script's own `herdr worktree
+# open` call is the sole, unraced writer of the workspace label. Setting it
+# would reintroduce the race gh-dash's "W" keybinding needed a sleep to work
+# around, for no benefit here.
+#
+# Extends, rather than trusts, cron's PATH: cron gives jobs a minimal one
+# (often just /usr/bin:/bin) that wouldn't find gh/jq/wt/herdr, and crontab
+# NAME=value lines don't expand $HOME, so that couldn't be fixed there —
+# this covers Homebrew on both platforms, cargo, and ~/.local/bin.
+#
+# `gh` normally reads its token from the OS keychain/keyring, which is only
+# unlocked inside a logged-in session — cron runs outside one, so that
+# lookup 401s (confirmed live: the real cron-triggered run got exactly that
+# from the GitHub API). `gh` checks $GH_TOKEN before the keychain, so
+# TOKEN_FILE — created once by hand with
+# `gh auth token > ~/.config/gh-review-watch/token && chmod 600 …` and never
+# committed anywhere — sidesteps the lookup entirely. Left unset if the file
+# doesn't exist, so this is a no-op on a machine where `gh` doesn't need it
+# (e.g. Linux with a plaintext credential file already).
+#
+# `wt switch pr:N` still needs its own `git fetch` of the PR branch, which
+# authenticates through git's OWN credential helper — `osxkeychain` here —
+# hitting the identical session-less problem a second time, just one layer
+# lower. Routing that fetch through `gh auth git-credential` instead reuses
+# the same $GH_TOKEN, without touching the machine's actual git config (this
+# override is scoped to this process's environment only).
+
+set -uo pipefail
+
+export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+TOKEN_FILE="$HOME/.config/gh-review-watch/token"
+[[ -z ${GH_TOKEN:-} && -f $TOKEN_FILE ]] && export GH_TOKEN="$(<"$TOKEN_FILE")"
+
+export GIT_CONFIG_COUNT=1
+export GIT_CONFIG_KEY_0="credential.helper"
+export GIT_CONFIG_VALUE_0="!gh auth git-credential"
+
+CODE_DIR="$HOME/code"
+
+prs=$(gh search prs --review-requested=@me --state=open --draft=false \
+  --json number,title,repository 2>/dev/null) || exit 0
+
+[[ -z $prs || $prs == "[]" ]] && exit 0
+
+echo "$prs" | jq -c '.[]' | while IFS= read -r pr; do
+  repo=$(jq -r .repository.nameWithOwner <<<"$pr")
+  number=$(jq -r .number <<<"$pr")
+
+  repo_path="$CODE_DIR/$repo"
+  [[ -d $repo_path/.git ]] || continue
+
+  result=$(wt -C "$repo_path" switch "pr:$number" --no-cd --yes --format=json 2>/dev/null) || continue
+  [[ $(jq -r .action <<<"$result") == created ]] || continue
+
+  path=$(jq -r .path <<<"$result")
+  branch=$(jq -r .branch <<<"$result")
+  [[ -z $path || $path == null ]] && continue
+
+  root_ws=$(herdr worktree list --cwd "$path" --json 2>/dev/null \
+    | jq -r '.result.source.source_workspace_id // empty')
+  [[ -n $root_ws ]] && herdr worktree open --workspace "$root_ws" --path "$path" \
+    --label "pr-$number · $branch" --no-focus --json >/dev/null 2>&1
+
+  title=$(jq -r .title <<<"$pr")
+  herdr notification show "Review richiesta: PR #$number" \
+    --body "$repo — $title" --sound request >/dev/null 2>&1
+done

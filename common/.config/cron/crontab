@@ -1,0 +1,10 @@
+# Managed by dotfiles (common/.config/cron/crontab).
+#
+# Installed verbatim by `crontab` on every `bin/post-install` run — this
+# REPLACES the whole crontab, so add jobs here rather than via `crontab -e`,
+# or they'll be gone on the next setup run.
+#
+# No PATH= line here: crontab NAME=value assignments are literal, they don't
+# expand $HOME, so gh-review-watch sets its own PATH instead.
+
+*/15 * * * * $HOME/.bin/gh-review-watch >/dev/null 2>&1

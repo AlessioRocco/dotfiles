@@ -62,7 +62,7 @@ description = "navigate right (vim/herdr)"
 [[keys.command]]
 key = "prefix+shift+g"
 type = "popup"
-command = 'lazygit --path "$(herdr-worktree-current)"'
+command = 'cd "$(herdr-worktree-current)" 2>/dev/null; exec lazygit'
 width = "90%"
 height = "90%"
 description = "Git: lazygit on the current worktree"

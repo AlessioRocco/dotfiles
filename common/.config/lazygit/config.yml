@@ -37,9 +37,9 @@ git:
       pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 customCommands:
   - key: "n"
-    command: 'wt -C "{{.SelectedWorktree.Path}}" switch --create --no-cd --base @ "{{index .PromptResponses 0}}"'
+    command: 'wt -C "{{.SelectedWorktree.Path}}" switch --create --no-cd --base @ "{{index .PromptResponses 0}}"; and kill (ps -o ppid= -p %self | string trim)'
     context: "worktrees"
-    description: "Worktrunk: create worktree from selected"
+    description: "Worktrunk: create worktree from selected, closing this popup"
     output: terminal
     prompts:
       - type: input

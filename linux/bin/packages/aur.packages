@@ -5,7 +5,6 @@ catppuccin-cursors-macchiato
 
 # Development
 docker-language-server
-heroku-cli-bin
 claude-code
 herdr-bin
 hunk-bin

@@ -17,7 +17,7 @@ udiskie
 # Terminal utilities and programs
 fish
 tmux
-sesh
+sesh-bin
 bat
 fd
 ripgrep
@@ -47,7 +47,7 @@ gnupg
 opencode
 television
 tree-sitter-cli
-universal-ctags
+ctags
 
 # Language servers and formatters
 lua-language-server

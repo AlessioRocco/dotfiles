@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Dotfiles setup orchestrator (macOS + Linux).
 #
@@ -80,7 +80,7 @@ ensure_stow
 
 # 3. Stow the shared package.
 fancy_echo "Stowing 'common' ..."
-stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow common
+stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --adopt --restow common
 
 # 4. Stow the OS-specific package and run its setup script.
 #    The OS script installs packages (Homebrew bundle, apt, etc.), so it runs
@@ -90,12 +90,12 @@ stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow common
 case "$OS" in
 Darwin)
   fancy_echo "Stowing 'macos' ..."
-  stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow macos
+  stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --adopt --restow macos
   . "$DOTFILES_DIR/macos/bin/setup"
   ;;
 Linux)
   fancy_echo "Stowing 'linux' ..."
-  stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --restow linux
+  stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --adopt --restow linux
   . "$DOTFILES_DIR/linux/bin/setup"
   ;;
 *)

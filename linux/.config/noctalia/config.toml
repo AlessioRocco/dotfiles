@@ -144,9 +144,14 @@ keyboard_layout = false
 media = false
 wifi = true
 
+[keybinds]
+down = [ "Down", "Ctrl+n" ]
+up = [ "Up", "Ctrl+p" ]
+
 [plugin_settings."noctalia/screen_recorder"]
 color_range = "full"
 copy_to_clipboard = true
+video_source = "focused"
 
 [plugins]
 enabled = [ "noctalia/screen_recorder" ]
@@ -213,7 +218,7 @@ wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "hyprland", "qt", "wezterm" ]
-    community_ids = [ "vicinae", "telegram", "yazi" ]
+    community_ids = [ "telegram", "yazi" ]
     enable_builtin_templates = true
     enable_community_templates = true
 

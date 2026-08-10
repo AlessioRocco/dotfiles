@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# focus-or-launch CLASS CMD [ARGS...]
+# Focus the first window matching CLASS, or launch CMD if none is found.
+
+CLASS="$1"
+shift
+
+if hyprctl clients -j 2>/dev/null | grep -qF "\"class\": \"${CLASS}\""; then
+    hyprctl dispatch "hl.dsp.focus{window=hl.get_windows({class='${CLASS}'})[1]}"
+else
+    runapp "$@"
+fi

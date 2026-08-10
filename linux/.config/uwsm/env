@@ -1,0 +1,17 @@
+export PATH="$HOME/.local/bin:$PATH"
+
+export XCURSOR_SIZE=24
+export XCURSOR_THEME=catppuccin-macchiato-lavender-cursors
+export HYPRCURSOR_SIZE=24
+export HYPRCURSOR_THEME=catppuccin-macchiato-lavender-cursors
+
+export QT_QPA_PLATFORMTHEME=hyprqt6engine
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+
+export GDK_BACKEND=wayland
+export QT_QPA_PLATFORM=wayland;xcb
+export SDL_VIDEODRIVER=wayland
+export CLUTTER_BACKEND=wayland
+
+export UWSM_MANAGED=1

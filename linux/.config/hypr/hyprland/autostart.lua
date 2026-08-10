@@ -6,7 +6,12 @@ hl.on('hyprland.start', function()
   hl.exec_cmd 'sleep 1 && dbus-update-activation-environment --systemd --all'
   hl.exec_cmd 'gnome-keyring-daemon --start --components=secrets'
 
-  hl.exec_cmd 'runapp noctalia'
+  hl.exec_cmd 'waybar'
+  hl.exec_cmd 'mako'
+  hl.exec_cmd 'hyprpaper'
+  hl.exec_cmd 'hypridle'
+  hl.exec_cmd 'hyprsunset -t 4000'
+  hl.exec_cmd 'systemctl --user start hyprpolkitagent'
 
   if os.getenv 'UWSM_MANAGED' ~= '1' then
     hl.exec_cmd 'udiskie'

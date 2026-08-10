@@ -1,7 +1,7 @@
 font: GeistMono Nerd Font Mono 12
-background: "#1e1e2e"
-color: "#ffffff"
-border: "#b4befe"
+background: "#24273a"
+color: "#cad3f5"
+border: "#b7bdf8"
 padding: 12
 border_width: 1
 corner_r: 8
@@ -13,7 +13,22 @@ margin_bottom: 12
 menu:
   - key: "p"
     desc: Power
-    cmd: system-action session menu-toggle
+    submenu:
+      - key: "l"
+        desc: Lock
+        cmd: system-action session lock
+      - key: "u"
+        desc: Suspend
+        cmd: system-action session suspend
+      - key: "r"
+        desc: Reboot
+        cmd: system-action session reboot
+      - key: "s"
+        desc: Shutdown
+        cmd: system-action session shutdown
+      - key: "o"
+        desc: Logout
+        cmd: loginctl terminate-user $USER
   - key: "a"
     desc: Apps
     submenu:
@@ -53,9 +68,6 @@ menu:
   - key: "t"
     desc: Tools
     submenu:
-      - key: "w"
-        desc: Emoji Selector
-        cmd: vicinae vicinae://extensions/vicinae/core/search-emojis
       - key: "e"
         desc: File Manager
         cmd: quick_terminal yazi
@@ -65,6 +77,39 @@ menu:
       - key: "s"
         desc: Systemd Services
         cmd: quick_terminal systemctl-tui -s user
+      - key: "a"
+        desc: Audio Mixer
+        cmd: quick_terminal pulsemixer
+      - key: "b"
+        desc: Bluetooth
+        cmd: quick_terminal bluetui
+      - key: "n"
+        desc: Network
+        submenu:
+          - key: "w"
+            desc: WiFi (impala)
+            cmd: quick_terminal impala
+          - key: "n"
+            desc: Connection Editor
+            cmd: nm-connection-editor
+      - key: "i"
+        desc: Toggle Idle
+        cmd: system-action idle toggle
+      - key: "r"
+        desc: Power Profile
+        submenu:
+          - key: "p"
+            desc: Performance
+            cmd: powerprofilesctl set performance
+          - key: "b"
+            desc: Balanced
+            cmd: powerprofilesctl set balanced
+          - key: "s"
+            desc: Power Saver
+            cmd: powerprofilesctl set power-saver
+      - key: "w"
+        desc: Emoji Selector
+        cmd: vicinae vicinae://extensions/vicinae/core/search-emojis
   - key: "s"
     desc: Screenshot
     submenu:
@@ -76,7 +121,7 @@ menu:
         cmd: system-action screenshot region
       - key: "w"
         desc: Pick Monitor
-        cmd: noctalia msg screenshot-fullscreen pick
+        cmd: screenshot fullscreen
   - key: "r"
     desc: Record Screen
     submenu:
@@ -90,14 +135,11 @@ menu:
     desc: Notifications
     submenu:
       - key: "c"
-        desc: Clear Active
+        desc: Clear All
         cmd: system-action notifications clear-active
-      - key: "x"
-        desc: Clear History
-        cmd: system-action notifications clear-history
-      - key: "h"
-        desc: Show History
-        cmd: system-action notifications show-history
       - key: "d"
-        desc: Toggle Do Not Disturb
+        desc: Toggle DND
         cmd: system-action notifications toggle-dnd
+      - key: "i"
+        desc: Toggle Idle
+        cmd: system-action idle toggle

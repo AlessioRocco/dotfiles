@@ -8,6 +8,11 @@ hl.config {
 
     border_size = 1,
 
+    col = {
+      active_border = 'rgba(b7bdf8ff)',
+      inactive_border = 'rgba(24273aff)',
+    },
+
     resize_on_border = true,
 
     allow_tearing = false,

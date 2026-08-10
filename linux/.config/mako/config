@@ -1,0 +1,19 @@
+max-history=20
+
+on-button-left=invoke-default-action
+on-button-right=dismiss
+on-button-middle=dismiss-all
+
+font=GeistMono Nerd Font Mono 10
+background-color=#24273a
+text-color=#cad3f5
+border-size=1
+border-color=#b7bdf8
+border-radius=8
+progress-color=over #363a4f
+
+format=<b>%s</b> - <i>%a</i>\n\n%b
+default-timeout=5000
+
+[urgency=high]
+border-color=#f5a97f

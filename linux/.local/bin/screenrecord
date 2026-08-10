@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+case "${1-}" in
+  --stop-recording) pkill -SIGINT gpu-screen-recorder ;;
+  *) gpu-screen-recorder -w screen -f 60 -a default \
+       -o ~/Videos/recording-$(date +%Y-%m-%d_%H-%M-%S).mp4 & ;;
+esac

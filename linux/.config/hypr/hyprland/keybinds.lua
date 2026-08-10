@@ -81,7 +81,7 @@ bindm('SHIFT + SPACE', run_app '1password --quick-access', 'Toggle 1Password')
 bindm('Y', exec 'vicinae vicinae://extensions/vicinae/clipboard/history', 'Toggle Clipboard History')
 bindm('O', exec 'wlr-which-key', 'Which Key')
 
-bindm('ESCAPE', system_action 'session menu-toggle', 'Power Menu')
+bindm('ESCAPE', exec 'wlr-which-key --initial-keys p', 'Power Menu')
 
 --------------------- Screenshot ---------------------
 bindm('PRINT', exec 'wlr-which-key --initial-keys s', 'Screenshot')

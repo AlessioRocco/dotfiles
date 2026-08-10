@@ -81,6 +81,7 @@ hl.window_rule {
   },
 }
 
+
 hl.window_rule {
   name = 'picture-in-picture-meet',
   match = {

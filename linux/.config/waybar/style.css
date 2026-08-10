@@ -1,0 +1,87 @@
+@import url("themes/catppuccin-macchiato.css");
+
+* {
+  font-family: "GeistMono Nerd Font", "Symbols Nerd Font";
+  font-size: 11pt;
+  font-weight: 500;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  transition-property: background-color, color;
+  transition-duration: 0.3s;
+}
+
+window#waybar {
+  background: transparent;
+  color: @text;
+}
+
+/* ─── Pill base ─────────────────────────────────────────────── */
+
+#clock,
+#wireplumber,
+#connectivity,
+#power {
+  background-color: @crust;
+  border-radius: 50px;
+  padding: 4px 14px;
+  margin: 5px 3px;
+  color: @text;
+  border: 1px solid @surface0;
+}
+
+#connectivity #bluetooth,
+#connectivity #network {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 6px;
+}
+
+#power #battery,
+#power #power-profiles-daemon,
+#power #idle_inhibitor {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#power #power-profiles-daemon {
+  padding-right: 4px;
+}
+
+/* ─── Module accent colors ───────────────────────────────────── */
+
+#clock                              { color: @lavender; }
+#wireplumber                        { color: @teal; }
+#wireplumber.muted                  { color: @overlay1; }
+
+#connectivity #bluetooth            { color: @blue; }
+#connectivity #bluetooth.off,
+#connectivity #bluetooth.disabled   { color: @overlay1; }
+#connectivity #network              { color: @sky; }
+#connectivity #network.disconnected { color: @overlay1; }
+
+#power #idle_inhibitor              { color: @overlay1; }
+#power #idle_inhibitor.activated    { color: @yellow; }
+#power #battery                     { color: @sapphire; }
+#power #battery.charging,
+#power #battery.plugged             { color: @green; }
+#power #battery.warning:not(.charging) { color: @yellow; }
+#power #battery.critical:not(.charging) {
+  color: @red;
+  animation: blink 0.5s linear infinite alternate;
+}
+#power #power-profiles-daemon       { color: @peach; }
+
+/* ─── Animations ─────────────────────────────────────────────── */
+
+@keyframes blink {
+  to {
+    background-color: @surface0;
+    color: @red;
+  }
+}

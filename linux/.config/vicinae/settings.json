@@ -15,11 +15,6 @@
          "family": "Adwaita Sans"
       }
    },
-   "theme": {
-      "dark": {
-         "name": "noctalia"
-      }
-   },
    "telemetry": {
       "system_info": false
    },

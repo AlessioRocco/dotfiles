@@ -1,0 +1,104 @@
+{
+  "layer": "top",
+  "position": "top",
+  "margin-top": 8,
+  "margin-bottom": 0,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 8,
+  "modules-left": [],
+  "modules-center": [],
+  "modules-right": [
+    "group/connectivity",
+    "wireplumber",
+    "group/power",
+    "clock"
+  ],
+  "group/connectivity": {
+    "orientation": "inherit",
+    "modules": ["bluetooth", "network"]
+  },
+  "bluetooth": {
+    "format": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱 {device_alias}",
+    "tooltip-format": "{controller_alias}\n{num_connections} connessi",
+    "tooltip-format-connected": "{controller_alias}\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "  {device_alias}",
+    "on-click": "quick_terminal bluetui"
+  },
+  "network": {
+    "interval": 10,
+    "format-wifi": "{icon} {signalStrength}%",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤭",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "tooltip-format-wifi": "SSID: {essid}\nSegnale: {signalStrength}%\nIP: {ipaddr}",
+    "tooltip-format-ethernet": "IP: {ipaddr}",
+    "on-click": "quick_terminal impala"
+  },
+  "wireplumber": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟",
+    "format-icons": ["󰕿", "󰖀", "󰕾"],
+    "on-click": "pavucontrol",
+    "on-click-right": "system-action volume mute",
+    "on-scroll-up": "system-action volume up",
+    "on-scroll-down": "system-action volume down",
+    "max-volume": 100
+  },
+  "group/power": {
+    "orientation": "inherit",
+    "modules": ["battery", "power-profiles-daemon", "idle_inhibitor"]
+  },
+  "power-profiles-daemon": {
+    "format": " {icon}",
+    "tooltip-format": "{profile}",
+    "format-icons": {
+      "default": "󰈐",
+      "balanced": "󰈐",
+      "power-saver": "󰌪",
+      "performance": "󱐋"
+    }
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰒳",
+      "deactivated": "󰒲"
+    },
+    "tooltip-format-activated": "Idle inibito",
+    "tooltip-format-deactivated": "Idle attivo",
+    "signal": 8
+  },
+  "battery": {
+    "bat": "BAT1",
+    "interval": 60,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "tooltip-format": "{timeTo}"
+  },
+  "clock": {
+    "interval": 60,
+    "format": "󰃭 {:%a %d %b %H:%M}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#eebebe'><b>{}</b></span>",
+        "days": "<span color='#ffe6ff'><b>{}</b></span>",
+        "weeks": "<span color='#c6a0f6'><b>W{}</b></span>",
+        "weekdays": "<span color='#eebebe'><b>{}</b></span>",
+        "today": "<span color='#ed8796'><b><u>{}</u></b></span>"
+      }
+    }
+  }
+}

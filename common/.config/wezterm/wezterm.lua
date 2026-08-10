@@ -4,7 +4,7 @@ local mux = wezterm.mux
 local config = wezterm.config_builder()
 
 -- Color scheme
-config.color_scheme = "Noctalia"
+config.color_scheme = "Catppuccin Macchiato"
 
 -- Font
 config.font_size = 16

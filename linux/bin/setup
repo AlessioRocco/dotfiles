@@ -52,6 +52,7 @@ install_packages "$SCRIPT_DIR/packages/base.packages"
 
 fancy_echo "Installing GUI packages ..."
 install_packages "$SCRIPT_DIR/packages/gui.packages"
+fc-cache -f
 
 fancy_echo "Installing AUR packages ..."
 install_packages "$SCRIPT_DIR/packages/aur.packages"
@@ -63,12 +64,39 @@ sudo groupadd plugdev 2>/dev/null || true
 sudo usermod -aG plugdev "$USER"
 sudo udevadm control --reload-rules
 
-# Install greetd config.
-fancy_echo "Setting up greetd ..."
-sudo ln -sf "$SCRIPT_DIR/greetd.toml" /etc/greetd/config.toml
-sudo cp "$SCRIPT_DIR/greetd-pam" /etc/pam.d/greetd
-sudo systemctl disable --now sddm.service 2>/dev/null || true
-sudo systemctl enable greetd.service
+# Install SDDM config and Catppuccin theme.
+fancy_echo "Setting up SDDM ..."
+sudo mkdir -p /etc/sddm.conf.d
+
+SDDM_THEME_URL="https://github.com/catppuccin/sddm/releases/download/v1.1.2/catppuccin-macchiato-lavender-sddm.zip"
+SDDM_THEMES_DIR="/usr/share/sddm/themes"
+SDDM_THEME_NAME="catppuccin-macchiato-lavender"
+
+if [[ ! -d "$SDDM_THEMES_DIR/$SDDM_THEME_NAME" ]]; then
+  fancy_echo "Downloading Catppuccin SDDM theme ..."
+  TMP_SDDM=$(mktemp -d)
+  trap 'rm -rf "$TMP_SDDM"' EXIT
+  curl -L "$SDDM_THEME_URL" -o "$TMP_SDDM/theme.zip"
+  unzip -q "$TMP_SDDM/theme.zip" -d "$TMP_SDDM"
+  THEME_DIR=$(find "$TMP_SDDM" -mindepth 1 -maxdepth 1 -type d | head -n 1)
+  sudo mv "$THEME_DIR" "$SDDM_THEMES_DIR/$SDDM_THEME_NAME"
+fi
+
+sudo tee /etc/sddm.conf.d/hyprland.conf > /dev/null <<'EOF'
+[General]
+DefaultSession=hyprland-uwsm.desktop
+
+[Theme]
+Current=catppuccin-macchiato-lavender
+
+[Wayland]
+EnableHiDPI=true
+
+[X11]
+EnableHiDPI=true
+EOF
+sudo systemctl disable --now greetd.service 2>/dev/null || true
+sudo systemctl enable sddm.service
 
 # Set system locale to English.
 fancy_echo "Setting system locale to English ..."

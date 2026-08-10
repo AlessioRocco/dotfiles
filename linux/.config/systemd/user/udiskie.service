@@ -1,0 +1,9 @@
+[Unit]
+Description=Automounter for removable media
+
+[Service]
+ExecStart=udiskie -s -c "$HOME/.config/udiskie/config.yml"
+Type=simple
+
+[Install]
+WantedBy=graphical-session.target

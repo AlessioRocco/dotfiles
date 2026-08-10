@@ -1,0 +1,6 @@
+program_options:
+  tray: auto
+  menu: nested
+  automount: true
+  notify: true
+  file_manager: xdg-open

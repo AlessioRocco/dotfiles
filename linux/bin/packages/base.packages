@@ -49,6 +49,7 @@ television
 tree-sitter-cli
 ctags
 worktrunk
+aws-cli-v2
 
 # Language servers and formatters
 lua-language-server

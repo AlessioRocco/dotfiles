@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+cmd="$1"
+class="quick_terminal_${cmd//[^a-zA-Z0-9]/_}"
+
+window=$(hyprctl clients -j | jq -c --arg class "$class" '.[] | select(.class == $class)' | head -1)
+
+if [[ -n "$window" ]]; then
+  hidden=$(echo "$window" | jq -r '.hidden')
+  workspace_name=$(echo "$window" | jq -r '.workspace.name')
+
+  if [[ "$hidden" == "true" && "$workspace_name" == special:* ]]; then
+    hyprctl dispatch togglespecialworkspace "${workspace_name#special:}"
+  else
+    address=$(echo "$window" | jq -r '.address')
+    hyprctl dispatch focuswindow "address:$address"
+  fi
+else
+  runapp wezterm start --class "$class" "$@"
+fi

@@ -20,6 +20,10 @@
 # | system-action panel-toggle settings       | noctalia msg settings-toggle                                    | N/A                                                             |
 # | system-action panel-toggle wallpaper      | noctalia msg panel-toggle wallpaper                             | N/A                                                             |
 # | system-action panel-toggle control-center | noctalia msg panel-toggle control-center                       | N/A                                                             |
+# | system-action panel-open network          | noctalia msg panel-open control-center network                 | N/A                                                             |
+# | system-action panel-open bluetooth        | noctalia msg panel-open control-center bluetooth               | N/A                                                             |
+# | system-action wifi toggle                 | noctalia msg wifi-toggle                                       | N/A                                                             |
+# | system-action bluetooth toggle            | noctalia msg bluetooth-toggle                                  | N/A                                                             |
 # | system-action wallpaper random            | noctalia msg wallpaper-random                                   | N/A                                                             |
 # | system-action wallpaper set <path>        | noctalia msg wallpaper-set <path>                              | N/A                                                             |
 # | system-action session menu-toggle         | noctalia msg panel-toggle session                              | wleave                                                          |
@@ -39,6 +43,10 @@
 # | system-action screenshot fullscreen       | noctalia msg screenshot-fullscreen                            | screenshot fullscreen                                           |
 # | system-action screenrecord start          | noctalia msg plugin noctalia/screen_recorder:service all start | screenrecord                                                    |
 # | system-action screenrecord stop           | noctalia msg plugin noctalia/screen_recorder:service all stop  | screenrecord --stop-recording                                   |
+# | system-action screenrecord toggle         | noctalia msg plugin noctalia/screen_recorder:service all toggle | N/A                                                            |
+# | system-action clipboard toggle            | noctalia msg panel-toggle clipboard                            | N/A                                                             |
+# | system-action nightlight toggle           | noctalia msg nightlight-toggle                                 | N/A                                                             |
+# | system-action power cycle                 | noctalia msg power-cycle                                       | N/A                                                             |
 
 SUBCOMMAND="${1-}"
 ACTION="${2-}"
@@ -59,12 +67,18 @@ Subcommands:
   idle          toggle
   dpms          on | off
   panel-toggle  settings | wallpaper | control-center
+  panel-open    network | bluetooth
+  wifi          toggle
+  bluetooth     toggle
   wallpaper     random | set <path>
   session       menu-toggle | lock | suspend | reboot | shutdown
   notifications clear-active | clear-history | show-history | toggle-dnd
   media         previous | toggle | stop | next
   screenshot    region | fullscreen
-  screenrecord  start | stop
+  screenrecord  start | stop | toggle
+  clipboard     toggle
+  nightlight    toggle
+  power         cycle
 EOF
   exit 1
 }
@@ -132,6 +146,35 @@ panel_toggle() {
     if noctalia_running; then noctalia msg panel-toggle control-center; fi ;;
   *)
     echo "Usage: system-action panel-toggle <settings|wallpaper|control-center>" >&2; exit 1 ;;
+  esac
+}
+
+panel_open() {
+  case "${ACTION}" in
+  network)
+    if noctalia_running; then noctalia msg panel-open control-center network; fi ;;
+  bluetooth)
+    if noctalia_running; then noctalia msg panel-open control-center bluetooth; fi ;;
+  *)
+    echo "Usage: system-action panel-open <network|bluetooth>" >&2; exit 1 ;;
+  esac
+}
+
+wifi() {
+  case "${ACTION}" in
+  toggle)
+    if noctalia_running; then noctalia msg wifi-toggle; fi ;;
+  *)
+    echo "Usage: system-action wifi <toggle>" >&2; exit 1 ;;
+  esac
+}
+
+bluetooth() {
+  case "${ACTION}" in
+  toggle)
+    if noctalia_running; then noctalia msg bluetooth-toggle; fi ;;
+  *)
+    echo "Usage: system-action bluetooth <toggle>" >&2; exit 1 ;;
   esac
 }
 
@@ -213,8 +256,37 @@ screenrecord_action() {
     if noctalia_running; then noctalia msg plugin noctalia/screen_recorder:service all start; else screenrecord; fi ;;
   stop)
     if noctalia_running; then noctalia msg plugin noctalia/screen_recorder:service all stop; else screenrecord --stop-recording; fi ;;
+  toggle)
+    if noctalia_running; then noctalia msg plugin noctalia/screen_recorder:service all toggle; fi ;;
   *)
-    echo "Usage: system-action screenrecord <start|stop>" >&2; exit 1 ;;
+    echo "Usage: system-action screenrecord <start|stop|toggle>" >&2; exit 1 ;;
+  esac
+}
+
+clipboard() {
+  case "${ACTION}" in
+  toggle)
+    if noctalia_running; then noctalia msg panel-toggle clipboard; fi ;;
+  *)
+    echo "Usage: system-action clipboard <toggle>" >&2; exit 1 ;;
+  esac
+}
+
+nightlight() {
+  case "${ACTION}" in
+  toggle)
+    if noctalia_running; then noctalia msg nightlight-toggle; fi ;;
+  *)
+    echo "Usage: system-action nightlight <toggle>" >&2; exit 1 ;;
+  esac
+}
+
+power() {
+  case "${ACTION}" in
+  cycle)
+    if noctalia_running; then noctalia msg power-cycle; fi ;;
+  *)
+    echo "Usage: system-action power <cycle>" >&2; exit 1 ;;
   esac
 }
 
@@ -225,11 +297,17 @@ brightness) brightness ;;
 idle) idle ;;
 dpms) dpms ;;
 panel-toggle) panel_toggle ;;
+panel-open) panel_open ;;
+wifi) wifi ;;
+bluetooth) bluetooth ;;
 wallpaper) wallpaper ;;
 session) session ;;
 notifications) notifications ;;
 media) media ;;
 screenshot) screenshot_action ;;
 screenrecord) screenrecord_action ;;
+clipboard) clipboard ;;
+nightlight) nightlight ;;
+power) power ;;
 *) usage ;;
 esac

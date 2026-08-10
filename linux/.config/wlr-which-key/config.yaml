@@ -19,43 +19,43 @@ menu:
     submenu:
       - key: "b"
         desc: Google Chrome
-        cmd: vicinae vicinae://launch/applications/google-chrome
+        cmd: focus-or-launch google-chrome google-chrome-stable
       - key: "t"
         desc: Telegram
-        cmd: runapp Telegram
+        cmd: focus-or-launch org.telegram.desktop telegram-desktop
       - key: "m"
         desc: Gmail
-        cmd: vicinae vicinae://launch/applications/chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1
+        cmd: focus-or-launch chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1 gtk-launch chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1
       - key: "c"
         desc: Calendar
-        cmd: vicinae vicinae://launch/applications/chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1
+        cmd: focus-or-launch chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1 gtk-launch chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1
       - key: "e"
         desc: Google Meet
-        cmd: vicinae vicinae://launch/applications/chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1
+        cmd: focus-or-launch chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1 gtk-launch chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1
       - key: "s"
         desc: Slack
-        cmd: vicinae vicinae://launch/applications/slack
+        cmd: focus-or-launch slack slack
       - key: "a"
         desc: Google Chat
-        cmd: vicinae vicinae://launch/applications/chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1
+        cmd: focus-or-launch chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1 gtk-launch chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1
       - key: "g"
         desc: GitHub
-        cmd: vicinae vicinae://launch/applications/chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1
+        cmd: focus-or-launch chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1 gtk-launch chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1
       - key: "j"
         desc: Jira
-        cmd: vicinae vicinae://launch/applications/chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1
+        cmd: focus-or-launch chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1 gtk-launch chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1
       - key: "u"
         desc: Spotify
-        cmd: vicinae vicinae://launch/applications/spotify
+        cmd: focus-or-launch Spotify spotify
       - key: "h"
         desc: Home Assistant
-        cmd: vicinae vicinae://launch/applications/chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default
+        cmd: focus-or-launch chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default gtk-launch chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default
   - key: "t"
     desc: Tools
     submenu:
-      - key: "w"
+      - key: "j"
         desc: Emoji Selector
-        cmd: vicinae vicinae://extensions/vicinae/core/search-emojis
+        cmd: noctalia msg panel-open launcher /emo
       - key: "e"
         desc: File Manager
         cmd: quick_terminal yazi
@@ -65,6 +65,22 @@ menu:
       - key: "s"
         desc: Systemd Services
         cmd: quick_terminal systemctl-tui -s user
+      - key: "n"
+        desc: Night Light
+        cmd: system-action nightlight toggle
+      - key: "w"
+        desc: Toggle WiFi
+        cmd: system-action wifi toggle
+      - key: "v"
+        desc: Toggle Bluetooth
+        cmd: system-action bluetooth toggle
+      - key: "c"
+        desc: Caffeine Toggle
+        cmd: system-action idle toggle
+      - key: "b"
+        desc: Power Profile Cycle
+        cmd: system-action power cycle
+        keep_open: true
   - key: "s"
     desc: Screenshot
     submenu:
@@ -78,14 +94,11 @@ menu:
         desc: Pick Monitor
         cmd: noctalia msg screenshot-fullscreen pick
   - key: "r"
-    desc: Record Screen
-    submenu:
-      - key: "r"
-        desc: Start Recording
-        cmd: system-action screenrecord start
-      - key: "s"
-        desc: Stop Recording
-        cmd: system-action screenrecord stop
+    desc: Toggle Recording
+    cmd: system-action screenrecord toggle
+  - key: "y"
+    desc: Clipboard History
+    cmd: system-action clipboard toggle
   - key: "n"
     desc: Notifications
     submenu:

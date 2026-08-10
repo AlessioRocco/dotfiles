@@ -23,7 +23,7 @@ set -xg XDG_CONFIG_HOME ~/.config
 ### Configurations
 
 # Theme
-fish_config theme choose catppuccin-macchiato
+fish_config theme choose --color-theme=dark catppuccin-macchiato
 
 # Add ~/.bin to the $PATH
 fish_add_path --move ~/.bin

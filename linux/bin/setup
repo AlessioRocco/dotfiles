@@ -79,7 +79,7 @@ xdg-user-dirs-update
 
 # Enable systemd user services.
 fancy_echo "Enabling systemd user services ..."
-for service in vicinae.service udiskie.service ssh-add.service hyprmoncfgd.service; do
+for service in udiskie.service ssh-add.service hyprmoncfgd.service; do
   if systemctl --user list-unit-files "$service" | grep -q "$service"; then
     systemctl --user enable "$service"
   else

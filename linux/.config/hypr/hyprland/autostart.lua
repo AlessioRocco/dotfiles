@@ -11,6 +11,6 @@ hl.on('hyprland.start', function()
   if os.getenv 'UWSM_MANAGED' ~= '1' then
     hl.exec_cmd 'udiskie'
     hl.exec_cmd '1password --silent'
-    hl.exec_cmd 'vicinae server'
+
   end
 end)

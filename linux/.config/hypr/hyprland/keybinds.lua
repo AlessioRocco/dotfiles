@@ -30,9 +30,6 @@ local function quick_terminal(command)
   end
 end
 
-local function vicinae_app(app)
-  return string.format('vicinae vicinae://launch/applications/%s', app)
-end
 
 local function bind(key, action, description)
   hl.bind(key, action, { description = description })
@@ -71,14 +68,14 @@ local function submap_bind(key, action, description)
 end
 
 --------------------- Programs ---------------------
-bindm('RETURN', exec(vicinae_app 'org.wezfurlong.wezterm'), 'Open Terminal')
-bindm('B', exec(vicinae_app 'google-chrome'), 'Open Browser')
+bindm('RETURN', exec 'focus-or-launch org.wezfurlong.wezterm wezterm', 'Open Terminal')
+bindm('B', exec 'focus-or-launch google-chrome google-chrome-stable', 'Open Browser')
 bindm('E', quick_terminal 'yazi', 'Open Terminal File Manager')
 
 --------------------- Launchers ---------------------
-bindm('SPACE', exec 'vicinae toggle', 'Toggle Launcher')
+bindm('SPACE', exec 'noctalia msg panel-toggle launcher', 'Toggle Launcher')
 bindm('SHIFT + SPACE', run_app '1password --quick-access', 'Toggle 1Password')
-bindm('Y', exec 'vicinae vicinae://extensions/vicinae/clipboard/history', 'Toggle Clipboard History')
+bindm('Y', system_action 'clipboard toggle', 'Toggle Clipboard History')
 bindm('O', exec 'wlr-which-key', 'Which Key')
 
 bindm('ESCAPE', system_action 'session menu-toggle', 'Power Menu')

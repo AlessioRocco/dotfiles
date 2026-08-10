@@ -1,20 +1,4 @@
 ---@diagnostic disable: undefined-global
-hl.layer_rule {
-  name = 'vicinae-blur',
-  match = {
-    namespace = 'vicinae',
-  },
-  blur = true,
-  ignore_alpha = 0,
-}
-
-hl.layer_rule {
-  name = 'no-animation',
-  match = {
-    namespace = 'vicinae',
-  },
-  no_anim = true,
-}
 
 hl.layer_rule {
   name = 'wlr-which-key',

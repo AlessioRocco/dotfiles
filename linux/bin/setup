@@ -1,12 +1,90 @@
-#!/bin/sh
+#!/bin/bash
 
 # Linux-specific setup.
 # Sourced by the top-level bin/setup orchestrator after `stow common linux`.
 # Assumes the dotfiles repo is already cloned and stowed, and inherits the
-# orchestrator's `set -e`, failure trap, and `fancy_echo`.
-#
-# Placeholder: a dedicated Linux provisioning script will go here.
-# Does not use Homebrew.
+# orchestrator's `set -e`, failure trap, `fancy_echo`, and DOTFILES_DIR.
 
-fancy_echo 'Linux setup is not implemented yet.'
-fancy_echo 'Add your Linux provisioning steps to linux/bin/setup.'
+SCRIPT_DIR="$DOTFILES_DIR/linux/bin"
+
+# Install the base packages needed to bootstrap paru.
+fancy_echo "Installing bootstrap packages ..."
+sudo pacman -Sq --needed --noconfirm \
+  base-devel \
+  git \
+  rustup
+
+# Install Rust stable toolchain.
+rustup update stable
+
+# Install Paru (AUR helper).
+if ! command -v paru &>/dev/null; then
+  fancy_echo "Installing paru ..."
+  PARU_TMP=$(mktemp -d)
+  git clone https://aur.archlinux.org/paru.git "$PARU_TMP/paru"
+  pushd "$PARU_TMP/paru"
+  makepkg -si -d
+  popd
+  rm -rf "$PARU_TMP"
+else
+  fancy_echo "paru already installed, skipping ..."
+fi
+
+# Install all packages listed in a .packages file with paru.
+# Comments (lines starting with #) and blank lines are ignored.
+install_packages() {
+  local file="$1"
+  local packages
+  mapfile -t packages < <(grep -v '^#' "$file" | grep -v '^$')
+
+  paru -S --needed --noconfirm "${packages[@]}" || exit 1
+
+  for pkg in "${packages[@]}"; do
+    if ! pacman -Q "$pkg" &>/dev/null; then
+      echo -e "\033[31mError: Package '$pkg' did not install\033[0m" >&2
+      exit 1
+    fi
+  done
+}
+
+fancy_echo "Installing base packages ..."
+install_packages "$SCRIPT_DIR/packages/base.packages"
+
+fancy_echo "Installing GUI packages ..."
+install_packages "$SCRIPT_DIR/packages/gui.packages"
+
+fancy_echo "Installing AUR packages ..."
+install_packages "$SCRIPT_DIR/packages/aur.packages"
+
+# Install ZSA udev rules for keyboard flashing (Planck EZ, Moonlander, Ergodox EZ).
+fancy_echo "Setting up ZSA udev rules ..."
+sudo cp "$SCRIPT_DIR/50-zsa.rules" /etc/udev/rules.d/50-zsa.rules
+sudo groupadd plugdev 2>/dev/null || true
+sudo usermod -aG plugdev "$USER"
+sudo udevadm control --reload-rules
+
+# Install greetd config.
+fancy_echo "Setting up greetd ..."
+sudo ln -sf "$SCRIPT_DIR/greetd.toml" /etc/greetd/config.toml
+sudo cp "$SCRIPT_DIR/greetd-pam" /etc/pam.d/greetd
+sudo systemctl disable --now sddm.service 2>/dev/null || true
+sudo systemctl enable greetd.service
+
+# Set system locale to English.
+fancy_echo "Setting system locale to English ..."
+sudo localectl set-locale LANG=en_US.UTF-8
+
+# Update XDG user directories.
+xdg-user-dirs-update
+
+# Enable systemd user services.
+fancy_echo "Enabling systemd user services ..."
+for service in vicinae.service udiskie.service ssh-add.service hyprmoncfgd.service; do
+  if systemctl --user list-unit-files "$service" | grep -q "$service"; then
+    systemctl --user enable "$service"
+  else
+    fancy_echo "Warning: $service not found, skipping ..."
+  fi
+done
+
+fancy_echo "Linux setup completed!"

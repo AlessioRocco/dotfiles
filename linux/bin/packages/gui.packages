@@ -1,0 +1,68 @@
+# GUI utils
+v4l-utils
+grim
+slurp
+satty
+gpu-screen-recorder
+brightnessctl
+bluez
+bluez-utils
+qt6-wayland
+gnome-keyring
+gvfs-mtp
+gvfs-nfs
+gvfs-smb
+fprintd
+xorg-xwayland
+
+# Fonts
+ttf-jetbrains-mono-nerd
+otf-geist-mono-nerd
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+adwaita-fonts
+
+# Audio
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+alsa-utils
+alsa-plugins
+
+# Media and codecs
+ffmpegthumbnailer
+gst-libav
+gst-plugins-bad
+gst-plugins-ugly
+gst-plugin-va
+gst-plugin-pipewire
+unrar
+
+# Theming
+adw-gtk-theme
+nwg-look
+
+# Window Manager and related tools
+greetd
+hyprland
+hyprshutdown
+hyprmoncfg
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+frameworkintegration
+
+# Printing
+cups
+system-config-printer
+
+# Applications
+wezterm
+imv
+mpv
+playerctl
+nautilus
+telegram-desktop
+evince
+libreoffice-fresh

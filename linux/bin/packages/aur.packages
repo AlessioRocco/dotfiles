@@ -1,0 +1,26 @@
+# Theming
+hyprqt6engine
+darkly
+catppuccin-cursors-macchiato
+
+# Development
+docker-language-server
+heroku-cli-bin
+claude-code
+aws-cli-v2
+
+# Desktop and shell
+# noctalia-git
+# noctalia-greeter-git
+runapp
+wlr-which-key
+vicinae-bin
+
+# Browsers
+google-chrome
+
+# Applications
+1password
+1password-cli
+slack-desktop
+spotify

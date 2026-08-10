@@ -1,0 +1,56 @@
+# Base utils
+git
+wget
+curl
+ffmpeg
+7zip
+resvg
+imagemagick
+chafa
+rsync
+xdg-user-dirs
+bash-completion
+plocate
+uwsm
+udiskie
+
+# Terminal utilities and programs
+fish
+tmux
+sesh
+bat
+fd
+ripgrep
+jq
+zoxide
+eza
+wl-clipboard
+stow
+lazygit
+lazydocker
+yazi
+btop
+dust
+unzip
+systemctl-tui
+
+# Editors
+neovim
+
+# Development
+docker
+docker-buildx
+docker-compose
+git-delta
+github-cli
+gnupg
+opencode
+television
+tree-sitter-cli
+universal-ctags
+
+# Language servers and formatters
+lua-language-server
+bash-language-server
+stylua
+shfmt

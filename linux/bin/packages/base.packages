@@ -16,8 +16,6 @@ udiskie
 
 # Terminal utilities and programs
 fish
-tmux
-sesh-bin
 bat
 fd
 ripgrep

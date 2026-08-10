@@ -48,6 +48,7 @@ opencode
 television
 tree-sitter-cli
 ctags
+worktrunk
 
 # Language servers and formatters
 lua-language-server

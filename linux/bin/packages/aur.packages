@@ -8,6 +8,8 @@ docker-language-server
 heroku-cli-bin
 claude-code
 aws-cli-v2
+herdr-bin
+hunk-bin
 
 # Desktop and shell
 # noctalia-git

@@ -1,0 +1,103 @@
+font: GeistMono Nerd Font Mono 12
+background: "#1e1e2e"
+color: "#ffffff"
+border: "#b4befe"
+padding: 12
+border_width: 1
+corner_r: 8
+
+anchor: bottom-right
+margin_right: 12
+margin_bottom: 12
+
+menu:
+  - key: "p"
+    desc: Power
+    cmd: system-action session menu-toggle
+  - key: "a"
+    desc: Apps
+    submenu:
+      - key: "b"
+        desc: Google Chrome
+        cmd: vicinae vicinae://launch/applications/google-chrome
+      - key: "t"
+        desc: Telegram
+        cmd: runapp Telegram
+      - key: "m"
+        desc: Gmail
+        cmd: vicinae vicinae://launch/applications/chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1
+      - key: "c"
+        desc: Calendar
+        cmd: vicinae vicinae://launch/applications/chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1
+      - key: "e"
+        desc: Google Meet
+        cmd: vicinae vicinae://launch/applications/chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1
+      - key: "s"
+        desc: Slack
+        cmd: vicinae vicinae://launch/applications/slack
+      - key: "a"
+        desc: Google Chat
+        cmd: vicinae vicinae://launch/applications/chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1
+      - key: "g"
+        desc: GitHub
+        cmd: vicinae vicinae://launch/applications/chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1
+      - key: "j"
+        desc: Jira
+        cmd: vicinae vicinae://launch/applications/chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1
+      - key: "u"
+        desc: Spotify
+        cmd: vicinae vicinae://launch/applications/spotify
+      - key: "h"
+        desc: Home Assistant
+        cmd: vicinae vicinae://launch/applications/chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default
+  - key: "t"
+    desc: Tools
+    submenu:
+      - key: "w"
+        desc: Emoji Selector
+        cmd: vicinae vicinae://extensions/vicinae/core/search-emojis
+      - key: "e"
+        desc: File Manager
+        cmd: quick_terminal yazi
+      - key: "p"
+        desc: Task Manager
+        cmd: quick_terminal btop
+      - key: "s"
+        desc: Systemd Services
+        cmd: quick_terminal systemctl-tui -s user
+  - key: "s"
+    desc: Screenshot
+    submenu:
+      - key: "f"
+        desc: Full Screen
+        cmd: system-action screenshot fullscreen
+      - key: "r"
+        desc: Region
+        cmd: system-action screenshot region
+      - key: "w"
+        desc: Pick Monitor
+        cmd: noctalia msg screenshot-fullscreen pick
+  - key: "r"
+    desc: Record Screen
+    submenu:
+      - key: "r"
+        desc: Start Recording
+        cmd: system-action screenrecord start
+      - key: "s"
+        desc: Stop Recording
+        cmd: system-action screenrecord stop
+  - key: "n"
+    desc: Notifications
+    submenu:
+      - key: "c"
+        desc: Clear Active
+        cmd: system-action notifications clear-active
+      - key: "x"
+        desc: Clear History
+        cmd: system-action notifications clear-history
+      - key: "h"
+        desc: Show History
+        cmd: system-action notifications show-history
+      - key: "d"
+        desc: Toggle Do Not Disturb
+        cmd: system-action notifications toggle-dnd

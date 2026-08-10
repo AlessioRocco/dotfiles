@@ -1,0 +1,9 @@
+[aliases]
+x = close
+
+[binds]
+<Ctrl+y> = exec wl-copy < "$imv_current_file"
+y = exec wl-copy "$imv_current_file"
+
+[options]
+background = 313244

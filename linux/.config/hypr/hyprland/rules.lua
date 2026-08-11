@@ -178,6 +178,20 @@ hl.window_rule {
 }
 
 hl.window_rule {
+  name = 'noctalia-settings-special',
+  match = {
+    class = 'dev.noctalia.Noctalia.Settings',
+  },
+  workspace = 'special:magic',
+  float = true,
+  size = {
+    'monitor_w*0.7',
+    'monitor_h*0.8',
+  },
+  center = true,
+}
+
+hl.window_rule {
   name = 'suppress-maximize-events',
   match = {
     class = '.*',

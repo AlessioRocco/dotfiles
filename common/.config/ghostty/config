@@ -1,0 +1,12 @@
+# Color scheme
+theme = noctalia
+
+# Font
+font-family = JetBrains Mono
+font-family = Symbols Nerd Font Mono
+font-size = 16
+
+# Window
+window-decoration = false
+window-padding-x = 0
+window-padding-y = 0

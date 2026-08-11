@@ -58,7 +58,7 @@ cups
 system-config-printer
 
 # Applications
-wezterm
+ghostty
 imv
 mpv
 playerctl

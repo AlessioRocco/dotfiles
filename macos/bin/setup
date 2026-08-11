@@ -95,7 +95,7 @@ cask "insomnia"
 cask "ngrok"
 cask "raycast"
 cask "spotify"
-cask "wezterm"
+cask "ghostty"
 
 # Image manipulation
 brew "imagemagick"

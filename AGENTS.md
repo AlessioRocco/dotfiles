@@ -24,13 +24,13 @@ Run `stow` from the repo root; `.stowrc` sets `--target=$HOME` and
 - `macos/`: macOS-only dotfiles + `macos/bin/setup` (Stow package).
 - `linux/`: Linux-only dotfiles + `linux/bin/setup` (Stow package).
 - `bin/setup`: OS-agnostic orchestrator (not symlinked).
-- `bin/post-install`: Shared fisher/tpm/theme install steps (not symlinked).
+- `bin/post-install`: Shared mise/theme install steps (not symlinked).
 - Repo files (`README.md`, `AGENTS.md`, `LICENSE`, `.gitignore`, `.agents/`,
   `agents.toml`): live at the root and are not symlinked.
 
 Each package mirrors `$HOME`. Example: `common/.config/fish/config.fish` links
 to `~/.config/fish/config.fish`. `--no-folding` keeps real directories with
-per-file symlinks so tools (fisher, mise, LazyVim) don't write into the repo.
+per-file symlinks so tools (mise, LazyVim) don't write into the repo.
 
 **This repo is public.** Anything that would be a problem for the world to read
 belongs in the private `dotfiles-private` repo, which is stowed the same way.

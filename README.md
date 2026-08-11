@@ -57,7 +57,7 @@ stow -n -v common    # dry-run (preview without changing anything)
 ```
 
 `--no-folding` keeps real directories with per-file symlinks, so tools that
-write into their config dirs (fisher, mise, LazyVim) don't write into the repo.
+write into their config dirs (mise, LazyVim) don't write into the repo.
 
 The private dotfiles are their own repo with a single `home` package: run
 `stow home` from `~/dotfiles-private` to re-link them.

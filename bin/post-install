@@ -1,8 +1,7 @@
 #!/bin/sh
 
 # Shared post-install steps for both macOS and Linux.
-# Installs Mise, creates the code folder, and installs/updates fish plugins
-# (fisher) and editor themes.
+# Installs Mise, creates the code folder, and installs editor themes.
 # Safe to re-run; sourced by the top-level bin/setup orchestrator.
 
 # Install or update Mise (https://mise.jdx.dev/getting-started.html).
@@ -19,24 +18,6 @@ CODE_DIR="$HOME/code"
 if [ ! -d "$CODE_DIR" ]; then
   fancy_echo "Creating code folder ..."
   mkdir "$CODE_DIR"
-fi
-
-# Resolve fish from PATH.
-FISH_BIN="$(command -v fish || true)"
-
-# Install or update fisher and the declared fish plugins.
-if [ -n "$FISH_BIN" ]; then
-  fancy_echo 'Installing/updating fisher and fish plugins ...'
-  "$FISH_BIN" -c '
-    if not functions -q fisher
-      set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-      curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
-      and fisher install jorgebucaran/fisher
-    end
-    fisher update
-  '
-else
-  fancy_echo 'fish not found; skipping fisher setup.'
 fi
 
 # Editor / pager themes (Catppuccin).

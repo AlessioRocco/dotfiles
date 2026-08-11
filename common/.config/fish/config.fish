@@ -62,6 +62,9 @@ abbr bi "bundle install"
 abbr bu "bundle update"
 abbr bo "bundle open"
 
+# Noctalia
+abbr noctalia-export "noctalia config export > ~/.config/noctalia/config.toml"
+
 ### Homebrew
 # Homebrew environment is set up per-OS in conf.d/os.fish.
 

@@ -55,7 +55,7 @@ hl.window_rule {
 hl.window_rule {
   name = 'quick-terminal',
   match = {
-    class = 'quick_terminal.*',
+    class = 'io.ghostty.quick.*',
   },
   float = true,
   workspace = 'special:magic',
@@ -116,7 +116,7 @@ hl.window_rule {
 hl.window_rule {
   name = 'workspace-1',
   match = {
-    class = '(org.wezfurlong.wezterm|google-chrome)',
+    class = '(com.mitchellh.ghostty|google-chrome)',
   },
   workspace = 1,
 }

@@ -9,12 +9,12 @@ hl.config {
 }
 
 local browser = 'google-chrome-stable'
-local terminal = 'wezterm'
+local terminal = 'ghostty'
 local file_manager = 'nautilus'
 local main_mod = 'SUPER'
 
 local function quick_terminal(command)
-  local class = 'quick_terminal_' .. command:gsub('[^%w]', '_')
+  local class = 'io.ghostty.quick.' .. command:gsub('[^%w]', '_')
   return function()
     local windows = hl.get_windows({ class = class })
     if #windows > 0 then
@@ -25,7 +25,7 @@ local function quick_terminal(command)
         hl.dispatch(hl.dsp.focus { window = windows[1] })
       end
     else
-      hl.dispatch(hl.dsp.exec_cmd(string.format('wezterm start --class %s "%s"', class, command)))
+      hl.dispatch(hl.dsp.exec_cmd(string.format('ghostty --class=%s -e %s', class, command)))
     end
   end
 end
@@ -68,7 +68,7 @@ local function submap_bind(key, action, description)
 end
 
 --------------------- Programs ---------------------
-bindm('RETURN', exec 'focus-or-launch org.wezfurlong.wezterm wezterm', 'Open Terminal')
+bindm('RETURN', exec 'focus-or-launch com.mitchellh.ghostty ghostty', 'Open Terminal')
 bindm('B', exec 'focus-or-launch google-chrome google-chrome-stable', 'Open Browser')
 bindm('E', quick_terminal 'yazi', 'Open Terminal File Manager')
 

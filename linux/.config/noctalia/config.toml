@@ -155,6 +155,11 @@ compact = true
 [shell.panel]
 launcher_position = "auto"
 
+[shell.screenshot]
+pipe_command = "satty -f -"
+pipe_to_command = true
+save_to_file = false
+
 [[shell.session.actions]]
 action = "lock"
 countdown_seconds = 0.0

@@ -37,6 +37,7 @@ systemctl-tui
 neovim
 
 # Development
+mise
 docker
 docker-buildx
 docker-compose

@@ -56,6 +56,11 @@ install_packages "$SCRIPT_DIR/packages/gui.packages"
 fancy_echo "Installing AUR packages ..."
 install_packages "$SCRIPT_DIR/packages/aur.packages"
 
+# Install tools declared in the global mise config (~/.config/mise/config.toml),
+# which is already stowed by the time this script runs.
+fancy_echo "Installing mise tools ..."
+mise install
+
 # Install ZSA udev rules for keyboard flashing (Planck EZ, Moonlander, Ergodox EZ).
 fancy_echo "Setting up ZSA udev rules ..."
 sudo cp "$SCRIPT_DIR/50-zsa.rules" /etc/udev/rules.d/50-zsa.rules

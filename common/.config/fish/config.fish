@@ -93,3 +93,6 @@ if status is-interactive && set -q HERDR_ENV && set -q HERDR_TAB_ID
 
     _herdr_tab_name_idle
 end
+
+# Prompt
+starship init fish | source

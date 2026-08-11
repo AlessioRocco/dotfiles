@@ -16,6 +16,7 @@ udiskie
 
 # Terminal utilities and programs
 fish
+starship
 bat
 fd
 ripgrep

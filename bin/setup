@@ -8,8 +8,9 @@
 #   3. Symlink the shared `common` package into $HOME with Stow.
 #   4. Detect the OS, symlink the matching package (`macos`/`linux`) and source
 #      its OS-specific setup script.
-#   5. Clone dotfiles-private and run its own setup script.
-#   6. Run the shared post-install steps (bin/post-install).
+#   5. Authenticate GitHub CLI (gh auth login) so HTTPS clones work.
+#   6. Clone dotfiles-private and run its own setup script.
+#   7. Run the shared post-install steps (bin/post-install).
 #
 # Safe to re-run.
 
@@ -104,7 +105,18 @@ Linux)
   ;;
 esac
 
-# 5. Clone the private dotfiles and hand over to their own setup script, which
+# 5. Authenticate GitHub CLI so HTTPS clones (e.g. private skill repos) work.
+#    Must run after the OS setup, which installs gh and google-chrome.
+if gh auth status >/dev/null 2>&1; then
+  fancy_echo "gh already authenticated, configuring git credential helper ..."
+  gh auth setup-git
+else
+  fancy_echo "Authenticating GitHub CLI (browser will open) ..."
+  gh auth login --web
+  gh auth setup-git
+fi
+
+# 7. Clone the private dotfiles and hand over to their own setup script, which
 #    owns what happens to them (stow, agent skills). The clone needs an SSH key
 #    with access to the repo, so a failure here only warns: the public setup
 #    stays usable on a machine where the key is not there yet.
@@ -123,7 +135,7 @@ elif [ -d "$PRIVATE_DIR" ]; then
   fancy_echo "$PRIVATE_DIR has no executable bin/setup; skipping." >&2
 fi
 
-# 6. Shared post-install steps.
+# 8. Shared post-install steps.
 fancy_echo "Running post-install steps ..."
 . "$DOTFILES_DIR/bin/post-install"
 

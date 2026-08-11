@@ -8,8 +8,8 @@ prompt: enabled
 pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
-  sync: repo sync
-  co: pr checkout
-  prc: pr checks
-  pro: '!fish -c "gh pr view --web"'
+    sync: repo sync
+    co: pr checkout
+    prc: pr checks
+    pro: '!fish -c "gh pr view --web"'
 version: "1"

@@ -159,11 +159,11 @@ launcher_position = "auto"
 builtin = "Catppuccin"
 community_palette = "ADW"
 mode = "dark"
-source = "builtin"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "ghostty", "hyprland", "qt" ]
+    community_ids = [ "telegram", "yazi" ]
     enable_builtin_templates = true
     enable_community_templates = true
 

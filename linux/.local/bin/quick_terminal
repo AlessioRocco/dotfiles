@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cmd="$1"
-class="quick_terminal_${cmd//[^a-zA-Z0-9]/_}"
+class="io.ghostty.quick.${cmd//[^a-zA-Z0-9]/_}"
 
 window=$(hyprctl clients -j | jq -c --arg class "$class" '.[] | select(.class == $class)' | head -1)
 
@@ -16,5 +16,5 @@ if [[ -n "$window" ]]; then
     hyprctl dispatch focuswindow "address:$address"
   fi
 else
-  runapp wezterm start --class "$class" "$@"
+  runapp ghostty --class="$class" -e "$@"
 fi

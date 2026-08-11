@@ -1,0 +1,222 @@
+[bar.default]
+center = [ "taskbar", "privacy", "recorder_2" ]
+end = [ "group:g3", "group:g1", "group:g2", "nightlight", "volume", "notifications", "group:g4", "session" ]
+margin_edge = 5
+margin_ends = 5
+show_on_workspace_switch = false
+start = [ "control-center", "tray", "active_window" ]
+
+    [[bar.default.capsule_group]]
+    fill = "surface_variant"
+    id = "g1"
+    members = [ "network", "bluetooth" ]
+    opacity = 1.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    fill = "surface_variant"
+    id = "g2"
+    members = [ "battery", "power_profile", "caffeine" ]
+    opacity = 1.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    fill = "surface_variant"
+    id = "g3"
+    members = [ "network_rx", "network_tx", "cpu", "ram" ]
+    opacity = 1.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    fill = "surface_variant"
+    id = "g4"
+    members = [ "clock", "weather" ]
+    opacity = 1.0
+    padding = 6.0
+
+[calendar.account.nebulab]
+name = "Nebulab"
+type = "google"
+
+[dock]
+enabled = false
+
+[idle]
+behavior_order = [ "Reduce Brightness", "Keyboard Brightness", "lock", "screen-off", "lock-and-suspend" ]
+
+    [idle.behavior."Keyboard Brightness"]
+    action = "command"
+    command = "kbd_backlight 0"
+    enabled = true
+    timeout = 180.0
+
+    [idle.behavior."Reduce Brightness"]
+    action = "command"
+    command = "brightnessctl -s set 10"
+    enabled = true
+    resume_command = "brightnessctl -r"
+    timeout = 180.0
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 300.0
+
+    [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
+    enabled = true
+    timeout = 600.0
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 400.0
+
+[location]
+auto_locate = true
+
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-4", "lockscreen-login-box@eDP-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 1720.0
+    cy = 1321.0
+    output = "DP-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_login_button = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-4"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 1600.0
+    cy = 1681.0
+    output = "DP-4"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-4".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_login_button = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 960.0
+    cy = 1081.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_login_button = true
+
+[nightlight]
+enabled = true
+
+[osd.kinds]
+wifi = true
+
+[plugin_settings."noctalia/screen_recorder"]
+hide_inactive = true
+
+[plugins]
+enabled = [ "noctalia/screen_recorder" ]
+
+[shell.launcher]
+categories = false
+compact = true
+
+[shell.panel]
+launcher_position = "auto"
+
+[theme]
+builtin = "Catppuccin"
+community_palette = "ADW"
+mode = "dark"
+source = "builtin"
+wallpaper_scheme = "m3-content"
+
+    [theme.templates]
+    builtin_ids = [ "btop", "gtk3", "gtk4", "ghostty", "hyprland", "qt" ]
+    enable_builtin_templates = true
+    enable_community_templates = true
+
+[wallpaper.default]
+path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
+
+[wallpaper.last]
+path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
+
+[wallpaper.monitors.DP-1]
+path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
+
+[wallpaper.monitors.DP-4]
+path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
+
+[wallpaper.monitors.eDP-1]
+path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
+
+[[wallpaper.favorite]]
+builtin_palette = "Ayu"
+palette_source = "builtin"
+path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
+theme_mode = "dark"
+
+[widget.cpu]
+show_label = false
+
+[widget.network]
+show_label = false
+
+[widget.network_rx]
+show_label = false
+
+[widget.network_tx]
+show_label = false
+
+[widget.privacy]
+hide_inactive = true
+
+[widget.ram]
+show_label = false
+
+[widget.recorder_2]
+type = "noctalia/screen_recorder:recorder"
+
+[widget.taskbar]
+group_by_workspace = true
+group_single_icon_per_app = true
+hide_empty_workspaces = true
+workspace_label_placement = "inside"
+
+[widget.tray]
+drawer = true
+
+[widget.weather]
+show_condition = false

@@ -1,0 +1,123 @@
+{
+  "name": "office-wide",
+  "created_at": "2026-08-10T00:00:00.000000000Z",
+  "updated_at": "2026-08-10T00:00:00.000000000Z",
+  "outputs": [
+    {
+      "key": "xiaomi corporation|mi monitor|0000000000000",
+      "match_key": "xiaomi corporation|mi monitor|0000000000000",
+      "name": "DP-1",
+      "description": "Xiaomi Corporation Mi Monitor 0000000000000",
+      "make": "Xiaomi Corporation",
+      "model": "Mi Monitor",
+      "serial": "0000000000000",
+      "enabled": true,
+      "mode": "3440x1440@100.00Hz",
+      "width": 3440,
+      "height": 1440,
+      "refresh": 100,
+      "x": 1220,
+      "y": 0,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    },
+    {
+      "key": "boe|nv122wum-n42",
+      "match_key": "boe|nv122wum-n42",
+      "name": "eDP-1",
+      "description": "BOE NV122WUM-N42",
+      "make": "BOE",
+      "model": "NV122WUM-N42",
+      "enabled": true,
+      "mode": "1920x1200@60.00Hz",
+      "width": 1920,
+      "height": 1200,
+      "refresh": 60,
+      "x": -700,
+      "y": -400,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    }
+  ],
+  "workspaces": {
+    "enabled": true,
+    "strategy": "sequential",
+    "max_workspaces": 10,
+    "group_size": 9,
+    "monitor_order": [
+      "xiaomi corporation|mi monitor|0000000000000",
+      "boe|nv122wum-n42"
+    ],
+    "rules": [
+      {
+        "workspace": "1",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1",
+        "default": true,
+        "persistent": true
+      },
+      {
+        "workspace": "2",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "3",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "4",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "5",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "6",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "7",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "8",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "9",
+        "output_key": "xiaomi corporation|mi monitor|0000000000000",
+        "output_name": "DP-1"
+      },
+      {
+        "workspace": "10",
+        "output_key": "boe|nv122wum-n42",
+        "output_name": "eDP-1",
+        "default": true,
+        "persistent": true
+      }
+    ]
+  },
+  "exec": ""
+}

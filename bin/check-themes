@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Check if tracked Catppuccin theme files are up to date with upstream.
+# Exits 0 even when files differ — warnings are informational only.
+
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+outdated=0
+
+check_theme() {
+  local_file="$1"
+  remote_url="$2"
+  tmp=$(mktemp)
+
+  if wget -q -O "$tmp" "$remote_url"; then
+    if ! diff -q "$local_file" "$tmp" >/dev/null 2>&1; then
+      echo "  WARNING: $(basename "$local_file") differs from upstream"
+      echo "    local:  $local_file"
+      echo "    remote: $remote_url"
+      outdated=1
+    fi
+  else
+    echo "  WARNING: could not fetch $(basename "$local_file") from upstream"
+    outdated=1
+  fi
+
+  rm -f "$tmp"
+}
+
+check_theme \
+  "$DOTFILES_DIR/common/.config/btop/themes/catppuccin_macchiato.theme" \
+  "https://github.com/catppuccin/btop/raw/main/themes/catppuccin_macchiato.theme"
+
+check_theme \
+  "$DOTFILES_DIR/common/.config/yazi/Catppuccin-macchiato.tmTheme" \
+  "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme"
+
+if [ "$outdated" -eq 0 ]; then
+  echo "  All theme files are up to date."
+fi

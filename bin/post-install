@@ -83,4 +83,7 @@ if command -v crontab >/dev/null 2>&1; then
   crontab "$HOME/.config/cron/crontab"
 fi
 
+fancy_echo 'Checking theme files against upstream ...'
+. "$DOTFILES_DIR/bin/check-themes"
+
 fancy_echo 'Post-install completed!'

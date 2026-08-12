@@ -27,6 +27,14 @@ check_theme() {
 }
 
 check_theme \
+  "$DOTFILES_DIR/common/.config/bat/themes/Catppuccin Macchiato.tmTheme" \
+  "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme"
+
+check_theme \
+  "$DOTFILES_DIR/common/.config/delta/themes/catppuccin.gitconfig" \
+  "https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig"
+
+check_theme \
   "$DOTFILES_DIR/common/.config/btop/themes/catppuccin_macchiato.theme" \
   "https://github.com/catppuccin/btop/raw/main/themes/catppuccin_macchiato.theme"
 

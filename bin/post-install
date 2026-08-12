@@ -24,19 +24,8 @@ fi
 fancy_echo 'Installing themes ...'
 mkdir -p ~/.config/delta/themes
 
-# Delta
-wget -N -P ~/.config/delta/themes \
-  https://github.com/catppuccin/delta/raw/main/catppuccin.gitconfig
-
 # Bat
 if command -v bat >/dev/null 2>&1; then
-  BAT_THEME_DIR="$(bat --config-dir)/themes"
-  mkdir -p "$BAT_THEME_DIR"
-  wget -N -P "$BAT_THEME_DIR" \
-    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Latte.tmTheme" \
-    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Frappe.tmTheme" \
-    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme" \
-    "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme"
   bat cache --build
 fi
 

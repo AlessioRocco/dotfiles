@@ -1,6 +1,6 @@
 onboarding = false
 [theme]
-name = "terminal"
+name = "catppuccin"
 auto_switch = false
 
 [ui.toast]

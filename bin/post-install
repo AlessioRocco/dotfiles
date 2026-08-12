@@ -40,6 +40,17 @@ if command -v bat >/dev/null 2>&1; then
   bat cache --build
 fi
 
+# Btop
+if command -v btop >/dev/null 2>&1; then
+  BTOP_CONF="$HOME/.config/btop/btop.conf"
+  mkdir -p "$(dirname "$BTOP_CONF")"
+  if [ -f "$BTOP_CONF" ]; then
+    sed -i 's/^color_theme = .*/color_theme = "catppuccin_macchiato"/' "$BTOP_CONF"
+  else
+    echo 'color_theme = "catppuccin_macchiato"' > "$BTOP_CONF"
+  fi
+fi
+
 # Change the default shell to fish if needed.
 update_shell() {
   shell_path="$(command -v fish)"

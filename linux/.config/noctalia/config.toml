@@ -204,7 +204,7 @@ wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "ghostty", "hyprland", "qt" ]
-    community_ids = [ "telegram", "yazi" ]
+    community_ids = [ "telegram" ]
     enable_builtin_templates = true
     enable_community_templates = true
 

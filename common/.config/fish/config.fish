@@ -20,6 +20,9 @@ set -xg BUNDLER_EDITOR $EDITOR
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 set -xg XDG_CONFIG_HOME ~/.config
 
+# Lazygit: load Catppuccin Macchiato theme alongside the main config
+set -xg LG_CONFIG_FILE $HOME/.config/lazygit/theme.yml,$HOME/.config/lazygit/config.yml
+
 ### Configurations
 
 # Theme

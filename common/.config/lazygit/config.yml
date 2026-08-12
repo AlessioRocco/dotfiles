@@ -1,7 +1,5 @@
 gui:
   nerdFontsVersion: "3"
-authorColors:
-  "*": "#b7bdf8"
 os:
   editPreset: "nvim-remote"
 git:

@@ -3,14 +3,14 @@
 # Dotfiles setup orchestrator (macOS + Linux).
 #
 # Responsibilities:
-#   1. Ensure the repo is cloned at ~/dotfiles.
-#   2. Ensure GNU Stow is installed.
-#   3. Symlink the shared `common` package into $HOME with Stow.
-#   4. Detect the OS, symlink the matching package (`macos`/`linux`) and source
-#      its OS-specific setup script.
-#   5. Authenticate GitHub CLI (gh auth login) so HTTPS clones work.
-#   6. Clone dotfiles-private and run its own setup script.
-#   7. Run the shared post-install steps (bin/post-install).
+#   - Ensure the repo is cloned at ~/dotfiles.
+#   - Ensure GNU Stow is installed.
+#   - Symlink the shared `common` package into $HOME with Stow.
+#   - Detect the OS, symlink the matching package (`macos`/`linux`) and source
+#     its OS-specific setup script.
+#   - Authenticate GitHub CLI (gh auth login) so HTTPS clones work.
+#   - Clone dotfiles-private and run its own setup script.
+#   - Run the shared post-install steps (bin/post-install).
 #
 # Safe to re-run.
 
@@ -31,7 +31,7 @@ DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/AlessioRocco/dotfiles}"
 PRIVATE_DIR="${PRIVATE_DIR:-$HOME/dotfiles-private}"
 PRIVATE_REPO="${PRIVATE_REPO:-git@github.com:AlessioRocco/dotfiles-private.git}"
 
-# 1. Clone the repo if it is not already present.
+# Clone the repo if it is not already present.
 if [ ! -d "$DOTFILES_DIR" ]; then
   fancy_echo "Cloning dotfiles into $DOTFILES_DIR ..."
   git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
@@ -39,7 +39,7 @@ fi
 
 OS="$(uname -s)"
 
-# 2. Ensure GNU Stow is available (needed before we can stow anything).
+# Ensure GNU Stow is available (needed before we can stow anything).
 ensure_stow() {
   if command -v stow >/dev/null 2>&1; then
     return
@@ -79,15 +79,15 @@ ensure_stow() {
 
 ensure_stow
 
-# 3. Stow the shared package.
+# Stow the shared package.
 fancy_echo "Stowing 'common' ..."
 stow --dir="$DOTFILES_DIR" --target="$HOME" --no-folding --adopt --restow common
 
-# 4. Stow the OS-specific package and run its setup script.
-#    The OS script installs packages (Homebrew bundle, apt, etc.), so it runs
-#    before the shared steps below that depend on those tools. It is sourced
-#    (not executed) so any environment it sets up (e.g. `brew shellenv`)
-#    persists for the shared steps.
+# Stow the OS-specific package and run its setup script.
+#   The OS script installs packages (Homebrew bundle, apt, etc.), so it runs
+#   before the shared steps below that depend on those tools. It is sourced
+#   (not executed) so any environment it sets up (e.g. `brew shellenv`)
+#   persists for the shared steps.
 case "$OS" in
 Darwin)
   fancy_echo "Stowing 'macos' ..."
@@ -105,21 +105,24 @@ Linux)
   ;;
 esac
 
-# 5. Authenticate GitHub CLI so HTTPS clones (e.g. private skill repos) work.
-#    Must run after the OS setup, which installs gh and google-chrome.
+# Authenticate GitHub CLI so HTTPS clones (e.g. private skill repos) work.
+#   Must run after the OS setup, which installs gh and google-chrome.
+#   The git credential helper itself is already wired up declaratively in
+#   common/.gitconfig (portable `!gh auth git-credential`, no absolute path)
+#   — do NOT run `gh auth setup-git` here, it rewrites that tracked, shared
+#   file with this machine's absolute `gh` binary path, which then conflicts
+#   with the same lines written on other machines (mac vs Linux paths).
 if gh auth status >/dev/null 2>&1; then
-  fancy_echo "gh already authenticated, configuring git credential helper ..."
-  gh auth setup-git
+  fancy_echo "gh already authenticated."
 else
   fancy_echo "Authenticating GitHub CLI (browser will open) ..."
   gh auth login --web
-  gh auth setup-git
 fi
 
-# 7. Clone the private dotfiles and hand over to their own setup script, which
-#    owns what happens to them (stow, agent skills). The clone needs an SSH key
-#    with access to the repo, so a failure here only warns: the public setup
-#    stays usable on a machine where the key is not there yet.
+# Clone the private dotfiles and hand over to their own setup script, which
+#   owns what happens to them (stow, agent skills). The clone needs an SSH key
+#   with access to the repo, so a failure here only warns: the public setup
+#   stays usable on a machine where the key is not there yet.
 if [ ! -d "$PRIVATE_DIR" ]; then
   fancy_echo "Cloning dotfiles-private into $PRIVATE_DIR ..."
   if ! git clone "$PRIVATE_REPO" "$PRIVATE_DIR"; then
@@ -135,7 +138,7 @@ elif [ -d "$PRIVATE_DIR" ]; then
   fancy_echo "$PRIVATE_DIR has no executable bin/setup; skipping." >&2
 fi
 
-# 8. Shared post-install steps.
+# Shared post-install steps.
 fancy_echo "Running post-install steps ..."
 . "$DOTFILES_DIR/bin/post-install"
 

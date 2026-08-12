@@ -49,6 +49,9 @@ alias eh "sudo vim /etc/hosts"
 # Kill process
 alias kp kill_process
 
+# Alessio's own nvim config (avim), as an alt profile to the default LazyVim
+alias avim "NVIM_APPNAME=avim nvim"
+
 ### Abbreviations
 
 # GitHub CLI

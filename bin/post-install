@@ -20,6 +20,28 @@ if [ ! -d "$CODE_DIR" ]; then
   mkdir "$CODE_DIR"
 fi
 
+# Clone Alessio's own nvim config (avim) and symlink it into ~/.config.
+NVIM_CONFIG_DIR="$HOME/code/AlessioRocco/nvim-config"
+if [ ! -d "$NVIM_CONFIG_DIR" ]; then
+  fancy_echo "Cloning nvim-config into $NVIM_CONFIG_DIR ..."
+  mkdir -p "$HOME/code/AlessioRocco"
+  git clone https://github.com/AlessioRocco/nvim-config "$NVIM_CONFIG_DIR"
+fi
+
+AVIM_LINK="$HOME/.config/avim"
+if [ -L "$AVIM_LINK" ]; then
+  if [ "$(readlink "$AVIM_LINK")" != "$NVIM_CONFIG_DIR" ]; then
+    fancy_echo "Relinking $AVIM_LINK -> $NVIM_CONFIG_DIR ..."
+    rm "$AVIM_LINK"
+    ln -s "$NVIM_CONFIG_DIR" "$AVIM_LINK"
+  fi
+elif [ -e "$AVIM_LINK" ]; then
+  fancy_echo "$AVIM_LINK exists and is not a symlink; skipping." >&2
+else
+  fancy_echo "Linking $AVIM_LINK -> $NVIM_CONFIG_DIR ..."
+  ln -s "$NVIM_CONFIG_DIR" "$AVIM_LINK"
+fi
+
 # Editor / pager themes (Catppuccin).
 fancy_echo 'Installing themes ...'
 mkdir -p ~/.config/delta/themes

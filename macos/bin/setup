@@ -61,6 +61,7 @@ brew bundle --file=- <<EOF
 tap "heroku/brew"
 
 # Tools and libraries
+brew "ast-grep"
 brew "awscli"
 brew "bat"
 brew "fd"

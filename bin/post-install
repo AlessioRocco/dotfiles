@@ -13,6 +13,17 @@ else
   mise self-update
 fi
 
+# Set up rtk's Claude Code integration (hook, RTK.md, CLAUDE.md reference).
+# The hook entry and the @RTK.md line in AGENTS.md are already tracked and
+# stowed by dotfiles-private before this runs, so this only needs to write
+# the local, untracked RTK.md on a fresh machine; it's a no-op here on
+# already-configured machines. Guarded so it no-ops if rtk failed to install
+# earlier in setup.
+if command -v rtk >/dev/null 2>&1; then
+  fancy_echo "Configuring rtk for Claude Code ..."
+  rtk init -g --auto-patch
+fi
+
 # Create the code folder.
 CODE_DIR="$HOME/code"
 if [ ! -d "$CODE_DIR" ]; then

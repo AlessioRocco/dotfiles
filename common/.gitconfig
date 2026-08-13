@@ -6,6 +6,7 @@
   excludesfile = ~/.gitignore
   autocrlf = input
   pager = hunk pager
+  hooksPath = ~/.config/git/hooks
 [include]
   path = ~/.config/delta/themes/catppuccin.gitconfig
   ; OS-specific settings (e.g. SSH signing program), stowed per platform.

@@ -31,6 +31,9 @@ fish_config theme choose --color-theme=dark catppuccin-macchiato
 # Add ~/.bin to the $PATH
 fish_add_path --move ~/.bin
 
+# Add ~/.local/bin to the $PATH (rtk's install location)
+fish_add_path --move ~/.local/bin
+
 ### Aliases
 
 # Git/GitHub CLI

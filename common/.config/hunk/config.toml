@@ -1,12 +1,12 @@
 # Hunk user config — https://www.hunk.dev/docs/reference/config/
-# Solo le chiavi che voglio cambiare; i default coprono il resto.
+# Only the keys I want to change; the defaults cover the rest.
 
 theme = "catppuccin-macchiato"
-mode = "auto"           # split/stack in base alla larghezza
+mode = "auto"           # split/stack based on width
 line_numbers = true
-tab_width = 2           # coerente con la maggior parte dei repo
+tab_width = 2           # consistent with most repos
 hunk_headers = true
 
-# Sessioni pager-style (git diff / git show via core.pager = "hunk pager")
+# Pager-style sessions (git diff / git show via core.pager = "hunk pager")
 [pager]
 menu_bar = false

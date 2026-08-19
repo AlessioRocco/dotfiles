@@ -104,8 +104,33 @@ echo "$prs" | jq -c '.[]' | while IFS= read -r pr; do
       # Herdr agent names must match [a-z][a-z0-9_-]{0,31} and be unique
       # among live agents — derive one deterministically from the repo and
       # PR number rather than tracking names anywhere.
-      agent_name=$(tr '[:upper:]' '[:lower:]' <<<"${repo//\//-}-pr-$number" \
-        | sed -E 's/[^a-z0-9_-]/-/g' | cut -c1-32)
+      #
+      # The 32-char budget is spent suffix-first, and the *repo slug* is what
+      # gets trimmed: a repo slug alone can already sit at the limit
+      # ("frameworkcomputer-marketplace" is 29 chars), so truncating the
+      # whole concatenated string instead silently drops "-pr-$number" and
+      # every PR on that repo lands on the identical name. That's not a
+      # cosmetic collision — the second PR's `agent start` fails with
+      # agent_name_taken (not transient, so the retry below just exhausts),
+      # leaving a worktree and a Herdr tab with no Claude session behind
+      # them. Confirmed live on PRs 10935 and 10915 of the same repo, which
+      # both collapsed to "frameworkcomputer-marketplace-pr". Trimming the
+      # slug keeps the PR number whole, so distinct PRs can't collide.
+      suffix="-pr-$number"
+
+      # Leading non-letters are stripped (and an all-numeric owner falls
+      # back to "pr") so the first character is always a lowercase letter.
+      repo_slug=$(tr '[:upper:]' '[:lower:]' <<<"${repo//\//-}" \
+        | sed -E 's/[^a-z0-9_-]/-/g; s/^[^a-z]*//')
+      repo_slug=${repo_slug:-pr}
+
+      # Clamped at 1 purely so the arithmetic can't go negative and hand
+      # bash's ${var:0:len} a negative length; a PR number would need ~28
+      # digits to get anywhere near that.
+      slug_budget=$((32 - ${#suffix}))
+      ((slug_budget < 1)) && slug_budget=1
+
+      agent_name="${repo_slug:0:$slug_budget}$suffix"
 
       # Both calls below are best-effort: a failure here must never
       # `continue` past the "review requested" notification below, and the

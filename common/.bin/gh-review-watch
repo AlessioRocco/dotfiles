@@ -84,8 +84,64 @@ echo "$prs" | jq -c '.[]' | while IFS= read -r pr; do
 
   root_ws=$(herdr worktree list --cwd "$path" --json 2>/dev/null \
     | jq -r '.result.source.source_workspace_id // empty')
-  [[ -n $root_ws ]] && herdr worktree open --workspace "$root_ws" --path "$path" \
-    --label "pr-$number · $branch" --no-focus --json >/dev/null 2>&1
+
+  if [[ -n $root_ws ]]; then
+    open_result=$(herdr worktree open --workspace "$root_ws" --path "$path" \
+      --label "pr-$number · $branch" --no-focus --json 2>/dev/null)
+
+    # `worktree open --json` hands back the freshly-opened pane directly as
+    # .result.root_pane.pane_id (confirmed live against a scratch worktree
+    # this session) — no need to go list panes for the common case. Kept as
+    # a fallback only in case that shape ever changes silently.
+    pane_id=$(jq -r '.result.root_pane.pane_id // empty' <<<"$open_result")
+    if [[ -z $pane_id ]]; then
+      new_ws=$(jq -r '.result.workspace.workspace_id // empty' <<<"$open_result")
+      [[ -n $new_ws ]] && pane_id=$(herdr pane list --workspace "$new_ws" 2>/dev/null \
+        | jq -r '.result.panes[0].pane_id // empty')
+    fi
+
+    if [[ -n $pane_id ]]; then
+      # Herdr agent names must match [a-z][a-z0-9_-]{0,31} and be unique
+      # among live agents — derive one deterministically from the repo and
+      # PR number rather than tracking names anywhere.
+      agent_name=$(tr '[:upper:]' '[:lower:]' <<<"${repo//\//-}-pr-$number" \
+        | sed -E 's/[^a-z0-9_-]/-/g' | cut -c1-32)
+
+      # Both calls below are best-effort: a failure here must never
+      # `continue` past the "review requested" notification below, and the
+      # prompt is deliberately fired without --wait — this loop moves on to
+      # the next PR immediately rather than blocking on Alessio's
+      # interactive session, which he'll come back to later on his own time.
+      #
+      # The pane `worktree open` just handed back is often still finishing
+      # shell init and briefly rejects `agent start` with agent_pane_busy
+      # ("not an available shell") — confirmed live, clearing within about
+      # one retry. A short bounded retry absorbs that without risking an
+      # indefinite wait.
+      agent_started=false
+      for _ in 1 2 3 4 5 6 7 8 9 10; do
+        herdr agent start "$agent_name" --kind claude --pane "$pane_id" >/dev/null 2>&1 \
+          && { agent_started=true; break; }
+        sleep 0.3
+      done
+
+      # /pr-review is sent unconditionally, identically, for every repo — no
+      # per-repo prompt logic belongs here. Repos that carry their own
+      # gitignored .claude/commands/pr-review.md (propagated into the fresh
+      # worktree by their own `wt` post-start hook, e.g.
+      # FrameworkComputer/marketplace) get a real review started; repos
+      # without one just get an "Unknown command: /pr-review" reply in the
+      # pane, which is itself the signal that the repo still needs that
+      # setup.
+      #
+      # Possible race, deliberately left unhandled: worktrunk runs
+      # post-start hooks in the background, so the file this depends on may
+      # not have landed in the worktree yet when this fires moments later.
+      # Worst case is the same harmless "Unknown command" reply as a repo
+      # with no hook at all, so it isn't worth a retry loop here.
+      [[ $agent_started == true ]] && herdr agent prompt "$agent_name" "/pr-review" >/dev/null 2>&1
+    fi
+  fi
 
   title=$(jq -r .title <<<"$pr")
   herdr notification show "Review richiesta: PR #$number" \

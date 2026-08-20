@@ -10,3 +10,16 @@ font-size = 16
 window-decoration = false
 window-padding-x = 0
 window-padding-y = 0
+
+# Pass tab-cycling keys through to Herdr
+keybind = ctrl+tab=unbind
+keybind = ctrl+shift+tab=unbind
+keybind = ctrl+one=unbind
+keybind = ctrl+two=unbind
+keybind = ctrl+three=unbind
+keybind = ctrl+four=unbind
+keybind = ctrl+five=unbind
+keybind = ctrl+six=unbind
+keybind = ctrl+seven=unbind
+keybind = ctrl+eight=unbind
+keybind = ctrl+nine=unbind

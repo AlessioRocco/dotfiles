@@ -20,6 +20,9 @@ prefix = "ctrl+a"
 settings = "prefix+,"
 copy_mode = "prefix+enter"
 new_worktree = ""
+next_tab = "ctrl+tab"
+previous_tab = "ctrl+shift+tab"
+switch_tab = "ctrl+1..9"
 
 # Jump straight to the two spaces I live in. Workspace ids are per-session, so
 # these go through a label lookup rather than a fixed index.

@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# Set up a herdr workspace for AI-assisted development:
+#
+#   Tab 1 "ai"     — claude agent (left, 30%) | hunk (right, 70%)
+#   Tab 2 "editor" — editor via `e`
+#
+# Idempotent: exits early if the "ai" tab already exists in this workspace.
+
+set -euo pipefail
+
+[[ -z ${HERDR_ENV:-} ]] && { echo "not running inside herdr" >&2; exit 1; }
+
+herdr=${HERDR_BIN_PATH:-herdr}
+cwd=$PWD
+
+# ── Guard: skip if already set up ────────────────────────────────────────────
+existing=$("$herdr" tab list --workspace "$HERDR_WORKSPACE_ID" \
+  | jq -r 'first(.result.tabs[] | select(.label == "ai") | .tab_id) // empty')
+[[ -n $existing ]] && { echo "workspace already set up"; exit 0; }
+
+# ── Tab 1: layout first, agent last ──────────────────────────────────────────
+claude_pane=$HERDR_PANE_ID
+# Agent names must be unique among all live agents across every workspace, so
+# a hardcoded "claude" collides as soon as a second workspace runs this script.
+claude_name="claude-$(printf '%s' "$HERDR_WORKSPACE_ID" | tr '[:upper:]' '[:lower:]')"
+
+"$herdr" tab rename "$HERDR_TAB_ID" ai
+
+hunk_pane=$("$herdr" pane split "$claude_pane" \
+  --direction right --ratio 0.3 --cwd "$cwd" --no-focus \
+  | jq -r '.result.pane.pane_id')
+
+"$herdr" pane run "$hunk_pane" "hunk diff"
+
+# ── Tab 2: editor ─────────────────────────────────────────────────────────────
+editor_pane=$("$herdr" tab create \
+  --workspace "$HERDR_WORKSPACE_ID" --cwd "$cwd" --label editor --no-focus \
+  | jq -r '.result.root_pane.pane_id')
+
+"$herdr" pane run "$editor_pane" e
+
+# ── Start the agent once this script exits ───────────────────────────────────
+# This pane is still busy while this script runs, so `agent start` here would
+# fail with agent_pane_busy. Herdr's own busy detection can also lag briefly
+# behind the shell reclaiming the pane once we exit, so retry through that
+# window instead of firing once. Runs detached so this script can exit and
+# free the pane immediately.
+log="/tmp/herdr-workspace-setup-agent-start.${HERDR_WORKSPACE_ID}.log"
+(
+  for _ in $(seq 1 20); do
+    out=$("$herdr" agent start "$claude_name" --kind claude --pane "$claude_pane" 2>&1) && break
+    [[ $(printf '%s' "$out" | jq -r '.error.code // empty') == agent_pane_busy ]] \
+      || { printf '%s\n' "$out"; exit 1; }
+    sleep 0.25
+  done
+  "$herdr" agent focus "$claude_name"
+) >"$log" 2>&1 &
+disown

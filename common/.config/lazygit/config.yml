@@ -4,9 +4,9 @@ os:
   editPreset: "nvim-remote"
 git:
   overrideGpg: true
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+      command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 customCommands:
   - key: "n"
     command: 'wt -C "{{.SelectedWorktree.Path}}" switch --create --no-cd --base @ "{{index .PromptResponses 0}}"; and kill (ps -o ppid= -p %self | string trim)'

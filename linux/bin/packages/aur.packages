@@ -10,8 +10,7 @@ herdr-bin
 hunk-bin
 
 # Desktop and shell
-# noctalia-git
-# noctalia-greeter-git
+noctalia-greeter
 runapp
 wlr-which-key
 

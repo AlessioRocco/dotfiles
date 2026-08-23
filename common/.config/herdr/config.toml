@@ -23,6 +23,8 @@ new_worktree = ""
 next_tab = "ctrl+tab"
 previous_tab = "ctrl+shift+tab"
 switch_tab = "ctrl+1..9"
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
 
 # Jump straight to the two spaces I live in. Workspace ids are per-session, so
 # these go through a label lookup rather than a fixed index.

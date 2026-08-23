@@ -9,7 +9,7 @@ SCRIPT_DIR="$DOTFILES_DIR/linux/bin"
 
 # Install the base packages needed to bootstrap paru.
 fancy_echo "Installing bootstrap packages ..."
-sudo pacman -Sq --needed --noconfirm \
+sudo pacman -Syq --needed --noconfirm \
   base-devel \
   git \
   rustup
@@ -46,6 +46,9 @@ install_packages() {
     fi
   done
 }
+
+fancy_echo "Upgrading system packages ..."
+paru -Syu --noconfirm
 
 fancy_echo "Installing base packages ..."
 install_packages "$SCRIPT_DIR/packages/base.packages"

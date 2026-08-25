@@ -90,7 +90,6 @@ window_rule {
       '1password',
       'org.pulseaudio.pavucontrol',
       'com.gabm.satty',
-      'org.gnome.FileRoller',
       chrome_pwa_class 'Google Password Manager'
     ),
   },

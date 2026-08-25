@@ -59,6 +59,12 @@ install_packages "$SCRIPT_DIR/packages/gui.packages"
 fancy_echo "Installing AUR packages ..."
 install_packages "$SCRIPT_DIR/packages/aur.packages"
 
+# Add user to the docker group (lets docker commands run without sudo) and
+# enable the service so it starts at boot.
+fancy_echo "Setting up Docker ..."
+sudo usermod -aG docker "$USER"
+sudo systemctl enable --now docker.service
+
 # Install tools declared in the global mise config (~/.config/mise/config.toml),
 # which is already stowed by the time this script runs.
 fancy_echo "Installing mise tools ..."

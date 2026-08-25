@@ -31,6 +31,22 @@ local function quick_terminal(command)
 end
 
 
+local function quick_app(class, launch_cmd)
+  return function()
+    local windows = hl.get_windows({ class = class })
+    if #windows > 0 then
+      local ws = windows[1].workspace
+      if ws and ws.special then
+        hl.dispatch(hl.dsp.workspace.toggle_special(ws.config_name:gsub('^special:', '')))
+      else
+        hl.dispatch(hl.dsp.focus { window = windows[1] })
+      end
+    else
+      hl.dispatch(hl.dsp.exec_cmd('runapp ' .. launch_cmd))
+    end
+  end
+end
+
 local function bind(key, action, description)
   hl.bind(key, action, { description = description })
 end
@@ -71,6 +87,7 @@ end
 bindm('RETURN', exec 'focus-or-launch com.mitchellh.ghostty ghostty', 'Open Terminal')
 bindm('B', exec 'focus-or-launch google-chrome google-chrome-stable', 'Open Browser')
 bindm('E', quick_terminal 'yazi', 'Open Terminal File Manager')
+bindm('SHIFT + E', quick_app('org.gnome.Nautilus', file_manager), 'Open File Manager')
 
 --------------------- Launchers ---------------------
 bindm('SPACE', exec 'noctalia msg panel-toggle launcher', 'Toggle Launcher')

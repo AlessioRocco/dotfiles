@@ -187,7 +187,10 @@ end
 hl.bind(main_mod .. ' + mouse:272', hl.dsp.window.drag(), { mouse = true })
 hl.bind(main_mod .. ' + mouse:273', hl.dsp.window.resize(), { mouse = true })
 
-bindm('R', hl.dsp.submap 'resize', 'Resize Submap')
+bindm('R', function()
+  hl.dispatch(hl.dsp.submap 'resize')
+  hl.dispatch(hl.dsp.exec_cmd "noctalia msg notification-show 'Resize Mode' 'Press ESCAPE to exit'")
+end, 'Resize Submap')
 
 define_submap('resize', function()
   bind('C', hl.dsp.layout 'colresize +conf', 'Resize Column')

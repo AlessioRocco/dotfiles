@@ -35,6 +35,8 @@ hl.config {
       passes = 1,
       vibrancy = 0.1696,
     },
+
+    dim_special = 0.5,
   },
 
   animations = {

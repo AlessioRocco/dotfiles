@@ -2,7 +2,7 @@
 Description=Automounter for removable media
 
 [Service]
-ExecStart=udiskie -s -c "$HOME/.config/udiskie/config.yml"
+ExecStart=udiskie -s -c "%h/.config/udiskie/config.yml"
 Type=simple
 
 [Install]

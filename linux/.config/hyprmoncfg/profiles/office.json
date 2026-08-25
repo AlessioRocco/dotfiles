@@ -1,23 +1,23 @@
 {
   "name": "office",
   "created_at": "2026-06-25T14:12:45.926882423Z",
-  "updated_at": "2026-06-25T14:19:56.978743004Z",
+  "updated_at": "2026-08-25T07:15:52.976459777Z",
   "outputs": [
     {
-      "key": "boe|nv122wum-n42",
-      "match_key": "boe|nv122wum-n42",
+      "key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+      "match_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
       "name": "eDP-1",
-      "description": "BOE NV122WUM-N42",
-      "make": "BOE",
-      "model": "NV122WUM-N42",
+      "description": "China Star Optoelectronics Technology Co. Ltd MND508ZB1-1",
+      "make": "China Star Optoelectronics Technology Co., Ltd",
+      "model": "MND508ZB1-1",
       "enabled": true,
-      "mode": "1920x1200@60.00Hz",
-      "width": 1920,
-      "height": 1200,
-      "refresh": 60,
-      "x": -700,
-      "y": -400,
-      "scale": 1,
+      "mode": "2880x1920@120.00Hz",
+      "width": 2880,
+      "height": 1920,
+      "refresh": 120,
+      "x": -38,
+      "y": 169,
+      "scale": 1.5,
       "transform": 0,
       "bitdepth": 8,
       "cm": "srgb",
@@ -30,7 +30,7 @@
     {
       "key": "lg electronics|lg ultrafine|204ntepbe916",
       "match_key": "lg electronics|lg ultrafine|204ntepbe916",
-      "name": "DP-4",
+      "name": "DP-1",
       "description": "LG Electronics LG ULTRAFINE 204NTEPBE916",
       "make": "LG Electronics",
       "model": "LG ULTRAFINE",
@@ -40,9 +40,9 @@
       "width": 3840,
       "height": 2160,
       "refresh": 60,
-      "x": 1280,
-      "y": -500,
-      "scale": 1.5,
+      "x": 1920,
+      "y": 0,
+      "scale": 1.2,
       "transform": 0,
       "bitdepth": 8,
       "cm": "srgb",
@@ -60,60 +60,60 @@
     "group_size": 9,
     "monitor_order": [
       "lg electronics|lg ultrafine|204ntepbe916",
-      "boe|nv122wum-n42"
+      "china star optoelectronics technology co., ltd|mnd508zb1-1"
     ],
     "rules": [
       {
         "workspace": "1",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1",
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1",
         "default": true,
         "persistent": true
       },
       {
         "workspace": "2",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "3",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "4",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "5",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "6",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "7",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "8",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "9",
-        "output_key": "boe|nv122wum-n42",
-        "output_name": "eDP-1"
+        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
+        "output_name": "DP-1"
       },
       {
         "workspace": "10",
-        "output_key": "lg electronics|lg ultrafine|204ntepbe916",
-        "output_name": "DP-4",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1",
         "default": true,
         "persistent": true
       }

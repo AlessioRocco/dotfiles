@@ -3,7 +3,6 @@ require 'hyprland.keybinds'
 require 'hyprland.rules'
 require 'hyprland.input'
 require 'hyprland.style'
-require 'monitors'
 
 hl.config {
   general = {
@@ -39,3 +38,6 @@ hl.config {
 
 -- For Noctalia Color templates
 require("noctalia").apply_theme()
+
+-- Added by hyprmoncfg: its generated monitor rules load last, so nothing before this can override the applied layout.
+dofile(os.getenv("HOME") .. "/.config/hypr/hyprmoncfg-monitors.lua")

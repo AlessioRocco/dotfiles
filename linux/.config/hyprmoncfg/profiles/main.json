@@ -1,23 +1,23 @@
 {
   "name": "main",
-  "created_at": "2026-06-26T06:54:02.628248415Z",
-  "updated_at": "2026-06-26T06:54:02.629309822Z",
+  "created_at": "2026-08-24T13:55:28.975804752Z",
+  "updated_at": "2026-08-25T07:14:04.025002145Z",
   "outputs": [
     {
-      "key": "boe|nv122wum-n42",
-      "match_key": "boe|nv122wum-n42",
+      "key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+      "match_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
       "name": "eDP-1",
-      "description": "BOE NV122WUM-N42",
-      "make": "BOE",
-      "model": "NV122WUM-N42",
+      "description": "China Star Optoelectronics Technology Co. Ltd MND508ZB1-1",
+      "make": "China Star Optoelectronics Technology Co., Ltd",
+      "model": "MND508ZB1-1",
       "enabled": true,
-      "mode": "1920x1200@60.00Hz",
-      "width": 1920,
-      "height": 1200,
-      "refresh": 60,
-      "x": -700,
-      "y": -400,
-      "scale": 1,
+      "mode": "2880x1920@120.00Hz",
+      "width": 2880,
+      "height": 1920,
+      "refresh": 120,
+      "x": 100,
+      "y": 0,
+      "scale": 1.5,
       "transform": 0,
       "bitdepth": 8,
       "cm": "srgb",
@@ -30,19 +30,64 @@
   ],
   "workspaces": {
     "enabled": true,
-    "strategy": "sequential",
+    "strategy": "interleave",
     "max_workspaces": 10,
-    "group_size": 10,
+    "group_size": 1,
     "monitor_order": [
-      "boe|nv122wum-n42"
+      "china star optoelectronics technology co., ltd|mnd508zb1-1"
     ],
     "rules": [
       {
-        "workspace": "10",
-        "output_key": "boe|nv122wum-n42",
+        "workspace": "1",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
         "output_name": "eDP-1",
         "default": true,
         "persistent": true
+      },
+      {
+        "workspace": "2",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "3",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "4",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "5",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "6",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "7",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "8",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "9",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "10",
+        "output_key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
+        "output_name": "eDP-1"
       }
     ]
   },

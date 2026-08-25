@@ -10,6 +10,7 @@
 #     its OS-specific setup script.
 #   - Authenticate GitHub CLI (gh auth login) so HTTPS clones work.
 #   - Clone dotfiles-private and run its own setup script.
+#   - Clone locco (personal assistant vault) and install its agent skills.
 #   - Run the shared post-install steps (bin/post-install).
 #
 # Safe to re-run.
@@ -30,6 +31,8 @@ DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/AlessioRocco/dotfiles}"
 PRIVATE_DIR="${PRIVATE_DIR:-$HOME/dotfiles-private}"
 PRIVATE_REPO="${PRIVATE_REPO:-git@github.com:AlessioRocco/dotfiles-private.git}"
+LOCCO_DIR="${LOCCO_DIR:-$HOME/locco}"
+LOCCO_REPO="${LOCCO_REPO:-git@github.com:AlessioRocco/locco.git}"
 
 # Clone the repo if it is not already present.
 if [ ! -d "$DOTFILES_DIR" ]; then
@@ -147,6 +150,34 @@ if [ -x "$PRIVATE_DIR/bin/setup" ]; then
   "$PRIVATE_DIR/bin/setup"
 elif [ -d "$PRIVATE_DIR" ]; then
   fancy_echo "$PRIVATE_DIR has no executable bin/setup; skipping." >&2
+fi
+
+# Clone locco, Alessio's personal assistant vault, and install its
+#   project-scoped agent skills (dotagents install, run from inside the repo).
+#   Same SSH-key caveat as dotfiles-private above: a failure here only warns.
+if [ ! -d "$LOCCO_DIR" ]; then
+  fancy_echo "Cloning locco into $LOCCO_DIR ..."
+  if ! git clone "$LOCCO_REPO" "$LOCCO_DIR"; then
+    fancy_echo "Could not clone $LOCCO_REPO." >&2
+    fancy_echo "Add an SSH key with access to it and re-run this script." >&2
+  fi
+fi
+
+if [ -d "$LOCCO_DIR" ]; then
+  NPX=""
+  if command -v npx >/dev/null 2>&1; then
+    NPX="npx"
+  elif command -v mise >/dev/null 2>&1 && mise exec node -- npx --version >/dev/null 2>&1; then
+    NPX="mise exec node -- npx"
+  fi
+
+  if [ -n "$NPX" ]; then
+    fancy_echo "Installing locco's agent skills ..."
+    (cd "$LOCCO_DIR" && $NPX --yes @sentry/dotagents@latest install)
+  else
+    fancy_echo 'npx not found; skipping locco agent skills install.'
+    fancy_echo "Install Node, then run: (cd $LOCCO_DIR && npx @sentry/dotagents@latest install)"
+  fi
 fi
 
 # Shared post-install steps.

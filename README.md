@@ -35,13 +35,16 @@ git clone https://github.com/AlessioRocco/dotfiles ~/dotfiles
 `bin/setup` installs Stow, links the `common` package, links and runs the setup
 for the current OS (`macos` or `linux`), then clones [`dotfiles-private`][private]
 into `~/dotfiles-private` and runs that repo's own `bin/setup`. What happens to
-the private dotfiles is defined there, not here.
+the private dotfiles is defined there, not here. It also clones
+[`locco`][locco], Alessio's personal assistant vault, into `~/locco` and
+installs its agent skills (`dotagents install`, run from inside that repo).
 
-The private clone uses SSH, so the machine needs a key with access to that
-repo. Without it, setup warns and carries on with the public dotfiles only:
-add the key and re-run `bin/setup` to pick up the private half.
+Both clones use SSH, so the machine needs a key with access to those repos.
+Without it, setup warns and carries on with the public dotfiles only: add the
+key and re-run `bin/setup` to pick up the private half.
 
 [private]: https://github.com/AlessioRocco/dotfiles-private
+[locco]: https://github.com/AlessioRocco/locco
 
 ## Managing symlinks
 

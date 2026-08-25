@@ -120,25 +120,22 @@ bindm('F', function()
   end
 end, 'Toggle Floating')
 
-local maximized_windows = {}
-
-hl.on('window.close', function(window)
-  maximized_windows[window.stable_id] = nil
-end)
-
 bindm('M', function()
   local window = hl.get_active_window()
   if not window then
     return
   end
 
-  local id = window.stable_id
-  if maximized_windows[id] then
+  if window.fullscreen and window.fullscreen ~= 0 then
+    -- A plain 'unset' silently no-ops on a window whose fullscreen was
+    -- client-requested (fullscreenClient ~= 0, e.g. Ghostty's own
+    -- fullscreen) rather than compositor-driven — re-asserting a
+    -- different mode first overrides the client's request so unset
+    -- actually takes effect.
+    hl.dispatch(hl.dsp.window.fullscreen { action = 'set', mode = 'fullscreen' })
     hl.dispatch(hl.dsp.window.fullscreen { action = 'unset' })
-    maximized_windows[id] = nil
   else
     hl.dispatch(hl.dsp.window.fullscreen { action = 'set', mode = 'maximized' })
-    maximized_windows[id] = true
   end
 end, 'Toggle Maximize')
 bindm('P', function()

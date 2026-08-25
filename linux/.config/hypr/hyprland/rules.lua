@@ -74,6 +74,14 @@ hl.window_rule {
   workspace = 'special:magic',
 }
 
+hl.window_rule {
+  name = 'nautilus-special',
+  match = {
+    class = 'org.gnome.Nautilus',
+  },
+  workspace = 'special:magic',
+}
+
 window_rule {
   name = 'google-password-manager-special',
   match = {

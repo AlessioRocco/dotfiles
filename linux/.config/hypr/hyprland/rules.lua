@@ -74,10 +74,25 @@ hl.window_rule {
   workspace = 'special:magic',
 }
 
-hl.window_rule {
+window_rule {
+  name = 'google-password-manager-special',
+  match = {
+    class = chrome_pwa_class 'Google Password Manager',
+  },
+  workspace = 'special:magic',
+}
+
+window_rule {
   name = 'float-apps',
   match = {
-    class = '(org.gnome.Nautilus|1password|org.pulseaudio.pavucontrol|com.gabm.satty|org.gnome.FileRoller)',
+    class = class_pattern(
+      'org.gnome.Nautilus',
+      '1password',
+      'org.pulseaudio.pavucontrol',
+      'com.gabm.satty',
+      'org.gnome.FileRoller',
+      chrome_pwa_class 'Google Password Manager'
+    ),
   },
   float = true,
   size = {

@@ -1,5 +1,47 @@
 ---@diagnostic disable: undefined-global
 
+-- Chrome regenerates a PWA's app-id and profile suffix on every (re)install,
+-- so resolve its current window class by name at config-load time instead
+-- of hardcoding "chrome-<id>-<profile>" here.
+local function chrome_pwa_class(name)
+  local handle = io.popen("chrome-pwa-class '" .. name .. "' 2>/dev/null")
+  if not handle then
+    return nil
+  end
+  local result = handle:read '*l'
+  handle:close()
+  if result == nil or result == '' then
+    return nil
+  end
+  return result
+end
+
+-- Combine class strings/patterns into a single regex alternation, dropping
+-- any that failed to resolve (e.g. a PWA not installed on this machine).
+local function class_pattern(...)
+  local parts = {}
+  for _, part in ipairs { ... } do
+    if part then
+      table.insert(parts, part)
+    end
+  end
+  if #parts == 0 then
+    return nil
+  end
+  if #parts == 1 then
+    return parts[1]
+  end
+  return '(' .. table.concat(parts, '|') .. ')'
+end
+
+-- Like hl.window_rule, but skipped entirely if match.class resolved to nil.
+local function window_rule(rule)
+  if rule.match and rule.match.class == nil then
+    return
+  end
+  hl.window_rule(rule)
+end
+
 hl.layer_rule {
   name = 'wlr-which-key',
   match = {
@@ -121,34 +163,34 @@ hl.window_rule {
   workspace = 1,
 }
 
-hl.window_rule {
+window_rule {
   name = 'workspace-2',
   match = {
-    class = '(slack|chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1)',
+    class = class_pattern('slack', chrome_pwa_class 'Google Chat'),
   },
   workspace = 2,
 }
 
-hl.window_rule {
+window_rule {
   name = 'workspace-10',
   match = {
-    class = 'chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1',
+    class = chrome_pwa_class 'Google Meet',
   },
   workspace = 10,
 }
 
-hl.window_rule {
+window_rule {
   name = 'workspace-3',
   match = {
-    class = '(chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1|chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1)',
+    class = class_pattern(chrome_pwa_class 'Gmail', chrome_pwa_class 'Google Calendar'),
   },
   workspace = 3,
 }
 
-hl.window_rule {
+window_rule {
   name = 'workspace-4',
   match = {
-    class = '(chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1|chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1)',
+    class = class_pattern(chrome_pwa_class 'GitHub', chrome_pwa_class 'Jira'),
   },
   workspace = 4,
 }
@@ -169,10 +211,10 @@ hl.window_rule {
   workspace = 8,
 }
 
-hl.window_rule {
+window_rule {
   name = 'workspace-9',
   match = {
-    class = 'chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default',
+    class = chrome_pwa_class 'Home Assistant',
   },
   workspace = 9,
 }

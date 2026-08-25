@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# chrome-pwa NAME
+# Focus a running Chrome PWA by its installed app name, or launch it if not
+# running. See chrome-pwa-class for how NAME is resolved to a window class.
+
+NAME="$1"
+CLASS="$(chrome-pwa-class "$NAME")"
+
+if [ -z "$CLASS" ]; then
+  echo "chrome-pwa: no installed PWA found with name '${NAME}'" >&2
+  exit 1
+fi
+
+exec focus-or-launch "$CLASS" gtk-launch "$CLASS"

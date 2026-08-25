@@ -25,31 +25,31 @@ menu:
         cmd: focus-or-launch org.telegram.desktop telegram-desktop
       - key: "m"
         desc: Gmail
-        cmd: focus-or-launch chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1 gtk-launch chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Profile_1
+        cmd: chrome-pwa "Gmail"
       - key: "c"
         desc: Calendar
-        cmd: focus-or-launch chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1 gtk-launch chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Profile_1
+        cmd: chrome-pwa "Google Calendar"
       - key: "e"
         desc: Google Meet
-        cmd: focus-or-launch chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1 gtk-launch chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Profile_1
+        cmd: chrome-pwa "Google Meet"
       - key: "s"
         desc: Slack
         cmd: focus-or-launch slack slack
       - key: "a"
         desc: Google Chat
-        cmd: focus-or-launch chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1 gtk-launch chrome-pommaclcbfghclhalboakcipcmmndhcj-Profile_1
+        cmd: chrome-pwa "Google Chat"
       - key: "g"
         desc: GitHub
-        cmd: focus-or-launch chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1 gtk-launch chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Profile_1
+        cmd: chrome-pwa "GitHub"
       - key: "j"
         desc: Jira
-        cmd: focus-or-launch chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1 gtk-launch chrome-kdlkbchlgboeoomhlnbhmoieojblpnpo-Profile_1
+        cmd: chrome-pwa "Jira"
       - key: "u"
         desc: Spotify
         cmd: focus-or-launch Spotify spotify
       - key: "h"
         desc: Home Assistant
-        cmd: focus-or-launch chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default gtk-launch chrome-dfdefklgdndbkmlaebimhmdkdmncihkf-Default
+        cmd: chrome-pwa "Home Assistant"
   - key: "t"
     desc: Tools
     submenu:

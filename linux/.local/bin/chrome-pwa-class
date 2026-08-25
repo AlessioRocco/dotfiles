@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# chrome-pwa-class NAME
+# Print the current window class of an installed Chrome PWA, resolved by
+# matching the Name= field of its generated .desktop file. Chrome
+# regenerates the app-id and profile suffix on every (re)install, so this
+# lets Hyprland window/workspace rules stay correct without hardcoding
+# "chrome-<id>-<profile>" anywhere. Exits 1 with no output if the PWA isn't
+# installed (used from Lua at config-load time via io.popen, where a
+# hardcoded class would just make that rule inert).
+
+NAME="$1"
+
+for f in "$HOME"/.local/share/applications/chrome-*.desktop; do
+  [ -f "$f" ] || continue
+  if [ "$(grep -m1 '^Name=' "$f")" = "Name=${NAME}" ]; then
+    basename "$f" .desktop
+    exit 0
+  fi
+done
+
+exit 1

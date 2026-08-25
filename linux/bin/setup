@@ -88,6 +88,38 @@ sudo cp "$SCRIPT_DIR/greetd-pam" /etc/pam.d/greetd
 sudo systemctl disable --now sddm.service 2>/dev/null || true
 sudo systemctl enable greetd.service
 
+# Enable fingerprint auth for sudo (Framework 13's Goodix reader, via fprintd).
+# CachyOS's `chwd` hardware detection does this automatically when it finds a
+# fingerprint sensor, but this repo installs packages directly with paru, so
+# it's done here too for machines set up from scratch with this script.
+# Not added to greetd/login: fingerprint-at-login is generally discouraged
+# (see the Framework/CachyOS guide), only unlock/admin prompts use it here.
+# Idempotent: only prepends the line if missing, so re-running setup won't
+# duplicate it or fight future updates to /etc/pam.d/sudo from the sudo
+# package itself.
+fancy_echo "Enabling fingerprint auth for sudo ..."
+if ! grep -q pam_fprintd /etc/pam.d/sudo; then
+  sudo sed -i '1i auth       sufficient   pam_fprintd.so' /etc/pam.d/sudo
+fi
+
+# Enable fingerprint auth for polkit prompts (1Password unlock, admin dialogs,
+# etc). Polkit has no /etc/pam.d/polkit-1 of its own by default, so it falls
+# back to /usr/lib/pam.d/polkit-1, which only includes system-auth (password
+# only). Writing an /etc/pam.d override takes precedence without touching the
+# package-owned file. Idempotent: only written if missing.
+fancy_echo "Enabling fingerprint auth for polkit ..."
+if [ ! -f /etc/pam.d/polkit-1 ]; then
+  sudo tee /etc/pam.d/polkit-1 >/dev/null <<'EOF'
+#%PAM-1.0
+
+auth       sufficient   pam_fprintd.so
+auth       include      system-auth
+account    include      system-auth
+password   include      system-auth
+session    include      system-auth
+EOF
+fi
+
 # Set system locale to English.
 fancy_echo "Setting system locale to English ..."
 sudo localectl set-locale LANG=en_US.UTF-8
@@ -97,7 +129,7 @@ xdg-user-dirs-update
 
 # Enable systemd user services.
 fancy_echo "Enabling systemd user services ..."
-for service in udiskie.service ssh-add.service hyprmoncfgd.service; do
+for service in udiskie.service ssh-add.service hyprmoncfgd.service hyprpolkitagent.service; do
   if systemctl --user list-unit-files "$service" | grep -q "$service"; then
     systemctl --user enable "$service"
   else

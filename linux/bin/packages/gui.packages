@@ -47,6 +47,7 @@ nwg-look
 # Window Manager and related tools
 greetd
 hyprland
+hyprpolkitagent
 noctalia
 hyprshutdown
 hyprmoncfg

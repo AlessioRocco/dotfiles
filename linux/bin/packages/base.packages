@@ -57,3 +57,6 @@ lua-language-server
 bash-language-server
 stylua
 shfmt
+
+# Security
+fprintd

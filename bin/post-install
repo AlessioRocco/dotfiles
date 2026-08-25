@@ -5,12 +5,16 @@
 # Safe to re-run; sourced by the top-level bin/setup orchestrator.
 
 # Install or update Mise (https://mise.jdx.dev/getting-started.html).
+#   On Linux mise comes from the `mise` package (paru, see
+#   linux/bin/packages/base.packages) and updates via `paru -Syu`; that build
+#   has self-update compiled out, so `mise self-update` errors there. Warn
+#   instead of aborting the whole setup over a failed self-update.
 if ! command -v mise >/dev/null 2>&1; then
   fancy_echo "Installing Mise ..."
   curl https://mise.run | sh
 else
   fancy_echo "Updating Mise ..."
-  mise self-update
+  mise self-update || fancy_echo "mise self-update unavailable (likely a package-manager install); skipping." >&2
 fi
 
 # Set up rtk's Claude Code integration (hook, RTK.md, CLAUDE.md reference).

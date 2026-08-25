@@ -84,7 +84,7 @@ abbr s herdr-workspace-setup
 zoxide init fish | source
 
 # Mise
-~/.local/bin/mise activate fish | source
+mise activate fish | source
 
 # Herdr: rename the tab to the running foreground command, falling back to
 # $PWD's directory name while the shell is idle at the prompt.

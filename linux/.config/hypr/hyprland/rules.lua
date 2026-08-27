@@ -93,13 +93,7 @@ window_rule {
 window_rule {
   name = 'float-apps',
   match = {
-    class = class_pattern(
-      'org.gnome.Nautilus',
-      '1password',
-      'org.pulseaudio.pavucontrol',
-      'com.gabm.satty',
-      chrome_pwa_class 'Google Password Manager'
-    ),
+    class = class_pattern('org.gnome.Nautilus', '1password', 'org.pulseaudio.pavucontrol', 'com.gabm.satty', chrome_pwa_class 'Google Password Manager'),
   },
   float = true,
   size = {

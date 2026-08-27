@@ -59,6 +59,7 @@ fancy_echo "Updating Homebrew formulae ..."
 brew update
 brew bundle --file=- <<EOF
 tap "heroku/brew"
+tap "aovestdipaperino/tap"
 
 # Tools and libraries
 brew "ast-grep"
@@ -80,6 +81,7 @@ brew "rtk"
 brew "starship"
 brew "stow"
 brew "television"
+brew "aovestdipaperino/tap/tokensave"
 brew "tree-sitter-cli"
 brew "universal-ctags"
 brew "wget"

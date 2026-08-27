@@ -42,6 +42,8 @@ local function window_rule(rule)
   hl.window_rule(rule)
 end
 
+-- Layer rules
+
 hl.layer_rule {
   name = 'wlr-which-key',
   match = {
@@ -49,6 +51,8 @@ hl.layer_rule {
   },
   no_anim = true,
 }
+
+-- Send utility windows to the special:magic scratchpad workspace
 
 hl.window_rule {
   name = 'no-screenshare',
@@ -90,6 +94,8 @@ window_rule {
   workspace = 'special:magic',
 }
 
+-- Float small utility windows instead of tiling them
+
 window_rule {
   name = 'float-apps',
   match = {
@@ -102,6 +108,8 @@ window_rule {
   },
 }
 
+-- Use scrolling layout at full width for Chrome
+
 hl.window_rule {
   name = 'maximised-apps',
   match = {
@@ -109,6 +117,8 @@ hl.window_rule {
   },
   scrolling_width = 1,
 }
+
+-- Ghostty's quick-launch dropdown terminal
 
 hl.window_rule {
   name = 'quick-terminal',
@@ -122,6 +132,8 @@ hl.window_rule {
     'monitor_h*0.8',
   },
 }
+
+-- Float, pin, and corner-position picture-in-picture windows
 
 hl.window_rule {
   name = 'picture-in-picture-meet',
@@ -157,6 +169,8 @@ hl.window_rule {
   },
 }
 
+-- Hyprland's screen-share source picker
+
 hl.window_rule {
   name = 'screen-share-popup',
   match = {
@@ -170,6 +184,8 @@ hl.window_rule {
   },
   center = true,
 }
+
+-- Assign apps to their default workspace
 
 hl.window_rule {
   name = 'workspace-1',
@@ -243,6 +259,8 @@ window_rule {
   workspace = 10,
 }
 
+-- Float and center the Noctalia settings window
+
 hl.window_rule {
   name = 'noctalia-settings-special',
   match = {
@@ -256,6 +274,8 @@ hl.window_rule {
   },
   center = true,
 }
+
+-- Miscellaneous window-behavior fixes
 
 hl.window_rule {
   name = 'suppress-maximize-events',

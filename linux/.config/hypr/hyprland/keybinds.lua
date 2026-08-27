@@ -127,6 +127,7 @@ bindm('PRINT', exec 'wlr-which-key --initial-keys s', 'Screenshot')
 
 --------------------- Apps ---------------------
 bindm('A', exec 'wlr-which-key --initial-keys a', 'Apps')
+bindm('SEMICOLON', exec 'wlr-which-key --initial-keys a', 'Apps')
 
 --------------------- Windows ---------------------
 bindm('Q', hl.dsp.window.close(), 'Close Current Window')

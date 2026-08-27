@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Btop
+Comment=Terminal task manager
+Exec=quick_terminal btop
+Icon=utilities-system-monitor
+Type=Application
+Terminal=false
+Categories=Utility;System;

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Systemd Services
+Comment=Terminal systemd service manager
+Exec=quick_terminal systemctl-tui -s user
+Icon=preferences-system-services
+Type=Application
+Terminal=false
+Categories=Utility;System;

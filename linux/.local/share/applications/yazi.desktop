@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Yazi
+Comment=Terminal file manager
+Exec=quick_terminal yazi
+Icon=system-file-manager
+Type=Application
+Terminal=false
+Categories=Utility;FileManager;

@@ -56,6 +56,12 @@ menu:
       - key: "f"
         desc: Cloudflare
         cmd: chrome-pwa "Cloudflare"
+      - key: "1"
+        desc: 1Password
+        cmd: focus-or-launch 1password gtk-launch 1password
+      - key: "2"
+        desc: Google Password Manager
+        cmd: chrome-pwa "Google Password Manager"
   - key: "t"
     desc: Tools
     submenu:

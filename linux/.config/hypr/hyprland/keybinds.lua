@@ -52,7 +52,7 @@ end
 local function quick_terminal(command)
   local class = 'io.ghostty.quick.' .. command:gsub('[^%w]', '_')
   return function()
-    local windows = hl.get_windows({ class = class })
+    local windows = hl.get_windows { class = class }
     if #windows > 0 then
       focus_or_toggle_special(windows[1])
     else
@@ -61,10 +61,9 @@ local function quick_terminal(command)
   end
 end
 
-
 local function quick_app(class, launch_cmd)
   return function()
-    local windows = hl.get_windows({ class = class })
+    local windows = hl.get_windows { class = class }
     if #windows > 0 then
       focus_or_toggle_special(windows[1])
     else

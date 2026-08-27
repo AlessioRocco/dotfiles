@@ -10,11 +10,19 @@ if [[ -n "$window" ]]; then
   workspace_name=$(echo "$window" | jq -r '.workspace.name')
 
   if [[ "$hidden" == "true" && "$workspace_name" == special:* ]]; then
-    hyprctl dispatch togglespecialworkspace "${workspace_name#special:}"
-  else
-    address=$(echo "$window" | jq -r '.address')
-    hyprctl dispatch focuswindow "address:$address"
+    hyprctl dispatch "hl.dsp.workspace.toggle_special('${workspace_name#special:}')"
   fi
+  # Always focus and raise: another tool sharing the same special workspace
+  # may already be on top, and toggling the workspace alone won't raise this
+  # one. Keyboard-driven focus alone doesn't restack floating windows in
+  # Hyprland, so alterzorder is needed too:
+  # https://github.com/hyprwm/Hyprland/discussions/5451
+  #
+  # This build's `hyprctl dispatch` evaluates its argument as Lua
+  # (hl.dispatch(<arg>)) rather than the classic "dispatcher arg" syntax —
+  # see focus-or-launch/system-action for the same pattern.
+  hyprctl dispatch "hl.dsp.focus({window=hl.get_windows({class='$class'})[1]})"
+  hyprctl dispatch "hl.dsp.window.alter_zorder({mode='top', window=hl.get_windows({class='$class'})[1]})"
 else
   runapp ghostty --class="$class" -e "$@"
 fi

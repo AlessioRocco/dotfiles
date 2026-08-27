@@ -13,17 +13,48 @@ local terminal = 'ghostty'
 local file_manager = 'nautilus'
 local main_mod = 'SUPER'
 
+-- Keyboard-driven focus alone doesn't raise floating windows to the top of
+-- the stack in Hyprland (https://github.com/hyprwm/Hyprland/discussions/5451)
+-- - alterzorder is needed on top of focus to actually bring one to front.
+local function raise(window)
+  hl.dispatch(hl.dsp.focus { window = window })
+  hl.dispatch(hl.dsp.window.alter_zorder { mode = 'top', window = window })
+end
+
+-- Special-workspace tool windows (quick terminal, Nautilus, ...) share one
+-- workspace, so simply toggling it can surface the wrong tool if another one
+-- is already on top. Bring the requested window to front instead of just
+-- toggling visibility, and only hide the workspace when that window is
+-- already the focused one (i.e. the user is asking to dismiss it).
+local function focus_or_toggle_special(window)
+  local ws = window.workspace
+  if not (ws and ws.special) then
+    raise(window)
+    return
+  end
+
+  local special_name = ws.config_name:gsub('^special:', '')
+
+  if window.hidden then
+    hl.dispatch(hl.dsp.workspace.toggle_special(special_name))
+    raise(window)
+    return
+  end
+
+  local active = hl.get_active_window()
+  if active and active.address == window.address then
+    hl.dispatch(hl.dsp.workspace.toggle_special(special_name))
+  else
+    raise(window)
+  end
+end
+
 local function quick_terminal(command)
   local class = 'io.ghostty.quick.' .. command:gsub('[^%w]', '_')
   return function()
     local windows = hl.get_windows({ class = class })
     if #windows > 0 then
-      local ws = windows[1].workspace
-      if ws and ws.special then
-        hl.dispatch(hl.dsp.workspace.toggle_special(ws.config_name:gsub('^special:', '')))
-      else
-        hl.dispatch(hl.dsp.focus { window = windows[1] })
-      end
+      focus_or_toggle_special(windows[1])
     else
       hl.dispatch(hl.dsp.exec_cmd(string.format('ghostty --class=%s -e %s', class, command)))
     end
@@ -35,12 +66,7 @@ local function quick_app(class, launch_cmd)
   return function()
     local windows = hl.get_windows({ class = class })
     if #windows > 0 then
-      local ws = windows[1].workspace
-      if ws and ws.special then
-        hl.dispatch(hl.dsp.workspace.toggle_special(ws.config_name:gsub('^special:', '')))
-      else
-        hl.dispatch(hl.dsp.focus { window = windows[1] })
-      end
+      focus_or_toggle_special(windows[1])
     else
       hl.dispatch(hl.dsp.exec_cmd('runapp ' .. launch_cmd))
     end

@@ -214,7 +214,7 @@ window_rule {
 hl.window_rule {
   name = 'workspace-7',
   match = {
-    class = 'Spotify',
+    class = class_pattern('Spotify', chrome_pwa_class 'YouTube'),
   },
   workspace = 7,
 }

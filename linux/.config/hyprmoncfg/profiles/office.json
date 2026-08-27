@@ -1,7 +1,7 @@
 {
   "name": "office",
   "created_at": "2026-06-25T14:12:45.926882423Z",
-  "updated_at": "2026-08-25T07:15:52.976459777Z",
+  "updated_at": "2026-08-26T05:39:39.468428815Z",
   "outputs": [
     {
       "key": "china star optoelectronics technology co., ltd|mnd508zb1-1",
@@ -15,8 +15,8 @@
       "width": 2880,
       "height": 1920,
       "refresh": 120,
-      "x": -38,
-      "y": 169,
+      "x": -37,
+      "y": 61,
       "scale": 1.5,
       "transform": 0,
       "bitdepth": 8,
@@ -40,9 +40,9 @@
       "width": 3840,
       "height": 2160,
       "refresh": 60,
-      "x": 1920,
+      "x": 1883,
       "y": 0,
-      "scale": 1.2,
+      "scale": 1.5,
       "transform": 0,
       "bitdepth": 8,
       "cm": "srgb",

@@ -74,12 +74,6 @@ menu:
       - key: "n"
         desc: Night Light
         cmd: system-action nightlight toggle
-      - key: "w"
-        desc: Toggle WiFi
-        cmd: system-action wifi toggle
-      - key: "v"
-        desc: Toggle Bluetooth
-        cmd: system-action bluetooth toggle
       - key: "c"
         desc: Caffeine Toggle
         cmd: system-action idle toggle

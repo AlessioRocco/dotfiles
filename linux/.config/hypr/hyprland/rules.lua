@@ -188,14 +188,6 @@ window_rule {
 }
 
 window_rule {
-  name = 'workspace-10',
-  match = {
-    class = chrome_pwa_class 'Google Meet',
-  },
-  workspace = 10,
-}
-
-window_rule {
   name = 'workspace-3',
   match = {
     class = class_pattern(chrome_pwa_class 'Gmail', chrome_pwa_class 'Google Calendar'),
@@ -209,6 +201,14 @@ window_rule {
     class = class_pattern(chrome_pwa_class 'GitHub', chrome_pwa_class 'Jira'),
   },
   workspace = 4,
+}
+
+window_rule {
+  name = 'workspace-5',
+  match = {
+    class = class_pattern(chrome_pwa_class 'Heroku', chrome_pwa_class 'Cloudflare'),
+  },
+  workspace = 5,
 }
 
 hl.window_rule {
@@ -233,6 +233,14 @@ window_rule {
     class = chrome_pwa_class 'Home Assistant',
   },
   workspace = 9,
+}
+
+window_rule {
+  name = 'workspace-10',
+  match = {
+    class = chrome_pwa_class 'Google Meet',
+  },
+  workspace = 10,
 }
 
 hl.window_rule {

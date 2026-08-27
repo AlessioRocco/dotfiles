@@ -50,6 +50,12 @@ menu:
       - key: "h"
         desc: Home Assistant
         cmd: chrome-pwa "Home Assistant"
+      - key: "k"
+        desc: Heroku
+        cmd: chrome-pwa "Heroku"
+      - key: "f"
+        desc: Cloudflare
+        cmd: chrome-pwa "Cloudflare"
   - key: "t"
     desc: Tools
     submenu:

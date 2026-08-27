@@ -55,19 +55,12 @@ hl.layer_rule {
 -- Send utility windows to the special:magic scratchpad workspace
 
 hl.window_rule {
-  name = 'no-screenshare',
-  match = {
-    class = '1password',
-  },
-  no_screen_share = true,
-}
-
-hl.window_rule {
   name = '1password-special',
   match = {
     class = '1password',
   },
   workspace = 'special:magic',
+  no_screen_share = true,
 }
 
 hl.window_rule {
@@ -92,6 +85,7 @@ window_rule {
     class = chrome_pwa_class 'Google Password Manager',
   },
   workspace = 'special:magic',
+  no_screen_share = true,
 }
 
 -- Float small utility windows instead of tiling them

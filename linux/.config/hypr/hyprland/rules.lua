@@ -54,6 +54,19 @@ hl.layer_rule {
 
 -- Send utility windows to the special:magic scratchpad workspace
 
+-- special:magic behaves like a "one app at a time" overlay: Monocle
+-- fullscreens whichever window is current and the native cycle_next
+-- dispatcher switches between them (see keybinds.lua's CTRL+S bind) - no
+-- custom raise/z-order logic needed. gaps_out insets that fullscreen
+-- window so it reads as a centered card instead of edge-to-edge - sized
+-- for this monitor's 1920x1280 logical resolution (2880x1920 @ 1.5x
+-- scale, per hyprmoncfg-monitors.lua); retune if that changes.
+hl.workspace_rule {
+  workspace = 'special:magic',
+  layout = 'monocle',
+  gaps_out = { top = 160, right = 192, bottom = 160, left = 192 },
+}
+
 hl.window_rule {
   name = '1password-special',
   match = {
@@ -88,18 +101,12 @@ window_rule {
   no_screen_share = true,
 }
 
--- Float small utility windows instead of tiling them
-
-window_rule {
-  name = 'float-apps',
+hl.window_rule {
+  name = 'pavucontrol-special',
   match = {
-    class = class_pattern('org.gnome.Nautilus', '1password', 'org.pulseaudio.pavucontrol', 'com.gabm.satty', chrome_pwa_class 'Google Password Manager'),
+    class = 'org.pulseaudio.pavucontrol',
   },
-  float = true,
-  size = {
-    'monitor_w*0.8',
-    'monitor_h*0.7',
-  },
+  workspace = 'special:magic',
 }
 
 -- Use scrolling layout at full width for Chrome
@@ -119,12 +126,7 @@ hl.window_rule {
   match = {
     class = 'io.ghostty.quick.*',
   },
-  float = true,
   workspace = 'special:magic',
-  size = {
-    'monitor_w*0.9',
-    'monitor_h*0.8',
-  },
 }
 
 -- Float, pin, and corner-position picture-in-picture windows
@@ -253,7 +255,7 @@ window_rule {
   workspace = 10,
 }
 
--- Float and center the Noctalia settings window
+-- Send the Noctalia settings window to the special:magic overlay
 
 hl.window_rule {
   name = 'noctalia-settings-special',
@@ -261,12 +263,6 @@ hl.window_rule {
     class = 'dev.noctalia.Noctalia.Settings',
   },
   workspace = 'special:magic',
-  float = true,
-  size = {
-    'monitor_w*0.7',
-    'monitor_h*0.8',
-  },
-  center = true,
 }
 
 -- Miscellaneous window-behavior fixes

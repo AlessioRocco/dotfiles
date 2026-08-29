@@ -188,9 +188,20 @@ local directions = {
 for dir, keys in pairs(directions) do
   for _, key in ipairs(keys) do
     bindm(key, function()
-      local workspace = hl.get_active_workspace()
+      -- get_active_workspace() reports the monitor's normal workspace, not
+      -- a special overlay currently shown on top of it - the focused
+      -- window's own .workspace is what actually reflects special:magic
+      -- (same distinction focus_or_toggle_special above relies on).
+      local window = hl.get_active_window()
+      local workspace = window and window.workspace
 
-      if workspace ~= nil and workspace.tiled_layout == 'scrolling' and (dir == 'left' or dir == 'right') then
+      if workspace ~= nil and workspace.special and (dir == 'left' or dir == 'right') then
+        -- tiled = true is what routes this to Monocle's own cyclenext/
+        -- cycleprev layout message (advancing its visible-window index) -
+        -- without it Hyprland falls back to a generic window search that
+        -- doesn't reliably drive Monocle's visibility bookkeeping.
+        hl.dispatch(hl.dsp.window.cycle_next { next = dir == 'right', tiled = true })
+      elseif workspace ~= nil and workspace.tiled_layout == 'scrolling' and (dir == 'left' or dir == 'right') then
         hl.dispatch(hl.dsp.layout('focus ' .. (dir == 'left' and 'l' or 'r')))
       else
         hl.dispatch(hl.dsp.focus { direction = dir })

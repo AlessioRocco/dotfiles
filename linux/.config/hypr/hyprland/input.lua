@@ -2,6 +2,7 @@
 hl.config {
   input = {
     kb_layout = 'us',
+    kb_options = 'compose:ralt',
     repeat_delay = 250,
     repeat_rate = 70,
 
@@ -24,7 +25,7 @@ hl.config {
 
 hl.device {
   name = 'at-translated-set-2-keyboard',
-  kb_options = 'ctrl:nocaps',
+  kb_options = 'ctrl:nocaps,compose:ralt',
 }
 
 hl.gesture {

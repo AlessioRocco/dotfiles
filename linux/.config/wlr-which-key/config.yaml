@@ -120,3 +120,18 @@ menu:
       - key: "d"
         desc: Toggle Do Not Disturb
         cmd: system-action notifications toggle-dnd
+  - key: "l"
+    desc: Layouts
+    submenu:
+      - key: "d"
+        desc: Dwindle
+        cmd: hyprctl eval "hl.workspace_rule({workspace = $(hyprctl activeworkspace -j | jq .id), layout = \"dwindle\"})"
+      - key: "m"
+        desc: Master
+        cmd: hyprctl eval "hl.workspace_rule({workspace = $(hyprctl activeworkspace -j | jq .id), layout = \"master\"})"
+      - key: "s"
+        desc: Scrolling
+        cmd: hyprctl eval "hl.workspace_rule({workspace = $(hyprctl activeworkspace -j | jq .id), layout = \"scrolling\"})"
+      - key: "o"
+        desc: Monocle
+        cmd: hyprctl eval "hl.workspace_rule({workspace = $(hyprctl activeworkspace -j | jq .id), layout = \"monocle\"})"

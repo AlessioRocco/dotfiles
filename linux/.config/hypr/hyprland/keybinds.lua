@@ -219,7 +219,7 @@ for dir, keys in pairs(directions) do
       local window = hl.get_active_window()
       local workspace = window and window.workspace
 
-      if workspace ~= nil and workspace.special and (dir == 'left' or dir == 'right') then
+      if workspace ~= nil and workspace.tiled_layout == 'monocle' and (dir == 'left' or dir == 'right') then
         -- tiled = true is what routes this to Monocle's own cyclenext/
         -- cycleprev layout message (advancing its visible-window index) -
         -- without it Hyprland falls back to a generic window search that

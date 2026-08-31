@@ -12,6 +12,7 @@ local browser = 'google-chrome-stable'
 local terminal = 'ghostty'
 local file_manager = 'nautilus'
 local main_mod = 'SUPER'
+local hyper_mod = 'CTRL + ALT + SHIFT + SUPER'
 
 -- Keyboard-driven focus alone doesn't raise floating windows to the top of
 -- the stack in Hyprland (https://github.com/hyprwm/Hyprland/discussions/5451)
@@ -80,6 +81,10 @@ local function bindm(key, action, description)
   hl.bind(main_mod .. ' + ' .. key, action, { description = description })
 end
 
+local function bindh(key, action, description)
+  hl.bind(hyper_mod .. ' + ' .. key, action, { description = description })
+end
+
 local function exec(cmd)
   return hl.dsp.exec_cmd(cmd)
 end
@@ -128,6 +133,25 @@ bindm('PRINT', exec 'wlr-which-key --initial-keys s', 'Screenshot')
 --------------------- Apps ---------------------
 bindm('A', exec 'wlr-which-key --initial-keys a', 'Apps')
 bindm('SEMICOLON', exec 'wlr-which-key --initial-keys a', 'Apps')
+
+--------------------- Hyper: Jump to App ---------------------
+-- Mirrors the keys under the which-key Apps submenu (wlr-which-key/config.yaml)
+-- so Hyper + <key> jumps straight to the app without opening the overlay.
+bindh('B', exec 'focus-or-launch google-chrome google-chrome-stable', 'Open Google Chrome')
+bindh('T', exec 'focus-or-launch org.telegram.desktop telegram-desktop', 'Open Telegram')
+bindh('M', exec 'chrome-pwa "Gmail"', 'Open Gmail')
+bindh('C', exec 'chrome-pwa "Google Calendar"', 'Open Calendar')
+bindh('E', exec 'chrome-pwa "Google Meet"', 'Open Google Meet')
+bindh('S', exec 'focus-or-launch slack slack', 'Open Slack')
+bindh('A', exec 'chrome-pwa "Google Chat"', 'Open Google Chat')
+bindh('G', exec 'chrome-pwa "GitHub"', 'Open GitHub')
+bindh('J', exec 'chrome-pwa "Jira"', 'Open Jira')
+bindh('U', exec 'focus-or-launch Spotify spotify', 'Open Spotify')
+bindh('H', exec 'chrome-pwa "Home Assistant"', 'Open Home Assistant')
+bindh('K', exec 'chrome-pwa "Heroku"', 'Open Heroku')
+bindh('F', exec 'chrome-pwa "Cloudflare"', 'Open Cloudflare')
+bindh('1', exec 'focus-or-launch 1password gtk-launch 1password', 'Open 1Password')
+bindh('2', exec 'chrome-pwa "Google Password Manager"', 'Open Google Password Manager')
 
 --------------------- Windows ---------------------
 bindm('Q', hl.dsp.window.close(), 'Close Current Window')

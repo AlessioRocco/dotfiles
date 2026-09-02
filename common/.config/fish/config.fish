@@ -92,15 +92,28 @@ zoxide init fish | source
 # Mise
 mise activate fish | source
 
-# Herdr: rename the tab to the running foreground command, falling back to
-# $PWD's directory name while the shell is idle at the prompt.
+# Herdr: rename the tab to the running foreground command, falling back to a
+# short idle label while the shell is at the prompt. The idle label uses the
+# repo's main folder name (shared across all its worktrees) instead of the
+# current worktree's directory name, which worktrunk derives from the whole
+# branch (user/ticket/description) and can get long.
 if status is-interactive && set -q HERDR_ENV && set -q HERDR_TAB_ID
-    function _herdr_tab_name_idle --on-variable PWD
-        set -l label (basename $PWD)
+    function _herdr_idle_label
         if test "$PWD" = "$HOME"
-            set label "~"
+            echo "~"
+            return
         end
-        herdr tab rename "$HERDR_TAB_ID" "$label" >/dev/null 2>&1
+        set -l git_common (command git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+        if test -n "$git_common"
+            basename (dirname -- $git_common)
+            return
+        end
+        basename $PWD
+    end
+
+    function _herdr_tab_name_idle --on-variable PWD
+        set -g _herdr_idle_label_cache (_herdr_idle_label)
+        herdr tab rename "$HERDR_TAB_ID" "$_herdr_idle_label_cache" >/dev/null 2>&1
     end
 
     function _herdr_tab_name_running --on-event fish_preexec
@@ -109,7 +122,7 @@ if status is-interactive && set -q HERDR_ENV && set -q HERDR_TAB_ID
     end
 
     function _herdr_tab_name_reset --on-event fish_postexec
-        _herdr_tab_name_idle
+        herdr tab rename "$HERDR_TAB_ID" "$_herdr_idle_label_cache" >/dev/null 2>&1
     end
 
     _herdr_tab_name_idle

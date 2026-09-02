@@ -122,6 +122,15 @@ else
   gh auth login --web
 fi
 
+# Install gh-dash (GitHub CLI dashboard extension).
+if gh extension list 2>/dev/null | grep -q dlvhdr/gh-dash; then
+  fancy_echo "Updating gh-dash ..."
+  gh extension upgrade dlvhdr/gh-dash
+else
+  fancy_echo "Installing gh-dash ..."
+  gh extension install dlvhdr/gh-dash
+fi
+
 # Launch 1Password so its SSH agent is up before we rely on it below for the
 # private dotfiles clone (git@github.com) and commit signing. It's normally
 # already running (login item on macOS, compositor autostart on Linux — see

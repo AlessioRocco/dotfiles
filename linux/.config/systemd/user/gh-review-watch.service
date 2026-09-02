@@ -1,0 +1,6 @@
+[Unit]
+Description=Poll GitHub for PRs awaiting my review and open worktrees for them
+
+[Service]
+Type=oneshot
+ExecStart=%h/.bin/gh-review-watch

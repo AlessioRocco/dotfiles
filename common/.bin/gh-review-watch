@@ -7,7 +7,10 @@
 # previous run), register it as its own herdr workspace — labeled the same
 # way as gh-dash's "W" review command — and fire a herdr notification. A PR
 # whose repo has no local checkout is skipped silently; there's nowhere to
-# put its worktree. Meant to run on a schedule (cron, every 15m).
+# put its worktree. Meant to run on a schedule every 15m: cron
+# (common/.config/cron/crontab) on macOS, a systemd --user timer
+# (linux/.config/systemd/user/gh-review-watch.timer) on Linux, since CachyOS
+# ships no cron daemon.
 #
 # No separate "seen" state: `wt switch`'s own `.action` field (`created` vs
 # `existing`) is already exactly the signal needed, so there's nothing to

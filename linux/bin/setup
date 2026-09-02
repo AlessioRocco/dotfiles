@@ -153,4 +153,12 @@ for service in udiskie.service ssh-add.service hyprmoncfgd.service hyprpolkitage
   fi
 done
 
+# Enable and start the gh-review-watch timer (this repo's cron-based
+# scheduling in common/.config/cron/crontab only takes effect where a cron
+# daemon exists; CachyOS ships none, so Linux schedules it via systemd
+# --user instead).
+fancy_echo "Enabling gh-review-watch timer ..."
+systemctl --user daemon-reload
+systemctl --user enable --now gh-review-watch.timer
+
 fancy_echo "Linux setup completed!"

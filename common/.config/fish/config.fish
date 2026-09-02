@@ -9,6 +9,12 @@ set -xg CDPATH . ~/code
 # Set LazyVim as the default nvim app
 set -xg NVIM_APPNAME nvim-lazyvim
 
+# Herdr's pty doesn't answer Nvim's startup DSR query for background-color
+# detection, which throws E1568 and slows startup. Skip the query there.
+if set -q HERDR_ENV
+    set -xg NVIM_NOTTYFAST 1
+end
+
 # Set NeoVim as the default editor.
 set -xg EDITOR nvim
 

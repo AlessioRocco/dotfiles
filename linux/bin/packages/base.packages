@@ -46,6 +46,7 @@ git-delta
 github-cli
 gnupg
 opencode
+postgresql
 television
 tree-sitter-cli
 ctags

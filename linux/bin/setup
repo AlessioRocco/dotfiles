@@ -80,16 +80,6 @@ else
   fancy_echo "rtk already installed, skipping ..."
 fi
 
-# Install tokensave (used by the Claude Code Stop hook / MCP server in
-# dotfiles-private). Not packaged for Arch/AUR, so build it with cargo
-# (installed above via rustup).
-if ! command -v tokensave &>/dev/null; then
-  fancy_echo "Installing tokensave ..."
-  cargo install tokensave
-else
-  fancy_echo "tokensave already installed, skipping ..."
-fi
-
 # Install ZSA udev rules for keyboard flashing (Planck EZ, Moonlander, Ergodox EZ).
 fancy_echo "Setting up ZSA udev rules ..."
 sudo cp "$SCRIPT_DIR/50-zsa.rules" /etc/udev/rules.d/50-zsa.rules

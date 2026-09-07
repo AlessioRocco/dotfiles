@@ -12,7 +12,7 @@ hl.config {
 
     allow_tearing = false,
 
-    layout = 'scrolling',
+    layout = 'monocle',
   },
 
   decoration = {

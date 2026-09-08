@@ -8,6 +8,7 @@ docker-language-server
 claude-code
 herdr-bin
 hunk-bin
+jira-cli-bin
 
 # Desktop and shell
 noctalia-greeter

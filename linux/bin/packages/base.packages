@@ -22,6 +22,7 @@ fd
 ripgrep
 ast-grep
 jq
+fzf
 zoxide
 eza
 wl-clipboard

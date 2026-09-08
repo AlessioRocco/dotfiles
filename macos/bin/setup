@@ -61,6 +61,7 @@ brew bundle --file=- <<EOF
 tap "heroku/brew"
 tap "aovestdipaperino/tap"
 tap "lmilojevicc/tap"
+tap "ankitpokhrel/jira-cli"
 
 # Tools and libraries
 brew "ast-grep"
@@ -68,11 +69,15 @@ brew "awscli"
 brew "bat"
 brew "fd"
 brew "fish"
+brew "fzf"
 brew "geckodriver"
 brew "gh"
 brew "git"
 brew "git-delta"
 brew "heroku"
+# Formula name unverified: Homebrew isn't installed on the development
+# machine this was written on. Correct if `brew install` can't find it.
+brew "jira-cli"
 brew "jq"
 brew "libpq"
 brew "ltex-ls"

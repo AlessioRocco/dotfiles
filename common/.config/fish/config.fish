@@ -40,6 +40,9 @@ fish_add_path --move ~/.bin
 # Add ~/.local/bin to the $PATH (rtk's install location)
 fish_add_path --move ~/.local/bin
 
+# Add ~/go/bin to the $PATH (go install's location)
+fish_add_path --move ~/go/bin
+
 ### Aliases
 
 # Git/GitHub CLI

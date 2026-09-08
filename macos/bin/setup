@@ -60,6 +60,7 @@ brew update
 brew bundle --file=- <<EOF
 tap "heroku/brew"
 tap "aovestdipaperino/tap"
+tap "lmilojevicc/tap"
 
 # Tools and libraries
 brew "ast-grep"
@@ -78,6 +79,7 @@ brew "ltex-ls"
 brew "neovim"
 brew "ripgrep"
 brew "rtk"
+brew "seshagy"
 brew "starship"
 brew "stow"
 brew "television"

@@ -45,6 +45,7 @@ docker-compose
 git-delta
 github-cli
 gnupg
+go
 opencode
 postgresql
 television

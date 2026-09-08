@@ -76,3 +76,13 @@ command = "gh dash"
 width = "90%"
 height = "90%"
 description = "GitHub: dashboard"
+
+# >>> seshagy keybind >>>
+[[keys.command]]
+  key = "prefix+s"
+  type = "popup"
+  command = "~/go/bin/seshagy --ephemeral"
+  description = "seshagy session manager"
+  width = "90%"
+  height = "90%"
+# <<< seshagy keybind <<<

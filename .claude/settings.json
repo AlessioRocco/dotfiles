@@ -1,6 +1,7 @@
 {
   "disableClaudeAiConnectors": true,
   "enabledPlugins": {
-    "nebulab-git-workflow@nebulab": true
+    "nebulab-git-workflow@nebulab": true,
+    "mattpocock-skills@claude-plugins-official": true
   }
 }

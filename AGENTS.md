@@ -85,6 +85,18 @@ No automated tests. Manual verification required:
 4. Restart affected applications (WezTerm, Neovim, etc.)
 5. Verify configuration changes take effect
 
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues (`AlessioRocco/dotfiles`), via the `gh` CLI. See
+`docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context layout: `CONTEXT.md` + `docs/adr/` at the repo root. See
+`docs/agents/domain.md`.
+
 ## Common tasks
 
 - **Add Homebrew package**: Edit the brew bundle in `macos/bin/setup` (and

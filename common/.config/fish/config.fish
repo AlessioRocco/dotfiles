@@ -86,6 +86,9 @@ abbr noctalia-export "noctalia config export > ~/.config/noctalia/config.toml"
 # Herdr
 abbr s herdr-workspace-setup
 
+# Claude
+abbr c claude
+
 ### Homebrew
 # Homebrew environment is set up per-OS in conf.d/os.fish.
 

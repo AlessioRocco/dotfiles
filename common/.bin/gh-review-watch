@@ -66,6 +66,13 @@ export GIT_CONFIG_VALUE_0="!gh auth git-credential"
 
 CODE_DIR="$HOME/code"
 
+# The skill that starts the review, kept out of the herdr agent prompt call
+# below and configurable via env var rather than hardcoded: which skill does
+# this best is expected to change over time (marketplace skills get renamed,
+# forked, or replaced), and a machine that wants a different one shouldn't
+# need to edit this script to get it.
+REVIEW_COMMAND="${GH_REVIEW_WATCH_COMMAND:-/mattpocock-skills:code-review}"
+
 prs=$(gh search prs --review-requested=@me --state=open --draft=false \
   --json number,title,repository 2>/dev/null) || exit 0
 
@@ -153,21 +160,13 @@ echo "$prs" | jq -c '.[]' | while IFS= read -r pr; do
         sleep 0.3
       done
 
-      # /pr-review is sent unconditionally, identically, for every repo — no
-      # per-repo prompt logic belongs here. Repos that carry their own
-      # gitignored .claude/commands/pr-review.md (propagated into the fresh
-      # worktree by their own `wt` post-start hook, e.g.
-      # FrameworkComputer/marketplace) get a real review started; repos
-      # without one just get an "Unknown command: /pr-review" reply in the
-      # pane, which is itself the signal that the repo still needs that
-      # setup.
-      #
-      # Possible race, deliberately left unhandled: worktrunk runs
-      # post-start hooks in the background, so the file this depends on may
-      # not have landed in the worktree yet when this fires moments later.
-      # Worst case is the same harmless "Unknown command" reply as a repo
-      # with no hook at all, so it isn't worth a retry loop here.
-      [[ $agent_started == true ]] && herdr agent prompt "$agent_name" "/pr-review" >/dev/null 2>&1
+      # $REVIEW_COMMAND is sent unconditionally, identically, for every
+      # repo — no per-repo prompt logic belongs here. Unlike the old
+      # per-repo gitignored .claude/commands/pr-review.md convention it
+      # replaces, a marketplace skill is available regardless of repo, so
+      # there's no "unknown command" fallback signal to rely on here
+      # anymore.
+      [[ $agent_started == true ]] && herdr agent prompt "$agent_name" "$REVIEW_COMMAND" >/dev/null 2>&1
     fi
   fi
 

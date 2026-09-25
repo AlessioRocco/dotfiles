@@ -116,16 +116,17 @@ echo "$prs" | jq -c '.[]' | while IFS= read -r pr; do
       # PR number rather than tracking names anywhere.
       #
       # The 32-char budget is spent suffix-first, and the *repo slug* is what
-      # gets trimmed: a repo slug alone can already sit at the limit
-      # ("frameworkcomputer-marketplace" is 29 chars), so truncating the
-      # whole concatenated string instead silently drops "-pr-$number" and
-      # every PR on that repo lands on the identical name. That's not a
-      # cosmetic collision — the second PR's `agent start` fails with
-      # agent_name_taken (not transient, so the retry below just exhausts),
-      # leaving a worktree and a Herdr tab with no Claude session behind
-      # them. Confirmed live on PRs 10935 and 10915 of the same repo, which
-      # both collapsed to "frameworkcomputer-marketplace-pr". Trimming the
-      # slug keeps the PR number whole, so distinct PRs can't collide.
+      # gets trimmed: a repo slug alone can already sit at the limit (a
+      # long owner/repo pair like "someorganization/storefront-app" is
+      # already 31 chars as a slug), so truncating the whole concatenated
+      # string instead silently drops "-pr-$number" and every PR on that
+      # repo lands on the identical name. That's not a cosmetic collision —
+      # the second PR's `agent start` fails with agent_name_taken (not
+      # transient, so the retry below just exhausts), leaving a worktree
+      # and a Herdr tab with no Claude session behind them. Confirmed live
+      # on two PRs of the same repo, which both collapsed to the same
+      # "<slug>-pr" prefix. Trimming the slug keeps the PR number whole, so
+      # distinct PRs can't collide.
       suffix="-pr-$number"
 
       # Leading non-letters are stripped (and an all-numeric owner falls

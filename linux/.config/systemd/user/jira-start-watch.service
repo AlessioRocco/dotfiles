@@ -1,0 +1,6 @@
+[Unit]
+Description=Start a grill session for Jira issues I move to In Progress
+
+[Service]
+Type=oneshot
+ExecStart=%h/.bin/jira-start-watch

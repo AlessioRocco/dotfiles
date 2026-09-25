@@ -1,0 +1,9 @@
+[Unit]
+Description=Run jira-start-watch every minute
+
+[Timer]
+OnCalendar=*:*
+Persistent=true
+
+[Install]
+WantedBy=timers.target

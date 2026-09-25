@@ -1,0 +1,279 @@
+#!/bin/bash
+#
+# Poll Jira for issues assigned to me that are In Progress. For each one with
+# no worktree yet, create it (named by jira-branch-name, exactly as
+# jira-worktree-start would), register it as its own herdr workspace, start
+# an interactive Claude session in it and send it $GRILL_COMMAND plus the
+# issue key — so the grilling is already underway by the time I open the
+# tab. Meant to run every minute from a systemd --user timer
+# (linux/.config/systemd/user/jira-start-watch.timer).
+#
+# Same mechanics as gh-review-watch, whose header documents the herdr side
+# (the agent_pane_busy retry, `worktree open --json`'s root pane, agent
+# prompts fired without --wait). Only what differs is explained here.
+#
+# Deliberately contains no Jira projects, server or repo names: the repos to
+# poll are discovered, not listed. A main checkout under ~/code/<owner>/<repo>
+# whose mise env defines JIRA_PROJECT (and JIRA_API_TOKEN) is a Jira-backed
+# repo — the same, already gitignored, per-repo config jira-worktree-start
+# reads — so the project → checkout mapping lives with the checkout itself,
+# and this script stays identical on any machine. Linked worktrees carry a
+# copy of the same mise.toml, which is why only main checkouts (a real .git
+# directory, not a .git file) count. If two checkouts name the same project,
+# the first one found wins and the other is logged and skipped: one issue,
+# one worktree.
+#
+# No separate "seen" state: an existing worktree for the issue is the signal
+# that it has been handled, so there is nothing to track that worktrunk
+# doesn't already know. The check is deliberately broader than
+# jira-branch-name's own `arocco/<key>/` matching — any worktree whose branch
+# or path mentions the key counts — because a duplicate worktree (and a
+# second grill session) is far worse than a skipped issue, and branches
+# named by other tools spell the key differently. A failed lookup skips the
+# issue for the same reason. Removing the worktree while the issue is still
+# In Progress means it comes back next run — deliberately.
+#
+# $HERDR_ENV is stripped from `wt switch` only (not from this process, so
+# the herdr CLI calls still see whatever they need): worktrunk's post-switch
+# hook (herdr-worktree-workspace) would otherwise register the workspace
+# itself and race this script's own `herdr worktree open` over the label.
+# Under systemd it is unset anyway; this covers a run from a herdr pane.
+#
+# systemd --user services get no login-shell environment: PATH is extended
+# here, and each repo's Jira env comes from `mise env` in that checkout, the
+# same way jira-worktree-start loads it for a popup.
+#
+# `--dry-run` is the test seam: it discovers repos, queries Jira and resolves
+# each issue's branch (read-only calls only), and prints what it would do
+# instead of creating worktrees, workspaces or sessions.
+# $JIRA_START_WATCH_CODE_DIR points discovery elsewhere for stubbed tests.
+
+set -uo pipefail
+
+# Appended, not prepended: under systemd the inherited PATH is minimal, so
+# order changes nothing there, while a caller's own PATH — stubs in a test,
+# above all — still wins.
+export PATH="$PATH:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin"
+PATH+=":/usr/local/bin:/usr/bin:/bin"
+
+CODE_DIR="${JIRA_START_WATCH_CODE_DIR:-$HOME/code}"
+
+# Sent as a slash command, not a prose prompt: the skill is
+# disable-model-invocation, so it only runs when invoked by name. Configurable
+# for the same reason as GH_REVIEW_WATCH_COMMAND — the skill that does this
+# best is expected to change.
+GRILL_COMMAND="${JIRA_START_WATCH_COMMAND:-/mattpocock-skills:grill-with-docs}"
+
+# WHERE clause only, no ORDER BY — jira-cli wraps it in its own
+# project-scoping expression (see jira-worktree-start). Overridable per repo
+# from its own mise.toml.
+DEFAULT_JQL='assignee = currentUser() AND status = "In Progress"'
+
+branch_name="$(dirname "$(readlink -f "$0")")/jira-branch-name"
+
+dry_run=false
+for arg in "$@"; do
+  case $arg in
+    --dry-run) dry_run=true ;;
+    -h | --help)
+      echo "usage: jira-start-watch [--dry-run]"
+      exit 0
+      ;;
+    *)
+      echo "jira-start-watch: unknown argument: $arg" >&2
+      exit 2
+      ;;
+  esac
+done
+
+log() {
+  echo "jira-start-watch: $*" >&2
+}
+
+# Say what would happen on a dry run; stay quiet on a real one, where only
+# failures are worth a journal line.
+report() {
+  [[ $dry_run == true ]] && echo "$*"
+}
+
+# The Jira project a checkout is wired to, or nothing. The grep is only a
+# cheap pre-filter so `mise env` runs in a handful of checkouts rather than
+# all of them; mise itself is what resolves the actual value.
+jira_project_of() {
+  local repo_path=$1 f found=false
+  for f in mise.toml .mise.toml mise.local.toml .mise.local.toml \
+    .config/mise.toml .mise/config.toml; do
+    [[ -f $repo_path/$f ]] && grep -q JIRA_PROJECT "$repo_path/$f" \
+      && found=true && break
+  done
+  [[ $found == true ]] || return 0
+
+  (
+    cd "$repo_path" || exit 0
+    eval "$(mise env -s bash 2>/dev/null)" || exit 0
+    printf '%s' "${JIRA_PROJECT:-}"
+  )
+}
+
+# Herdr agent names must match [a-z][a-z0-9_-]{0,31} and be unique among
+# live agents. The validated, lowercased key already fits the pattern and is
+# the unique part, so the budget is spent on it first and the "grill-" prefix
+# is dropped rather than truncating the key.
+agent_name_for() {
+  local key=$1
+  if ((${#key} + 6 <= 32)); then
+    printf 'grill-%s' "$key"
+  elif ((${#key} <= 32)); then
+    printf '%s' "$key"
+  fi
+}
+
+# Everything after the worktree exists: workspace, session, grill command.
+# Best-effort throughout, like gh-review-watch — a failure here must never
+# stop the notification.
+start_session() {
+  local path=$1 branch=$2 key_upper=$3 key_lower=$4
+  local root_ws open_result pane_id new_ws agent_name
+
+  root_ws=$(herdr worktree list --cwd "$path" --json 2>/dev/null \
+    | jq -r '.result.source.source_workspace_id // empty')
+  [[ -z $root_ws ]] && { log "$key_upper: repo not open in herdr"; return 1; }
+
+  # Labeled with the bare branch, as herdr-worktree-workspace does for a
+  # worktree created by hand, so the sidebar looks the same either way.
+  open_result=$(herdr worktree open --workspace "$root_ws" --path "$path" \
+    --label "$branch" --no-focus --json 2>/dev/null)
+
+  pane_id=$(jq -r '.result.root_pane.pane_id // empty' <<<"$open_result")
+  if [[ -z $pane_id ]]; then
+    new_ws=$(jq -r '.result.workspace.workspace_id // empty' <<<"$open_result")
+    [[ -n $new_ws ]] && pane_id=$(herdr pane list --workspace "$new_ws" \
+      2>/dev/null | jq -r '.result.panes[0].pane_id // empty')
+  fi
+  [[ -z $pane_id ]] && { log "$key_upper: no herdr pane"; return 1; }
+
+  agent_name=$(agent_name_for "$key_lower")
+  [[ -z $agent_name ]] && { log "$key_upper: key too long"; return 1; }
+
+  local started=false
+  for _ in 1 2 3 4 5 6 7 8 9 10; do
+    herdr agent start "$agent_name" --kind claude --pane "$pane_id" \
+      >/dev/null 2>&1 && { started=true; break; }
+    sleep 0.3
+  done
+  [[ $started == true ]] || { log "$key_upper: agent start failed"; return 1; }
+
+  # The session reads the issue itself (the repo has its own Jira tooling),
+  # so only the key goes in — no issue text to keep in sync.
+  herdr agent prompt "$agent_name" "$GRILL_COMMAND $key_upper" >/dev/null 2>&1
+}
+
+# One issue, inside its repo's checkout with its mise env loaded.
+handle_issue() {
+  local repo=$1 repo_path=$2 key=$3 summary=$4
+  local key_upper key_lower worktrees key_re branch create=false result path
+
+  key_upper=$(tr '[:lower:]' '[:upper:]' <<<"$key")
+  key_lower=$(tr '[:upper:]' '[:lower:]' <<<"$key")
+
+  worktrees=$(wt list --format json 2>/dev/null) \
+    || { log "$key_upper: wt list failed, skipping"; return; }
+
+  # A key followed by a digit is a different issue (PROJ-12 vs PROJ-123).
+  key_re="(^|[^a-z0-9])${key_lower}([^0-9]|$)"
+  if jq -e --arg re "$key_re" 'any(.[];
+      ((.branch // "") + " " + (.path // "")) | ascii_downcase | test($re))' \
+    <<<"$worktrees" >/dev/null; then
+    report "$key_upper: worktree already exists in $repo, skipping"
+    return
+  fi
+
+  branch=$("$branch_name" existing "$key_upper") || return
+  if [[ -z $branch ]]; then
+    branch=$("$branch_name" propose "$key_upper") || return
+    create=true
+  fi
+
+  local -a switch_args=(switch "$branch")
+  [[ $create == true ]] && switch_args=(switch --create "$branch")
+  switch_args+=(--no-cd --yes --format=json)
+
+  if [[ $dry_run == true ]]; then
+    report "$key_upper: would run in $repo: wt ${switch_args[*]}"
+    report "$key_upper: then start $(agent_name_for "$key_lower")" \
+      "with: $GRILL_COMMAND $key_upper"
+    return
+  fi
+
+  result=$(env -u HERDR_ENV wt "${switch_args[@]}" 2>/dev/null) \
+    || { log "$key_upper: wt switch $branch failed"; return; }
+
+  # Anything but `created` means a worktree was already there after all:
+  # never start a second session on it.
+  [[ $(jq -r .action <<<"$result") == created ]] || return
+
+  path=$(jq -r .path <<<"$result")
+  [[ -z $path || $path == null ]] && return
+
+  local title="Worktree pronto: $key_upper"
+  start_session "$path" "$branch" "$key_upper" "$key_lower" \
+    && title="Grill avviato: $key_upper"
+
+  herdr notification show "$title" --body "$repo — $summary" \
+    --sound request >/dev/null 2>&1
+}
+
+# One Jira-backed checkout: its env, its query, its issues.
+handle_repo() {
+  local repo=$1 repo_path=$2
+  cd "$repo_path" || return
+  eval "$(mise env -s bash 2>/dev/null)" || return
+
+  [[ -n ${JIRA_PROJECT:-} ]] || return
+  [[ -n ${JIRA_API_TOKEN:-} ]] \
+    || { log "$repo: JIRA_API_TOKEN not set"; return; }
+
+  local jql=${JIRA_START_WATCH_JQL:-$DEFAULT_JQL} rows rc
+  rows=$(jira issue list --project "$JIRA_PROJECT" -q "$jql" \
+    --plain --no-headers --columns key,summary --delimiter '|' 2>&1)
+  rc=$?
+
+  # jira-cli exits 1 on an empty result too, with a "No result found" line
+  # on stdout; only anything else is worth logging.
+  if ((rc != 0)); then
+    [[ $rows == *"No result found"* ]] \
+      || log "$repo: jira issue list failed: $rows"
+    return
+  fi
+
+  # Rows come in on fd 3 and each issue runs with stdin closed: `wt switch`
+  # runs project hooks, and anything in them that reads stdin would
+  # otherwise swallow the remaining rows.
+  local key summary
+  while IFS='|' read -r -u 3 key summary; do
+    key=${key//[[:space:]]/}
+    [[ $key =~ ^[A-Za-z][A-Za-z0-9]*-[0-9]+$ ]] || continue
+    handle_issue "$repo" "$repo_path" "$key" "$summary" </dev/null
+  done 3<<<"$rows"
+}
+
+declare -A repo_for_project=()
+
+for repo_path in "$CODE_DIR"/*/*; do
+  [[ -d $repo_path/.git ]] || continue
+  repo=${repo_path#"$CODE_DIR"/}
+
+  project=$(jira_project_of "$repo_path")
+  [[ -z $project ]] && continue
+
+  if [[ -n ${repo_for_project[$project]:-} ]]; then
+    log "$repo: project $project already handled by" \
+      "${repo_for_project[$project]}, skipping"
+    continue
+  fi
+  repo_for_project[$project]=$repo
+
+  (handle_repo "$repo" "$repo_path")
+done
+
+exit 0

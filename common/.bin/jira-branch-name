@@ -1,0 +1,172 @@
+#!/bin/bash
+#
+# The one place that decides what a Jira issue's branch is called:
+# `arocco/<key>/<slug>`. Shared by jira-worktree-start (interactive, a herdr
+# popup) and jira-start-watch (unattended, a systemd timer), which must agree
+# on the name — otherwise the watcher can't recognize a branch the picker
+# created, and vice versa.
+#
+#   existing <ISSUE-KEY>   Print the branch already in flight for the issue,
+#                          or nothing if there is none.
+#   propose  <ISSUE-KEY>   Print a fresh name, slug generated from the issue.
+#
+# Runs against the git repository in the current directory, and expects the
+# caller to have loaded that repo's Jira env (jira-cli needs it for
+# `propose`). Exits non-zero, with a message on stderr, only on an actual
+# failure: "no existing branch" is an empty line, not an error, so a failed
+# lookup can never be mistaken for a free name.
+
+set -euo pipefail
+
+prefix=arocco
+
+die() {
+  echo "jira-branch-name: $*" >&2
+  exit 1
+}
+
+usage() {
+  echo "usage: jira-branch-name existing|propose ISSUE-KEY" >&2
+  exit 2
+}
+
+(($# == 2)) || usage
+mode=$1
+issue_key=$2
+
+# Enforced before the key reaches the match regexes below: an unvalidated
+# key would otherwise be interpolated straight into a grep/jq regex, letting
+# metacharacters change match semantics instead of just failing to match.
+[[ $issue_key =~ ^[A-Za-z][A-Za-z0-9]*-[0-9]+$ ]] \
+  || die "invalid issue key: $issue_key (expected PROJECT-123 format)"
+
+git rev-parse --show-toplevel >/dev/null 2>&1 \
+  || die "not inside a git repository"
+
+issue_key_upper=$(tr '[:lower:]' '[:upper:]' <<<"$issue_key")
+issue_key_lower=$(tr '[:upper:]' '[:lower:]' <<<"$issue_key")
+
+# ── existing ─────────────────────────────────────────────────────────────────
+
+# Staged for latency: a worktree already open, or a local branch without one,
+# is a plain local ref — `git for-each-ref` answers that in milliseconds. Only
+# when nothing local matches (a colleague's branch, or one pushed from
+# another machine) do we pay for `wt list --remotes`, which needs a live look
+# at the remote and is measurably slower. Either way, a plain `wt switch` of
+# the result is the one idempotent path in: it enters an existing worktree,
+# creates one for a branch that has none, or creates a tracking worktree for
+# a remote-only branch.
+existing() {
+  local local_re="^${prefix}/${issue_key_lower}/"
+  local branch
+  branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ \
+    2>/dev/null | grep -E "$local_re" | head -n1) || true
+
+  if [[ -z $branch ]]; then
+    # Remote-only rows list as "<remote>/arocco/<key>/<slug>"; the regex
+    # matches that form too, and the sed strips the leading remote name
+    # back off, so `wt switch` always gets the bare local branch name it
+    # expects.
+    local match_re="(^|/)${prefix}/${issue_key_lower}/"
+    local jq_filter='first(.[] | select(.branch != null'
+    jq_filter+=' and (.branch | test($re))) | .branch) // empty'
+    local rows
+    rows=$(wt list --format json --remotes 2>/dev/null) \
+      || die "wt list --remotes failed"
+    branch=$(jq -r --arg re "$match_re" "$jq_filter" <<<"$rows")
+    branch=$(sed -E "s#^.*/(${prefix}/)#\\1#" <<<"$branch")
+  fi
+
+  printf '%s\n' "$branch"
+}
+
+# ── propose ──────────────────────────────────────────────────────────────────
+
+fallback_slug() {
+  printf '%s' "$1" \
+    | tr '[:upper:]' '[:lower:]' \
+    | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//' \
+    | cut -d- -f1-4 \
+    | cut -c1-30 \
+    | sed -E 's/-+$//'
+}
+
+# The slug comes from the local Claude CLI in headless print mode, using the
+# same flag spelling as worktrunk's own commit-message hook (tuned for this
+# exact latency profile: ~2.5s/call). Wrapped in a 5s timeout; on timeout or
+# any failure it falls back to a deterministic slugification of the summary,
+# so a name always comes back.
+propose() {
+  local raw_issue title description
+  raw_issue=$(jira issue view "$issue_key_upper" --raw) \
+    || die "jira issue view failed for $issue_key_upper"
+  title=$(jq -r '.fields.summary' <<<"$raw_issue")
+  description=$(jq -c '.fields.description' <<<"$raw_issue" | head -c 4000)
+
+  # Few-shot examples carry the register (terse noun-phrase handles) far
+  # more effectively than adjectives ever could — real slugs already in this
+  # repo's history, local or remote, deduplicated.
+  local -a example_slugs
+  mapfile -t example_slugs < <(
+    git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ \
+      2>/dev/null \
+      | grep -E "^([^/]+/)?${prefix}/[^/]+/[^/]+\$" \
+      | sed -E "s#^([^/]+/)?${prefix}/[^/]+/##" \
+      | sort -u \
+      | head -6
+  )
+
+  local examples_block=""
+  if ((${#example_slugs[@]} > 0)); then
+    examples_block=$'\nReal branch slugs from this project, for register:\n'
+    local s
+    for s in "${example_slugs[@]}"; do
+      examples_block+="- $s"$'\n'
+    done
+  fi
+
+  local prompt
+  prompt=$(cat <<EOF
+Generate a short git branch slug for this Jira issue.
+
+Rules:
+- 2 to 4 words
+- lowercase kebab-case (letters, digits, hyphens only)
+- at most 30 characters
+- do not include the issue key
+- do not start with a ticket-speak verb (e.g. "fix", "add", "implement")
+- output only the slug, nothing else
+$examples_block
+Issue summary: $title
+
+Issue description (raw JSON, may be Atlassian Document Format):
+$description
+EOF
+  )
+
+  local slug="" model_out
+  if command -v claude >/dev/null 2>&1; then
+    model_out=$(printf '%s' "$prompt" | timeout 5 env MAX_THINKING_TOKENS=0 \
+      claude -p --no-session-persistence --model=haiku --tools='' \
+      --safe-mode --setting-sources='user' --system-prompt='' 2>/dev/null) \
+      || model_out=""
+    slug=$(head -n1 <<<"$model_out")
+    slug=${slug#"${slug%%[![:space:]]*}"}
+    slug=${slug%"${slug##*[![:space:]]}"}
+    slug=${slug//\"/}
+    slug=${slug//\'/}
+    slug=$(tr '[:upper:]' '[:lower:]' <<<"$slug")
+  fi
+
+  if ! [[ $slug =~ ^[a-z0-9]+(-[a-z0-9]+){1,3}$ && ${#slug} -le 30 ]]; then
+    slug=$(fallback_slug "$title")
+  fi
+
+  printf '%s\n' "${prefix}/${issue_key_lower}/${slug}"
+}
+
+case $mode in
+  existing) existing ;;
+  propose) propose ;;
+  *) usage ;;
+esac

@@ -134,6 +134,59 @@ bindm('PRINT', exec 'wlr-which-key --initial-keys s', 'Screenshot')
 bindm('A', exec 'wlr-which-key --initial-keys a', 'Apps')
 bindm('SEMICOLON', exec 'wlr-which-key --initial-keys a', 'Apps')
 
+--------------------- Dictation ---------------------
+-- Push-to-talk with Voxtype: hold SUPER + I to record, and the first
+-- release of I or Super stops. SUPER + I alone won't do: after an early
+-- Super release the mods no longer match, and Hyprland shadows binds
+-- whose key is still held. So the stop binds ignore mods, are
+-- transparent (can't be shadowed) and pass the key on. `record stop` is
+-- idempotent, and the flag only stops ordinary I and Super keystrokes
+-- from spawning voxtype. Release binds match the submap the key was
+-- pressed in, so the recording submap below doesn't hide them.
+local dictating = false
+hl.bind(main_mod .. ' + I', function()
+  dictating = true
+  hl.dispatch(exec 'voxtype record start')
+end, { description = 'Start Dictation' })
+for _, key in ipairs { 'i', 'Super_L', 'Super_R' } do
+  hl.bind(key, function()
+    if not dictating then
+      return
+    end
+    dictating = false
+    hl.dispatch(exec 'voxtype record stop')
+  end, {
+    description = 'Stop Dictation',
+    release = true,
+    ignore_mods = true,
+    non_consuming = true,
+    transparent = true,
+  })
+end
+
+-- Submaps Voxtype enters through its output hooks
+-- (~/.config/voxtype/config.toml), ported from
+-- `voxtype setup compositor hyprland --show`. F12 is the way out of
+-- both if the daemon dies before resetting the submap.
+hl.define_submap('voxtype_recording', function()
+  hl.bind('F12', function()
+    hl.dispatch(exec 'voxtype record cancel')
+    hl.dispatch(hl.dsp.submap 'reset')
+  end, { description = 'Cancel Dictation' })
+end)
+
+-- Active while the text is typed: no Super binds exist here, so typed
+-- keys can't combine with a still-held Super into shortcuts (wtype's
+-- first keycode is Escape, which would open the power menu). Escape
+-- stays unbound, since binding it drops wtype's first character
+-- (https://github.com/hyprwm/Hyprland/issues/3165).
+hl.define_submap('voxtype_suppress', function()
+  for _, key in ipairs { 'Super_L', 'Super_R', 'Control_L', 'Control_R', 'Alt_L', 'Alt_R', 'Shift_L', 'Shift_R' } do
+    hl.bind(key, function() end, { description = 'Block Modifier While Typing' })
+  end
+  hl.bind('F12', hl.dsp.submap 'reset', { description = 'Exit Submap' })
+end)
+
 --------------------- Hyper: Jump to App ---------------------
 -- Mirrors the keys under the which-key Apps submenu (wlr-which-key/config.yaml)
 -- so Hyper + <key> jumps straight to the app without opening the overlay.

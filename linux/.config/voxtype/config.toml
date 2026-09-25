@@ -1,0 +1,27 @@
+# Voxtype configuration: only the settings that differ from the
+# built-in defaults. This file replaces /etc/voxtype/config.toml rather
+# than layering over it. Reference: `voxtype config schema`.
+
+# Parakeet handles both Italian and English, detects the language on its
+# own, and adds punctuation. It is faster than Whisper on a CPU-only
+# laptop. It needs the ONNX binary: `sudo voxtype setup onnx --enable`.
+engine = "parakeet"
+
+[parakeet]
+# The int8 build is a quarter of the size of the fp32 one (670 MB).
+model = "parakeet-tdt-0.6b-v3-int8"
+
+[hotkey]
+# Hyprland binds drive recording (hyprland/keybinds.lua), so the evdev
+# hotkey stays off and no `input` group membership is needed.
+enabled = false
+
+[output]
+# Hyprland submaps from hyprland/keybinds.lua. The recording submap lets
+# F12 cancel, and the suppress submap keeps a still-held Super from
+# turning the typed text into binds. The Lua config ignores the
+# `submap <name>` syntax that `voxtype setup compositor` writes, so
+# dispatch the Lua call instead.
+pre_recording_command = "hyprctl dispatch 'hl.dsp.submap(\"voxtype_recording\")'"
+pre_output_command = "hyprctl dispatch 'hl.dsp.submap(\"voxtype_suppress\")'"
+post_output_command = "hyprctl dispatch 'hl.dsp.submap(\"reset\")'"

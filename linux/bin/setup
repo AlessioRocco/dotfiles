@@ -59,6 +59,43 @@ install_packages "$SCRIPT_DIR/packages/gui.packages"
 fancy_echo "Installing AUR packages ..."
 install_packages "$SCRIPT_DIR/packages/aur.packages"
 
+# Switch Voxtype to its ONNX binary: the Parakeet engine set in
+# ~/.config/voxtype/config.toml isn't built into the default Whisper
+# one. voxtype-bin's upgrade hook keeps whichever binary is active, so
+# this only runs once.
+voxtype_restart=false
+if ! voxtype setup onnx --status | grep -q '^Active engine: Parakeet'; then
+  fancy_echo "Switching Voxtype to the ONNX engine ..."
+  sudo voxtype setup onnx --enable
+  voxtype_restart=true
+else
+  fancy_echo "Voxtype ONNX engine already enabled, skipping ..."
+fi
+
+# Download the Parakeet model named in the config. Without --activate,
+# `voxtype setup --download` leaves the config alone, so the stowed
+# config.toml isn't rewritten. Files land in place only once complete,
+# so these checks (the ones voxtype's own validator makes) don't pass
+# on an interrupted download.
+voxtype_model=$(voxtype config get parakeet.model)
+voxtype_models="${XDG_DATA_HOME:-$HOME/.local/share}/voxtype/models"
+voxtype_model_dir="$voxtype_models/$voxtype_model"
+if [ -f "$voxtype_model_dir/vocab.txt" ] &&
+  compgen -G "$voxtype_model_dir/encoder*.onnx" >/dev/null &&
+  compgen -G "$voxtype_model_dir/decoder_joint*.onnx" >/dev/null; then
+  fancy_echo "Voxtype model $voxtype_model already downloaded, skipping ..."
+else
+  fancy_echo "Downloading Voxtype model $voxtype_model ..."
+  voxtype setup --download --model "$voxtype_model" --no-post-install
+  voxtype_restart=true
+fi
+
+# Restart the daemon so it picks up the new binary/model. try-restart
+# is a no-op when it isn't running yet (it's enabled further down).
+if [ "$voxtype_restart" = true ]; then
+  systemctl --user try-restart voxtype.service
+fi
+
 # Add user to the docker group (lets docker commands run without sudo) and
 # enable the service so it starts at boot.
 fancy_echo "Setting up Docker ..."
@@ -141,7 +178,8 @@ xdg-user-dirs-update
 
 # Enable systemd user services.
 fancy_echo "Enabling systemd user services ..."
-for service in udiskie.service ssh-add.service hyprmoncfgd.service hyprpolkitagent.service; do
+for service in udiskie.service ssh-add.service hyprmoncfgd.service hyprpolkitagent.service \
+  voxtype.service; do
   if systemctl --user list-unit-files "$service" | grep -q "$service"; then
     systemctl --user enable "$service"
   else

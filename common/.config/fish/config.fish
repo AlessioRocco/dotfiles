@@ -29,6 +29,9 @@ set -xg XDG_CONFIG_HOME ~/.config
 # Lazygit: load Catppuccin Macchiato theme alongside the main config
 set -xg LG_CONFIG_FILE $HOME/.config/lazygit/theme.yml,$HOME/.config/lazygit/config.yml
 
+# fzf: load Catppuccin Macchiato colors
+set -xg FZF_DEFAULT_OPTS_FILE $HOME/.config/fzf/catppuccin-macchiato.rc
+
 ### Configurations
 
 # Theme

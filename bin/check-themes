@@ -46,6 +46,10 @@ check_theme \
   "$DOTFILES_DIR/common/.config/lazygit/theme.yml" \
   "https://github.com/catppuccin/lazygit/raw/main/themes-mergable/macchiato/mauve.yml"
 
+check_theme \
+  "$DOTFILES_DIR/common/.config/fzf/catppuccin-macchiato.rc" \
+  "https://github.com/catppuccin/fzf/raw/main/themes/catppuccin-fzf-macchiato.rc"
+
 if [ "$outdated" -eq 0 ]; then
   echo "  All theme files are up to date."
 fi

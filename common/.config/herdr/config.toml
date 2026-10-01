@@ -90,6 +90,14 @@ width = "90%"
 height = "90%"
 description = "Jira: pick an issue, get a worktree"
 
+[[keys.command]]
+key = "prefix+ctrl+d"
+type = "popup"
+command = "herdr-worktree-remove"
+width = "90%"
+height = "90%"
+description = "Worktrunk: remove the current worktree"
+
 # >>> seshagy keybind >>>
 [[keys.command]]
   key = "prefix+s"

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# Remove the worktree you are looking at through worktrunk, so its pre-remove
+# and post-remove hooks close the matching herdr workspace. The herdr popup
+# counterpart of lazygit's `d` in the worktrees panel; herdr's own
+# remove_worktree only knows herdr-managed worktrees and skips those hooks.
+#
+# Runs from a herdr popup, so a failure waits for Enter instead of vanishing
+# with the popup before you can read why.
+
+set -uo pipefail
+
+# Keep the error on screen until it has been read.
+fail() {
+  [[ $# -gt 0 ]] && printf '%s\n' "$*" >&2
+  printf '\n[exit %s] press enter to close\n' "${ec:-1}"
+  read -r _
+  exit "${ec:-1}"
+}
+
+unset GIT_DIR GIT_WORK_TREE
+
+target=$(herdr-worktree-current) || target=
+[[ -n $target ]] || fail "Not inside a git worktree."
+
+# The first entry of `git worktree list` is always the primary worktree.
+primary=$(git -C "$target" worktree list --porcelain | sed -n '1s/^worktree //p')
+[[ $target != "$primary" ]] \
+  || fail "$target is the primary worktree; there is nothing to remove."
+
+branch=$(git -C "$target" symbolic-ref --quiet --short HEAD) \
+  || branch="(detached at $(git -C "$target" rev-parse --short HEAD))"
+
+printf "Remove worktree '%s'\n  %s\n[y/N] " "$branch" "$target"
+read -r answer
+[[ $answer == [yY]* ]] || exit 0
+
+wt remove --foreground -C "$primary" "$target"
+ec=$?
+[[ $ec -eq 0 ]] || fail

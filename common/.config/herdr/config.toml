@@ -11,6 +11,11 @@ agent_panel_sort = "spaces"
 prompt_new_tab_name = false
 sidebar_start_collapsed = true
 sidebar_collapsed_mode = "hidden"
+# Git branch of the focused pane, tmux-status style. Empty output (no repo,
+# detached HEAD) hides the entry.
+tab_bar_right = [
+  { type = "command", command = 'b=$(git -C "${HERDR_ACTIVE_PANE_CWD:-.}" branch --show-current 2>/dev/null) && [ -n "$b" ] && printf " %s\342\240\200\n" "$b"', interval_seconds = 5, timeout_seconds = 1 },
+]
 
 [experimental]
 switch_ascii_input_source_in_prefix = true

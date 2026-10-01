@@ -1,0 +1,15 @@
+# Dictation mic for Voxtype (audio.device in voxtype/config.toml).
+# Records from the C922 webcam mic, so dictating doesn't force the
+# Bluetooth headset into its low-quality headset (HFP) profile.
+# PipeWire opens the stream only while recording and resolves the
+# target each time: with the webcam unplugged, WirePlumber falls back
+# to the default source. The target is the node's object.path, which
+# uses the card ID ("Webcam") rather than the device serial.
+pcm.dictation {
+  type pipewire
+  capture_node "alsa:acp:Webcam:0:capture"
+  hint {
+    show on
+    description "Dictation mic (C922 webcam, else default source)"
+  }
+}

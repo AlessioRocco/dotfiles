@@ -11,6 +11,11 @@ engine = "parakeet"
 # The int8 build is a quarter of the size of the fp32 one (670 MB).
 model = "parakeet-tdt-0.6b-v3-int8"
 
+[audio]
+# The C922 webcam mic, so dictating doesn't switch the Bluetooth headset
+# to HFP. Falls back to the default source (see alsa/asoundrc).
+device = "dictation"
+
 [hotkey]
 # Hyprland binds drive recording (hyprland/keybinds.lua), so the evdev
 # hotkey stays off and no `input` group membership is needed.

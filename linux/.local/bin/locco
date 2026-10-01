@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# locco [ARGS...]
+# Start a Claude Code session in the locco vault. ~/locco/.claude/settings.json
+# selects the assistant agent, so ARGS are passed straight to claude.
+
+cd "$HOME/locco" && exec claude "$@"

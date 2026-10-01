@@ -117,6 +117,7 @@ end
 bindm('RETURN', exec('focus-or-launch com.mitchellh.ghostty ' .. terminal), 'Open Terminal')
 bindm('B', exec('focus-or-launch google-chrome ' .. browser), 'Open Browser')
 bindm('E', quick_terminal 'yazi', 'Open Terminal File Manager')
+bindm('C', quick_terminal 'locco', 'Open Locco')
 bindm('SHIFT + E', quick_app('org.gnome.Nautilus', file_manager), 'Open File Manager')
 
 --------------------- Launchers ---------------------

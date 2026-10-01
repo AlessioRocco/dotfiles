@@ -71,6 +71,9 @@ menu:
       - key: "e"
         desc: File Manager
         cmd: quick_terminal yazi
+      - key: "l"
+        desc: Locco
+        cmd: quick_terminal locco
       - key: "p"
         desc: Task Manager
         cmd: quick_terminal btop

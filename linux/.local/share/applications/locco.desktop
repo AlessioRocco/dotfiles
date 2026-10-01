@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Locco
+Comment=Personal assistant
+Exec=quick_terminal locco
+Icon=utilities-terminal
+Type=Application
+Terminal=false
+Categories=Utility;

@@ -10,7 +10,7 @@ delivery = "herdr"
 agent_panel_sort = "spaces"
 prompt_new_tab_name = false
 sidebar_start_collapsed = true
-sidebar_collapsed_mode = "hidden"
+sidebar_collapsed_mode = "compact"
 # Git branch of the focused pane, tmux-status style. Empty output (no repo,
 # detached HEAD) hides the entry.
 tab_bar_right = [

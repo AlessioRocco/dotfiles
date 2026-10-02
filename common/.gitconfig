@@ -11,6 +11,8 @@
   path = ~/.config/delta/themes/catppuccin.gitconfig
   ; OS-specific settings (e.g. SSH signing program), stowed per platform.
   path = ~/.gitconfig.os
+[init]
+  defaultBranch = main
 [interactive]
   diffFilter = delta --color-only
 [delta]

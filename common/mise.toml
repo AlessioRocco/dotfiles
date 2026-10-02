@@ -1,0 +1,8 @@
+[tools]
+ruby = "4.0.6"
+node = "24"
+
+[env]
+# claude.ai connectors (Gmail, Slack, …) stay off in Claude Code by default;
+# repos that need them set this to true in their own mise.toml.
+ENABLE_CLAUDEAI_MCP_SERVERS = "false"

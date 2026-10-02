@@ -19,7 +19,7 @@ CLAUDE.local.md
 codecompanion-workspace.json
 db/*.sqlite3
 log/*.log
-mise.toml
+mise.local.toml
 node_modules
 rails.rb
 rerun.txt

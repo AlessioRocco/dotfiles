@@ -1,6 +1,7 @@
 {
   "enabledPlugins": {
     "nebulab-git-workflow@nebulab": true,
+    "lua-lsp@claude-plugins-official": true,
     "mattpocock-skills@claude-plugins-official": true
   }
 }

@@ -1,0 +1,24 @@
+[Unit]
+Description=Dagu scheduler and web UI for local workflows
+Documentation=https://docs.dagu.sh
+
+[Service]
+# Not the installer's --service unit: that one forces DAGU_HOME=~/.dagu,
+# while this keeps Dagu on its XDG paths (~/.config/dagu for the stowed
+# config and DAGs, ~/.local/share/dagu for state and logs).
+# Dagu is a mise tool pinned in ~/mise.toml, which the shim only sees
+# from under $HOME: hence the explicit working directory.
+WorkingDirectory=%h
+ExecStart=%h/.local/share/mise/shims/dagu start-all
+Restart=always
+RestartSec=5
+# Steps otherwise run through $SHELL, i.e. fish, which loads config.fish
+# (mise activation, exported tokens) into every step. Neither the
+# default_shell setting nor `shell:` in base.yaml reaches them in v2.18.2.
+Environment=DAGU_DEFAULT_SHELL=/bin/bash
+# Steps inherit PATH from here: the ~/.bin scripts the DAGs call, and
+# mise shims for dagu itself and any tool a repo's worktree hooks run.
+Environment=PATH=%h/.local/bin:%h/.bin:%h/.local/share/mise/shims:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=default.target

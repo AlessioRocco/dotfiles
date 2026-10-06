@@ -41,6 +41,13 @@ The root-level `AGENTS.md`/`agents.toml`/`.agents/` are this repo's own tooling
 and do stay, as does `common/.config/herdr/`: it is terminal config and
 public-safe.
 
+Scheduled jobs are [Dagu](https://docs.dagu.sh) DAGs, run by
+`dagu.service` (UI on http://127.0.0.1:8080). Config and public-safe DAGs
+live in `linux/.config/dagu/`; a DAG that names clients goes in
+`dotfiles-private` under `home/.config/dagu/dags/`, and Stow merges both
+into `~/.config/dagu/dags/`. The UI can't edit DAGs (they're symlinks into
+the repos): change them here, Dagu picks them up on its own.
+
 ## OS-specific differences
 
 Handled with stowed fragments rather than conditionals in shared files:

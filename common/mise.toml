@@ -1,6 +1,7 @@
 [tools]
 ruby = "4.0.6"
 node = "24"
+dagu = "2.18.2"
 
 # Service CLIs used across client projects (Jira, Heroku, Cloudflare).
 acli = "latest"

@@ -5,8 +5,8 @@
 # jira-worktree-start would), register it as its own herdr workspace, start
 # an interactive Claude session in it and send it $GRILL_COMMAND plus the
 # issue key — so the grilling is already underway by the time I open the
-# tab. Meant to run every minute from a systemd --user timer
-# (linux/.config/systemd/user/jira-start-watch.timer).
+# tab. Meant to run every 5 minutes from Dagu
+# (linux/.config/dagu/dags/jira-start-watch.yaml).
 #
 # Same mechanics as gh-review-watch, whose header documents the herdr side
 # (the agent_pane_busy retry, `worktree open --json`'s root pane, agent
@@ -36,9 +36,9 @@
 # the herdr CLI calls still see whatever they need): worktrunk's post-switch
 # hook (herdr-worktree-workspace) would otherwise register the workspace
 # itself and race this script's own `herdr worktree open` over the label.
-# Under systemd it is unset anyway; this covers a run from a herdr pane.
+# Under Dagu it is unset anyway; this covers a run from a herdr pane.
 #
-# systemd --user services get no login-shell environment: PATH is extended
+# Dagu steps get no login-shell environment: PATH is extended
 # here, and each repo's Jira env comes from `mise env` in that checkout, the
 # same way jira-worktree-start loads it for a popup. Jira itself is reached
 # through acli's own stored login, so no token has to travel in that env.
@@ -50,7 +50,7 @@
 
 set -uo pipefail
 
-# Appended, not prepended: under systemd the inherited PATH is minimal, so
+# Appended, not prepended: under Dagu the inherited PATH is minimal, so
 # order changes nothing there, while a caller's own PATH — stubs in a test,
 # above all — still wins.
 export PATH="$PATH:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin"

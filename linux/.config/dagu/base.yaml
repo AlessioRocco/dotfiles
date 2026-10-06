@@ -1,0 +1,8 @@
+# Defaults inherited by every DAG in ~/.config/dagu/dags. Tracked so Dagu
+# doesn't seed its own sample base.yaml here on first start.
+
+# One log per step, stdout and stderr interleaved, like the journal.
+log_output: merged
+
+# The per-minute jobs write ~1,400 runs a day.
+hist_retention_days: 7

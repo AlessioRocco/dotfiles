@@ -1,0 +1,11 @@
+description: >-
+  Poll GitHub for PRs awaiting my review and open worktrees for them
+schedule: "*/15 * * * *"
+timeout_sec: 600
+
+# GH_TOKEN is loaded by the script from ~/.config/gh-review-watch/token, not
+# through Dagu's `secrets:` file provider: that one keeps the file's trailing
+# newline, which gh then rejects as an invalid Authorization header.
+steps:
+  - name: watch
+    run: ~/.bin/gh-review-watch

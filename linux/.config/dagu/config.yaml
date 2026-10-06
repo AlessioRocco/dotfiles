@@ -1,0 +1,28 @@
+# Dagu server and scheduler, run by dagu.service (`dagu start-all`).
+# Reference: https://docs.dagu.sh/configurations/reference
+
+# Single user on this machine: no login, and nothing listens beyond
+# localhost.
+host: 127.0.0.1
+port: 8080
+auth:
+  mode: none
+
+tz: Europe/Rome
+
+# DAG files are Stow symlinks into the dotfiles repos, so the UI must not
+# rewrite them; edit them in the repo instead. Discovery has to follow
+# those symlinks, since their targets sit outside the DAGs dir.
+permissions:
+  write_dags: false
+dag_discovery:
+  symlinks: true
+
+# Keep the DAGs dir to tracked files only: no seeded examples, and the
+# wiki (by default {dags_dir}/wiki) goes with the rest of the state.
+skip_examples: true
+paths:
+  wiki_dir: ~/.local/share/dagu/wiki
+
+# The version is pinned in linux/bin/setup.
+check_updates: false

@@ -2,7 +2,7 @@
 #
 # The one place that decides what a Jira issue's branch is called:
 # `arocco/<key>/<slug>`. Shared by jira-worktree-start (interactive, a herdr
-# popup) and jira-start-watch (unattended, a systemd timer), which must agree
+# popup) and jira-start-watch (unattended, a Dagu job), which must agree
 # on the name — otherwise the watcher can't recognize a branch the picker
 # created, and vice versa.
 #

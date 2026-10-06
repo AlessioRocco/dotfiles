@@ -1,0 +1,11 @@
+description: >-
+  Start a grill session for Jira issues I move to In Progress
+schedule: "*/5 * * * *"
+timeout_sec: 300
+
+# Each repo's Jira env (JIRA_PROJECT, optionally JIRA_START_WATCH_JQL)
+# comes from `mise env` inside the script, and Jira access from acli's own
+# login, not from here: see common/.bin/jira-start-watch.
+steps:
+  - name: watch
+    run: ~/.bin/jira-start-watch

@@ -2,6 +2,11 @@
 ruby = "4.0.6"
 node = "24"
 
+# Service CLIs used across client projects (Jira, Heroku, Cloudflare).
+acli = "latest"
+heroku = "latest"
+"npm:cf" = { version = "latest", prerelease = "true" }
+
 [env]
 # claude.ai connectors (Gmail, Slack, …) stay off in Claude Code by default;
 # repos that need them set this to true in their own mise.toml.

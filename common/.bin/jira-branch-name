@@ -10,11 +10,11 @@
 #                          or nothing if there is none.
 #   propose  <ISSUE-KEY>   Print a fresh name, slug generated from the issue.
 #
-# Runs against the git repository in the current directory, and expects the
-# caller to have loaded that repo's Jira env (jira-cli needs it for
-# `propose`). Exits non-zero, with a message on stderr, only on an actual
-# failure: "no existing branch" is an empty line, not an error, so a failed
-# lookup can never be mistaken for a free name.
+# Runs against the git repository in the current directory; `propose` reads
+# the issue through acli, which uses its own stored login. Exits non-zero,
+# with a message on stderr, only on an actual failure: "no existing branch"
+# is an empty line, not an error, so a failed lookup can never be mistaken
+# for a free name.
 
 set -euo pipefail
 
@@ -98,8 +98,9 @@ fallback_slug() {
 # so a name always comes back.
 propose() {
   local raw_issue title description
-  raw_issue=$(jira issue view "$issue_key_upper" --raw) \
-    || die "jira issue view failed for $issue_key_upper"
+  raw_issue=$(acli jira workitem view "$issue_key_upper" \
+    --fields summary,description --json) \
+    || die "acli workitem view failed for $issue_key_upper"
   title=$(jq -r '.fields.summary' <<<"$raw_issue")
   description=$(jq -c '.fields.description' <<<"$raw_issue" | head -c 4000)
 

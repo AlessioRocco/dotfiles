@@ -31,7 +31,7 @@
 # `--dry-run` is the test seam: it resolves the full branch name and prints
 # the `wt` command that would run, without side effects, so query handling,
 # slug generation/fallback, existing-branch matching and name assembly
-# (jira-branch-name included) can all be exercised by stubbing jira/claude/wt
+# (jira-branch-name included) can all be exercised by stubbing acli/claude/wt
 # earlier on PATH.
 #
 # Requires the herdr environment marker, like herdr-workspace-setup: a script
@@ -84,15 +84,15 @@ git rev-parse --show-toplevel >/dev/null 2>&1 \
 
 # Popup/plugin-launched commands run as a raw command, not through the
 # interactive shell, so mise's fish-hook env injection (this repo's own
-# JIRA_PROJECT/JIRA_API_TOKEN mechanism) never fires on its own. Load this
-# repo's mise env explicitly rather than depending on the caller's shell
-# having already activated it.
+# JIRA_PROJECT mechanism) never fires on its own. Load this repo's mise env
+# explicitly rather than depending on the caller's shell having already
+# activated it.
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise env -s bash 2>/dev/null)" || true
 fi
 
-command -v jira >/dev/null 2>&1 \
-  || die "jira-cli not found on PATH (install jira-cli, ankitpokhrel)"
+command -v acli >/dev/null 2>&1 \
+  || die "acli not found on PATH (install acli, Atlassian CLI)"
 
 command -v wt >/dev/null 2>&1 \
   || die "wt (worktrunk) not found on PATH"
@@ -100,31 +100,29 @@ command -v wt >/dev/null 2>&1 \
 [[ -n ${JIRA_PROJECT:-} ]] \
   || die "JIRA_PROJECT not set for this repo"
 
-jira_config_file=${JIRA_CONFIG_FILE:-$HOME/.config/.jira/.config.yml}
-[[ -f $jira_config_file ]] \
-  || die "jira-cli not initialized — run: jira init"
-
-[[ -n ${JIRA_API_TOKEN:-} ]] \
-  || die "JIRA_API_TOKEN not set for this repo"
-
 # ── Pick an issue ────────────────────────────────────────────────────────────
 
 if [[ -z $issue_key ]]; then
   command -v fzf >/dev/null 2>&1 \
     || die "fzf not found on PATH (required for the issue picker)"
 
-  # WHERE clause only — no ORDER BY. jira-cli wraps -q in its own
-  # project-scoping expression when --project is also given, and an ORDER BY
-  # inside that wrapped sub-expression is invalid JQL ("Expecting ',' but got
-  # 'ORDER'", confirmed live). Sort with --order-by/--reverse instead, same
-  # as this repo's old (dead) television channel did.
+  # WHERE clause only — no ORDER BY. acli has no --project flag, so the
+  # clause is wrapped in parentheses after the project scoping, and an ORDER
+  # BY inside that sub-expression is invalid JQL. The sort is appended here
+  # instead: least recently updated first, so the most recent sit at the
+  # bottom of the list.
   default_jql='assignee = currentUser() AND statusCategory != Done'
-  jql=${JIRA_WORKTREE_JQL:-$default_jql}
+  where=${JIRA_WORKTREE_JQL:-$default_jql}
+  jql="project = \"$JIRA_PROJECT\" AND ($where) ORDER BY updated ASC"
 
-  rows=$(jira issue list --project "$JIRA_PROJECT" -q "$jql" \
-    --order-by updated --reverse \
-    --plain --no-headers --columns key,summary,status --delimiter '|') \
-    || die "jira issue list failed"
+  json=$(acli jira workitem search --jql "$jql" \
+    --fields key,summary,status --json --paginate) \
+    || die "acli workitem search failed (logged out? acli jira auth login)"
+
+  # Flattened to key|summary|status rows, one line each.
+  rows=$(jq -r '.[] | [.key, (.fields.summary // ""), .fields.status.name // ""]
+    | map(gsub("\n"; " ")) | join("|")' <<<"$json") \
+    || die "unexpected acli output"
 
   if [[ -z $rows ]]; then
     echo "No Jira issues assigned to you were found."
@@ -133,12 +131,12 @@ if [[ -z $issue_key ]]; then
 
   # Realigned on whitespace (not the '|' delimiter) so fzf's default field
   # splitting hands {1} the bare key, with no --delimiter of its own to keep
-  # in sync with jira-cli's.
+  # in sync with the rows'.
   list=$(awk -F'|' '{ printf "%-15s %-60s %s\n", $1, $2, $3 }' <<<"$rows")
 
   selected=$(fzf --height=90% --layout=reverse --border \
     --header 'Jira: pick an issue (Esc to cancel)' \
-    --preview 'jira issue view {1} 2>/dev/null' \
+    --preview 'acli jira workitem view {1} 2>/dev/null' \
     --preview-window=right:60% <<<"$list") || true
 
   [[ -z $selected ]] && exit 0

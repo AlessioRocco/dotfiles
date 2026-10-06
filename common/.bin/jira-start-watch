@@ -14,14 +14,13 @@
 #
 # Deliberately contains no Jira projects, server or repo names: the repos to
 # poll are discovered, not listed. A main checkout under ~/code/<owner>/<repo>
-# whose mise env defines JIRA_PROJECT (and JIRA_API_TOKEN) is a Jira-backed
-# repo — the same, already gitignored, per-repo config jira-worktree-start
-# reads — so the project → checkout mapping lives with the checkout itself,
-# and this script stays identical on any machine. Linked worktrees carry a
-# copy of the same mise.toml, which is why only main checkouts (a real .git
-# directory, not a .git file) count. If two checkouts name the same project,
-# the first one found wins and the other is logged and skipped: one issue,
-# one worktree.
+# whose mise env defines JIRA_PROJECT is a Jira-backed repo — the same,
+# already gitignored, per-repo config jira-worktree-start reads — so the
+# project → checkout mapping lives with the checkout itself, and this script
+# stays identical on any machine. Linked worktrees carry a copy of the same
+# mise.toml, which is why only main checkouts (a real .git directory, not a
+# .git file) count. If two checkouts name the same project, the first one
+# found wins and the other is logged and skipped: one issue, one worktree.
 #
 # No separate "seen" state: an existing worktree for the issue is the signal
 # that it has been handled, so there is nothing to track that worktrunk
@@ -41,7 +40,8 @@
 #
 # systemd --user services get no login-shell environment: PATH is extended
 # here, and each repo's Jira env comes from `mise env` in that checkout, the
-# same way jira-worktree-start loads it for a popup.
+# same way jira-worktree-start loads it for a popup. Jira itself is reached
+# through acli's own stored login, so no token has to travel in that env.
 #
 # `--dry-run` is the test seam: it discovers repos, queries Jira and resolves
 # each issue's branch (read-only calls only), and prints what it would do
@@ -64,9 +64,9 @@ CODE_DIR="${JIRA_START_WATCH_CODE_DIR:-$HOME/code}"
 # best is expected to change.
 GRILL_COMMAND="${JIRA_START_WATCH_COMMAND:-/mattpocock-skills:grill-with-docs}"
 
-# WHERE clause only, no ORDER BY — jira-cli wraps it in its own
-# project-scoping expression (see jira-worktree-start). Overridable per repo
-# from its own mise.toml.
+# WHERE clause only, no ORDER BY — it gets wrapped in parentheses after the
+# repo's project clause (see handle_repo). Overridable per repo from its own
+# mise.toml.
 DEFAULT_JQL='assignee = currentUser() AND status = "In Progress"'
 
 branch_name="$(dirname "$(readlink -f "$0")")/jira-branch-name"
@@ -230,21 +230,20 @@ handle_repo() {
   eval "$(mise env -s bash 2>/dev/null)" || return
 
   [[ -n ${JIRA_PROJECT:-} ]] || return
-  [[ -n ${JIRA_API_TOKEN:-} ]] \
-    || { log "$repo: JIRA_API_TOKEN not set"; return; }
 
-  local jql=${JIRA_START_WATCH_JQL:-$DEFAULT_JQL} rows rc
-  rows=$(jira issue list --project "$JIRA_PROJECT" -q "$jql" \
-    --plain --no-headers --columns key,summary --delimiter '|' 2>&1)
-  rc=$?
+  # acli has no --project flag: the scoping goes into the JQL itself.
+  local where=${JIRA_START_WATCH_JQL:-$DEFAULT_JQL} out rows
+  local jql="project = \"$JIRA_PROJECT\" AND ($where)"
+  out=$(acli jira workitem search --jql "$jql" --fields key,summary \
+    --json --paginate 2>&1) \
+    || { log "$repo: acli workitem search failed: $out"; return; }
 
-  # jira-cli exits 1 on an empty result too, with a "No result found" line
-  # on stdout; only anything else is worth logging.
-  if ((rc != 0)); then
-    [[ $rows == *"No result found"* ]] \
-      || log "$repo: jira issue list failed: $rows"
-    return
-  fi
+  # Flattened to the key|summary rows the loop below reads (a summary is
+  # one line, so newlines go). An empty result is `[]` and a zero exit, so
+  # it simply yields no rows.
+  rows=$(jq -r '.[] | "\(.key)|\(.fields.summary // "" | gsub("\n"; " "))"' \
+    <<<"$out" 2>/dev/null) \
+    || { log "$repo: unexpected acli output: $out"; return; }
 
   # Rows come in on fd 3 and each issue runs with stdin closed: `wt switch`
   # runs project hooks, and anything in them that reads stdin would

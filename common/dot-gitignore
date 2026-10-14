@@ -14,6 +14,8 @@
 .solargraph.yml
 .tool-versions
 .vscode/
+.worktreeinclude
+.worktreelink
 /tags
 CLAUDE.local.md
 codecompanion-workspace.json

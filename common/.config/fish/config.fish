@@ -101,7 +101,7 @@ mise activate fish | source
 # Herdr: rename the tab to the running foreground command, falling back to a
 # short idle label while the shell is at the prompt. The idle label uses the
 # repo's main folder name (shared across all its worktrees) instead of the
-# current worktree's directory name, which worktrunk derives from the whole
+# current worktree's directory name, which Herdr derives from the whole
 # branch (user/ticket/description) and can get long.
 if status is-interactive && set -q HERDR_ENV && set -q HERDR_TAB_ID
     function _herdr_idle_label

@@ -4,7 +4,6 @@
 .DS_Store
 .bundle
 .byebug_history
-.config/wt.toml
 .env
 .ignore
 .lazy.lua

@@ -15,7 +15,7 @@ worktree:
 customCommands:
   - key: "n"
     command: >-
-      set -e GIT_DIR GIT_WORK_TREE; set wt "{{.SelectedWorktree.Path}}"; set repo (git -C $wt worktree list --porcelain | string replace -rf '^worktree ' '')[1]; set b "{{index .PromptResponses 0}}"; set out (herdr worktree open --cwd $repo --branch $b --focus 2>&1); or if echo $out | jq -e '.error.code == "worktree_not_found"' >/dev/null; herdr worktree create --cwd $repo --branch $b --base (git -C $wt rev-parse HEAD) --focus >/dev/null; else; echo $out; false; end; and kill (ps -o ppid= -p %self | string trim)
+      set -e GIT_DIR GIT_WORK_TREE; set sel "{{.SelectedWorktree.Path}}"; set repo (git -C $sel worktree list --porcelain | string replace -rf '^worktree ' '')[1]; set b "{{index .PromptResponses 0}}"; set out (herdr worktree open --cwd $repo --branch $b --focus 2>&1); or if echo $out | jq -e '.error.code == "worktree_not_found"' >/dev/null; herdr worktree create --cwd $repo --branch $b --base (git -C $sel rev-parse HEAD) --focus >/dev/null; else; echo $out; false; end; and kill (ps -o ppid= -p %self | string trim)
     context: "worktrees"
     description: "Herdr: create worktree from selected, closing this popup"
     output: terminal
@@ -25,7 +25,7 @@ customCommands:
         key: Branch
   - key: "<space>"
     command: >-
-      set -e GIT_DIR GIT_WORK_TREE; set wt "{{.SelectedWorktree.Path}}"; set repo (git -C $wt worktree list --porcelain | string replace -rf '^worktree ' '')[1]; herdr worktree open --cwd $repo --path $wt --focus >/dev/null; and kill (ps -o ppid= -p %self | string trim)
+      set -e GIT_DIR GIT_WORK_TREE; set sel "{{.SelectedWorktree.Path}}"; set repo (git -C $sel worktree list --porcelain | string replace -rf '^worktree ' '')[1]; herdr worktree open --cwd $repo --path $sel --focus >/dev/null; and kill (ps -o ppid= -p %self | string trim)
     context: "worktrees"
     description: "Herdr: open worktree, closing this popup"
     output: terminal

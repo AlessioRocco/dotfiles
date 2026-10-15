@@ -10,7 +10,8 @@
 # Runs as a global post-checkout config hook (see ~/.gitconfig): git
 # calls it as `<null-ref> <new-HEAD> 1` on `git worktree add`. Run it
 # with no arguments inside a worktree to repair a partial setup.
-# Existing paths are never overwritten.
+# Existing paths are never overwritten. In hook mode it then opens the
+# worktree as a Herdr workspace (see herdr-worktree-workspace).
 #
 # Always exits 0: a failing hook makes `git worktree add`, and the tool
 # behind it (Herdr, lazygit, Claude Code), report an error.
@@ -76,4 +77,13 @@ apply() {
 
 apply .worktreelink shared
 apply .worktreeinclude seeded
+
+# Hook mode only, and only now that shared and seeded paths are in place:
+# give the worktree a Herdr workspace, so it shows in the sidebar no
+# matter which tool created it. The helper is a no-op outside Herdr.
+if [[ $# -gt 0 ]]; then
+  branch=$(git symbolic-ref --quiet --short HEAD) || branch=
+  "$(dirname "$(readlink -f "$0")")/herdr-worktree-workspace" \
+    open "$worktree" "$branch" </dev/null >/dev/null 2>&1
+fi
 exit 0

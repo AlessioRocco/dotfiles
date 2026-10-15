@@ -41,15 +41,17 @@
 #
 # The `git fetch` of the PR branch authenticates through git's OWN
 # credential helper — `osxkeychain` here — hitting the identical
-# session-less problem a second time, just one layer lower. Routing that fetch through `gh auth git-credential` instead reuses
-# the same $GH_TOKEN, without touching the machine's actual git config (this
-# override is scoped to this process's environment only).
+# session-less problem a second time, just one layer lower. Routing that
+# fetch through `gh auth git-credential` instead reuses the same $GH_TOKEN,
+# without touching the machine's actual git config (this override is
+# scoped to this process's environment only).
 
 set -uo pipefail
 
 # Appended, not prepended, as in jira-start-watch: a caller's own PATH —
 # stubs in a test, above all — still wins.
-export PATH="$PATH:/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
+export PATH="$PATH:/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin"
+PATH+=":$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 TOKEN_FILE="$HOME/.config/gh-review-watch/token"
 [[ -z ${GH_TOKEN:-} && -f $TOKEN_FILE ]] && export GH_TOKEN="$(<"$TOKEN_FILE")"

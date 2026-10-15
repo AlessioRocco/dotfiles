@@ -35,12 +35,3 @@ customCommands:
     context: "remoteBranches"
     description: "Herdr: open or create worktree of remote branch, closing this popup"
     output: terminal
-  - key: "d"
-    command: 'set -e GIT_DIR GIT_WORK_TREE; set primary (git -C "{{.SelectedWorktree.Path}}" worktree list --porcelain | head -1 | string replace "worktree " ""); and wt remove --foreground -C "$primary" "{{.SelectedWorktree.Path}}"'
-    context: "worktrees"
-    description: "Worktrunk: remove worktree"
-    output: terminal
-    prompts:
-      - type: confirm
-        title: "Remove worktree"
-        body: "Remove '{{.SelectedWorktree.Branch}}'?"

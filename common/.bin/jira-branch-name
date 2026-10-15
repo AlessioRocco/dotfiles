@@ -48,14 +48,10 @@ issue_key_lower=$(tr '[:upper:]' '[:lower:]' <<<"$issue_key")
 
 # ── existing ─────────────────────────────────────────────────────────────────
 
-# Staged for latency: a worktree already open, or a local branch without one,
-# is a plain local ref — `git for-each-ref` answers that in milliseconds. Only
-# when nothing local matches (a colleague's branch, or one pushed from
-# another machine) do we pay for `wt list --remotes`, which needs a live look
-# at the remote and is measurably slower. Either way, a plain `wt switch` of
-# the result is the one idempotent path in: it enters an existing worktree,
-# creates one for a branch that has none, or creates a tracking worktree for
-# a remote-only branch.
+# Local branches first, a worktree's included, then remote-tracking ones (a
+# colleague's branch, or one pushed from another machine), as of the last
+# fetch. Always the bare branch name: callers find the remote ref to base a
+# tracking branch on themselves.
 existing() {
   local local_re="^${prefix}/${issue_key_lower}/"
   local branch
@@ -63,18 +59,9 @@ existing() {
     2>/dev/null | grep -E "$local_re" | head -n1) || true
 
   if [[ -z $branch ]]; then
-    # Remote-only rows list as "<remote>/arocco/<key>/<slug>"; the regex
-    # matches that form too, and the sed strips the leading remote name
-    # back off, so `wt switch` always gets the bare local branch name it
-    # expects.
-    local match_re="(^|/)${prefix}/${issue_key_lower}/"
-    local jq_filter='first(.[] | select(.branch != null'
-    jq_filter+=' and (.branch | test($re))) | .branch) // empty'
-    local rows
-    rows=$(wt list --format json --remotes 2>/dev/null) \
-      || die "wt list --remotes failed"
-    branch=$(jq -r --arg re "$match_re" "$jq_filter" <<<"$rows")
-    branch=$(sed -E "s#^.*/(${prefix}/)#\\1#" <<<"$branch")
+    # lstrip=3 drops "refs/remotes/<remote>/", leaving the bare name.
+    branch=$(git for-each-ref --format='%(refname:lstrip=3)' refs/remotes/ \
+      2>/dev/null | grep -E "$local_re" | head -n1) || true
   fi
 
   printf '%s\n' "$branch"
@@ -91,9 +78,8 @@ fallback_slug() {
     | sed -E 's/-+$//'
 }
 
-# The slug comes from the local Claude CLI in headless print mode, using the
-# same flag spelling as worktrunk's own commit-message hook (tuned for this
-# exact latency profile: ~2.5s/call). Wrapped in a 5s timeout; on timeout or
+# The slug comes from the local Claude CLI in headless print mode, with
+# flags tuned for latency (~2.5s/call). Wrapped in a 5s timeout; on timeout or
 # any failure it falls back to a deterministic slugification of the summary,
 # so a name always comes back.
 propose() {

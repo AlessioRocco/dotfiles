@@ -7,25 +7,33 @@ git:
   diffRenderers:
     - colorArg: always
       command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+# Same root as herdr's worktrees.directory; add <repo>/<branch> by hand.
+worktree:
+  defaultPath: "~/code/.worktrees"
+# herdr only accepts the primary checkout as --cwd ($repo below), and
+# lazygit's GIT_DIR would point git at the wrong worktree.
 customCommands:
   - key: "n"
-    command: 'wt -C "{{.SelectedWorktree.Path}}" switch --create --no-cd --base @ "{{index .PromptResponses 0}}"; and kill (ps -o ppid= -p %self | string trim)'
+    command: >-
+      set -e GIT_DIR GIT_WORK_TREE; set wt "{{.SelectedWorktree.Path}}"; set repo (git -C $wt worktree list --porcelain | string replace -rf '^worktree ' '')[1]; set b "{{index .PromptResponses 0}}"; set out (herdr worktree open --cwd $repo --branch $b --focus 2>&1); or if echo $out | jq -e '.error.code == "worktree_not_found"' >/dev/null; herdr worktree create --cwd $repo --branch $b --base (git -C $wt rev-parse HEAD) --focus >/dev/null; else; echo $out; false; end; and kill (ps -o ppid= -p %self | string trim)
     context: "worktrees"
-    description: "Worktrunk: create worktree from selected, closing this popup"
+    description: "Herdr: create worktree from selected, closing this popup"
     output: terminal
     prompts:
       - type: input
         title: "New branch name"
         key: Branch
   - key: "<space>"
-    command: 'wt switch --no-cd "{{.SelectedWorktree.Branch}}"; and kill (ps -o ppid= -p %self | string trim)'
+    command: >-
+      set -e GIT_DIR GIT_WORK_TREE; set wt "{{.SelectedWorktree.Path}}"; set repo (git -C $wt worktree list --porcelain | string replace -rf '^worktree ' '')[1]; herdr worktree open --cwd $repo --path $wt --focus >/dev/null; and kill (ps -o ppid= -p %self | string trim)
     context: "worktrees"
-    description: "Worktrunk: open in herdr, closing this popup"
+    description: "Herdr: open worktree, closing this popup"
     output: terminal
   - key: "W"
-    command: 'wt switch --no-cd "{{.SelectedRemoteBranch.Name}}"; and kill (ps -o ppid= -p %self | string trim)'
+    command: >-
+      set -e GIT_DIR GIT_WORK_TREE; set repo (git worktree list --porcelain | string replace -rf '^worktree ' '')[1]; set b "{{.SelectedRemoteBranch.Name}}"; set out (herdr worktree open --cwd $repo --branch $b --focus 2>&1); or if echo $out | jq -e '.error.code == "worktree_not_found"' >/dev/null; herdr worktree create --cwd $repo --branch $b --base "{{.SelectedRemoteBranch.RemoteName}}/$b" --focus >/dev/null; else; echo $out; false; end; and kill (ps -o ppid= -p %self | string trim)
     context: "remoteBranches"
-    description: "Worktrunk: create worktree from remote branch, closing this popup"
+    description: "Herdr: open or create worktree of remote branch, closing this popup"
     output: terminal
   - key: "d"
     command: 'set -e GIT_DIR GIT_WORK_TREE; set primary (git -C "{{.SelectedWorktree.Path}}" worktree list --porcelain | head -1 | string replace "worktree " ""); and wt remove --foreground -C "$primary" "{{.SelectedWorktree.Path}}"'

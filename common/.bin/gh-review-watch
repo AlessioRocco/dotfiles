@@ -2,35 +2,30 @@
 #
 # Poll GitHub-wide for open, non-draft PRs where I'm requested to review.
 # For each one, derive its local checkout from `~/code/<owner>/<repo>` and,
-# only if that checkout actually exists, `wt switch pr:N` into it. When that
-# creates a new worktree (as opposed to finding one already open from a
-# previous run), register it as its own herdr workspace — labeled the same
-# way as gh-dash's "W" review command — and fire a herdr notification. A PR
+# only if that checkout actually exists, fetch the PR's head branch from
+# origin and have herdr open its worktree, or create it when there is none,
+# without focus — labeled the same way as gh-dash's "W" review command. Only
+# a fresh worktree gets a review session and a herdr notification. A PR
 # whose repo has no local checkout is skipped silently; there's nowhere to
-# put its worktree. Meant to run every 15m from Dagu
+# put its worktree. A PR from a fork is skipped with a log line: its branch
+# isn't on origin. Meant to run every 15m from Dagu
 # (linux/.config/dagu/dags/gh-review-watch.yaml).
 #
-# No separate "seen" state: `wt switch`'s own `.action` field (`created` vs
-# `existing`) is already exactly the signal needed, so there's nothing to
-# track that worktrunk doesn't already know. Closing the worktree while the
-# PR is still open review-requested means it reopens (and renotifies) next
-# run — deliberately; the alternative is a state file to keep in sync with
-# reality by hand.
+# No separate "seen" state: a worktree already on the PR's branch means a
+# previous run (or I) got there first, so it is left alone, closed
+# workspace included; otherwise only a `worktree_not_found` answer to
+# `herdr worktree open` leads to a create. Removing the worktree while the
+# PR is still open review-requested means it comes back (and renotifies)
+# next run — deliberately; the alternative is a state file to keep in sync
+# with reality by hand.
 #
 # Deliberately contains no repo names: the search is account-wide and the
 # checkout path is derived from the PR's own repository field, so this
 # script stays identical regardless of which (possibly client-confidential)
 # repos it ends up touching on a given machine.
 #
-# Deliberately leaves $HERDR_ENV unset: worktrunk's post-switch hook
-# (herdr-worktree-workspace) checks it and no-ops otherwise, so `wt switch`
-# below registers nothing on its own and this script's own `herdr worktree
-# open` call is the sole, unraced writer of the workspace label. Setting it
-# would reintroduce the race gh-dash's "W" keybinding needed a sleep to work
-# around, for no benefit here.
-#
 # Extends, rather than trusts, cron's PATH: cron gives jobs a minimal one
-# (often just /usr/bin:/bin) that wouldn't find gh/jq/wt/herdr, and crontab
+# (often just /usr/bin:/bin) that wouldn't find gh/jq/herdr, and crontab
 # NAME=value lines don't expand $HOME, so that couldn't be fixed there —
 # this covers Homebrew on both platforms, cargo, and ~/.local/bin.
 #
@@ -44,16 +39,17 @@
 # doesn't exist, so this is a no-op on a machine where `gh` doesn't need it
 # (e.g. Linux with a plaintext credential file already).
 #
-# `wt switch pr:N` still needs its own `git fetch` of the PR branch, which
-# authenticates through git's OWN credential helper — `osxkeychain` here —
-# hitting the identical session-less problem a second time, just one layer
-# lower. Routing that fetch through `gh auth git-credential` instead reuses
+# The `git fetch` of the PR branch authenticates through git's OWN
+# credential helper — `osxkeychain` here — hitting the identical
+# session-less problem a second time, just one layer lower. Routing that fetch through `gh auth git-credential` instead reuses
 # the same $GH_TOKEN, without touching the machine's actual git config (this
 # override is scoped to this process's environment only).
 
 set -uo pipefail
 
-export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+# Appended, not prepended, as in jira-start-watch: a caller's own PATH —
+# stubs in a test, above all — still wins.
+export PATH="$PATH:/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 TOKEN_FILE="$HOME/.config/gh-review-watch/token"
 [[ -z ${GH_TOKEN:-} && -f $TOKEN_FILE ]] && export GH_TOKEN="$(<"$TOKEN_FILE")"
@@ -62,7 +58,8 @@ export GIT_CONFIG_COUNT=1
 export GIT_CONFIG_KEY_0="credential.helper"
 export GIT_CONFIG_VALUE_0="!gh auth git-credential"
 
-CODE_DIR="$HOME/code"
+# Overridable so stubbed tests can point it at throwaway repos.
+CODE_DIR="${GH_REVIEW_WATCH_CODE_DIR:-$HOME/code}"
 
 # The skill that starts the review, kept out of the herdr agent prompt call
 # below and configurable via env var rather than hardcoded: which skill does
@@ -70,6 +67,10 @@ CODE_DIR="$HOME/code"
 # forked, or replaced), and a machine that wants a different one shouldn't
 # need to edit this script to get it.
 REVIEW_COMMAND="${GH_REVIEW_WATCH_COMMAND:-/mattpocock-skills:code-review}"
+
+log() {
+  echo "gh-review-watch: $*" >&2
+}
 
 prs=$(gh search prs --review-requested=@me --state=open --draft=false \
   --json number,title,repository 2>/dev/null) || exit 0
@@ -83,90 +84,102 @@ echo "$prs" | jq -c '.[]' | while IFS= read -r pr; do
   repo_path="$CODE_DIR/$repo"
   [[ -d $repo_path/.git ]] || continue
 
-  result=$(wt -C "$repo_path" switch "pr:$number" --no-cd --yes --format=json 2>/dev/null) || continue
-  [[ $(jq -r .action <<<"$result") == created ]] || continue
+  pr_info=$(gh pr view "$number" -R "$repo" \
+    --json headRefName,isCrossRepository 2>/dev/null) || continue
+  if [[ $(jq -r .isCrossRepository <<<"$pr_info") == true ]]; then
+    log "$repo#$number: from a fork, skipping"
+    continue
+  fi
+  branch=$(jq -r .headRefName <<<"$pr_info")
 
-  path=$(jq -r .path <<<"$result")
-  branch=$(jq -r .branch <<<"$result")
-  [[ -z $path || $path == null ]] && continue
+  git -C "$repo_path" worktree list --porcelain \
+    | grep -qxF "branch refs/heads/$branch" && continue
 
-  root_ws=$(herdr worktree list --cwd "$path" --json 2>/dev/null \
-    | jq -r '.result.source.source_workspace_id // empty')
+  git -C "$repo_path" fetch --quiet origin "$branch" \
+    || { log "$repo#$number: fetching $branch failed"; continue; }
 
-  if [[ -n $root_ws ]]; then
-    open_result=$(herdr worktree open --workspace "$root_ws" --path "$path" \
-      --label "pr-$number · $branch" --no-focus --json 2>/dev/null)
+  label="pr-$number · $branch"
+  out=$(herdr worktree open --cwd "$repo_path" --branch "$branch" \
+    --label "$label" --no-focus 2>&1) && continue
+  if [[ $(jq -r '.error.code? // empty' <<<"$out" 2>/dev/null) \
+    != worktree_not_found ]]; then
+    log "$repo#$number: herdr worktree open failed: $out"
+    continue
+  fi
 
-    # `worktree open --json` hands back the freshly-opened pane directly as
-    # .result.root_pane.pane_id (confirmed live against a scratch worktree
-    # this session) — no need to go list panes for the common case. Kept as
-    # a fallback only in case that shape ever changes silently.
-    pane_id=$(jq -r '.result.root_pane.pane_id // empty' <<<"$open_result")
-    if [[ -z $pane_id ]]; then
-      new_ws=$(jq -r '.result.workspace.workspace_id // empty' <<<"$open_result")
-      [[ -n $new_ws ]] && pane_id=$(herdr pane list --workspace "$new_ws" 2>/dev/null \
-        | jq -r '.result.panes[0].pane_id // empty')
-    fi
+  # Based on the fetched ref, so the new local branch tracks origin's.
+  out=$(herdr worktree create --cwd "$repo_path" --branch "$branch" \
+    --base "origin/$branch" --label "$label" --no-focus 2>&1) \
+    || { log "$repo#$number: herdr worktree create failed: $out"; continue; }
 
-    if [[ -n $pane_id ]]; then
-      # Herdr agent names must match [a-z][a-z0-9_-]{0,31} and be unique
-      # among live agents — derive one deterministically from the repo and
-      # PR number rather than tracking names anywhere.
-      #
-      # The 32-char budget is spent suffix-first, and the *repo slug* is what
-      # gets trimmed: a repo slug alone can already sit at the limit (a
-      # long owner/repo pair like "someorganization/storefront-app" is
-      # already 31 chars as a slug), so truncating the whole concatenated
-      # string instead silently drops "-pr-$number" and every PR on that
-      # repo lands on the identical name. That's not a cosmetic collision —
-      # the second PR's `agent start` fails with agent_name_taken (not
-      # transient, so the retry below just exhausts), leaving a worktree
-      # and a Herdr tab with no Claude session behind them. Confirmed live
-      # on two PRs of the same repo, which both collapsed to the same
-      # "<slug>-pr" prefix. Trimming the slug keeps the PR number whole, so
-      # distinct PRs can't collide.
-      suffix="-pr-$number"
+  # `worktree create` hands back the freshly-opened pane directly as
+  # .result.root_pane.pane_id — no need to go list panes for the common
+  # case. Kept as a fallback only in case that shape ever changes silently.
+  pane_id=$(jq -r '.result.root_pane.pane_id // empty' <<<"$out")
+  if [[ -z $pane_id ]]; then
+    new_ws=$(jq -r '.result.workspace.workspace_id // empty' <<<"$out")
+    [[ -n $new_ws ]] && pane_id=$(herdr pane list --workspace "$new_ws" 2>/dev/null \
+      | jq -r '.result.panes[0].pane_id // empty')
+  fi
 
-      # Leading non-letters are stripped (and an all-numeric owner falls
-      # back to "pr") so the first character is always a lowercase letter.
-      repo_slug=$(tr '[:upper:]' '[:lower:]' <<<"${repo//\//-}" \
-        | sed -E 's/[^a-z0-9_-]/-/g; s/^[^a-z]*//')
-      repo_slug=${repo_slug:-pr}
+  if [[ -n $pane_id ]]; then
+    # Herdr agent names must match [a-z][a-z0-9_-]{0,31} and be unique
+    # among live agents — derive one deterministically from the repo and
+    # PR number rather than tracking names anywhere.
+    #
+    # The 32-char budget is spent suffix-first, and the *repo slug* is what
+    # gets trimmed: a repo slug alone can already sit at the limit (a
+    # long owner/repo pair like "someorganization/storefront-app" is
+    # already 31 chars as a slug), so truncating the whole concatenated
+    # string instead silently drops "-pr-$number" and every PR on that
+    # repo lands on the identical name. That's not a cosmetic collision —
+    # the second PR's `agent start` fails with agent_name_taken (not
+    # transient, so the retry below just exhausts), leaving a worktree
+    # and a Herdr tab with no Claude session behind them. Confirmed live
+    # on two PRs of the same repo, which both collapsed to the same
+    # "<slug>-pr" prefix. Trimming the slug keeps the PR number whole, so
+    # distinct PRs can't collide.
+    suffix="-pr-$number"
 
-      # Clamped at 1 purely so the arithmetic can't go negative and hand
-      # bash's ${var:0:len} a negative length; a PR number would need ~28
-      # digits to get anywhere near that.
-      slug_budget=$((32 - ${#suffix}))
-      ((slug_budget < 1)) && slug_budget=1
+    # Leading non-letters are stripped (and an all-numeric owner falls
+    # back to "pr") so the first character is always a lowercase letter.
+    repo_slug=$(tr '[:upper:]' '[:lower:]' <<<"${repo//\//-}" \
+      | sed -E 's/[^a-z0-9_-]/-/g; s/^[^a-z]*//')
+    repo_slug=${repo_slug:-pr}
 
-      agent_name="${repo_slug:0:$slug_budget}$suffix"
+    # Clamped at 1 purely so the arithmetic can't go negative and hand
+    # bash's ${var:0:len} a negative length; a PR number would need ~28
+    # digits to get anywhere near that.
+    slug_budget=$((32 - ${#suffix}))
+    ((slug_budget < 1)) && slug_budget=1
 
-      # Both calls below are best-effort: a failure here must never
-      # `continue` past the "review requested" notification below, and the
-      # prompt is deliberately fired without --wait — this loop moves on to
-      # the next PR immediately rather than blocking on Alessio's
-      # interactive session, which he'll come back to later on his own time.
-      #
-      # The pane `worktree open` just handed back is often still finishing
-      # shell init and briefly rejects `agent start` with agent_pane_busy
-      # ("not an available shell") — confirmed live, clearing within about
-      # one retry. A short bounded retry absorbs that without risking an
-      # indefinite wait.
-      agent_started=false
-      for _ in 1 2 3 4 5 6 7 8 9 10; do
-        herdr agent start "$agent_name" --kind claude --pane "$pane_id" >/dev/null 2>&1 \
-          && { agent_started=true; break; }
-        sleep 0.3
-      done
+    agent_name="${repo_slug:0:$slug_budget}$suffix"
 
-      # $REVIEW_COMMAND is sent unconditionally, identically, for every
-      # repo — no per-repo prompt logic belongs here. Unlike the old
-      # per-repo gitignored .claude/commands/pr-review.md convention it
-      # replaces, a marketplace skill is available regardless of repo, so
-      # there's no "unknown command" fallback signal to rely on here
-      # anymore.
-      [[ $agent_started == true ]] && herdr agent prompt "$agent_name" "$REVIEW_COMMAND" >/dev/null 2>&1
-    fi
+    # Both calls below are best-effort: a failure here must never
+    # `continue` past the "review requested" notification below, and the
+    # prompt is deliberately fired without --wait — this loop moves on to
+    # the next PR immediately rather than blocking on Alessio's
+    # interactive session, which he'll come back to later on his own time.
+    #
+    # The pane `worktree create` just handed back is often still finishing
+    # shell init and briefly rejects `agent start` with agent_pane_busy
+    # ("not an available shell") — confirmed live, clearing within about
+    # one retry. A short bounded retry absorbs that without risking an
+    # indefinite wait.
+    agent_started=false
+    for _ in 1 2 3 4 5 6 7 8 9 10; do
+      herdr agent start "$agent_name" --kind claude --pane "$pane_id" >/dev/null 2>&1 \
+        && { agent_started=true; break; }
+      sleep 0.3
+    done
+
+    # $REVIEW_COMMAND is sent unconditionally, identically, for every
+    # repo — no per-repo prompt logic belongs here. Unlike the old
+    # per-repo gitignored .claude/commands/pr-review.md convention it
+    # replaces, a marketplace skill is available regardless of repo, so
+    # there's no "unknown command" fallback signal to rely on here
+    # anymore.
+    [[ $agent_started == true ]] && herdr agent prompt "$agent_name" "$REVIEW_COMMAND" >/dev/null 2>&1
   fi
 
   title=$(jq -r .title <<<"$pr")

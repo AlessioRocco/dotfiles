@@ -63,7 +63,7 @@ keybindings:
     - key: W
       name: review in worktree
       command: >
-        set result (wt -C {{.RepoPath}} switch pr:{{.PrNumber}} --no-cd --format=json); and set path (echo $result | jq -r .path); and set branch (echo $result | jq -r .branch); and sleep 1; and set root_ws (herdr worktree list --cwd "$path" --json | jq -r ".result.source.source_workspace_id"); and herdr worktree open --workspace "$root_ws" --path "$path" --label "pr-{{.PrNumber}} · $branch" --focus
+        set b {{.HeadRefName}}; set label "pr-{{.PrNumber}} · $b"; git -C {{.RepoPath}} fetch --quiet origin $b; and begin; set out (herdr worktree open --cwd {{.RepoPath}} --branch $b --label $label --focus 2>&1); or if echo $out | jq -e '.error.code == "worktree_not_found"' >/dev/null; herdr worktree create --cwd {{.RepoPath}} --branch $b --base origin/$b --label $label --focus >/dev/null; else; echo $out; false; end; end
 repoPaths: {}
 theme:
   ui:

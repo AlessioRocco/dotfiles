@@ -17,6 +17,11 @@ tab_bar_right = [
   { type = "command", command = 'b=$(git -C "${HERDR_ACTIVE_PANE_CWD:-.}" branch --show-current 2>/dev/null) && [ -n "$b" ] && printf " %s\342\240\200\n" "$b"', interval_seconds = 5, timeout_seconds = 1 },
 ]
 
+# New worktrees land in <directory>/<repo>/<branch-slug>, next to my code.
+# lazygit's worktree.defaultPath suggests the same root.
+[worktrees]
+directory = "~/code/.worktrees"
+
 [experimental]
 switch_ascii_input_source_in_prefix = true
 

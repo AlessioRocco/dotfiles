@@ -12,15 +12,12 @@
 # embed directly in a script. Called out because a future reader will see
 # television everywhere else in this repo and wonder.
 #
-# Resuming relies on `wt switch` being idempotent where `wt switch --create`
-# is not: a plain switch enters an existing worktree, creates one for a
-# branch that has none, or creates a tracking worktree for a remote-only
-# branch — so an `arocco/<key>/` branch already existing skips naming
-# entirely and goes straight through that path.
-#
-# Worktree creation is delegated whole to `wt`: its own post-switch hook
-# (herdr-worktree-workspace) opens and focuses the editor workspace, and
-# duplicating that here would double-register it.
+# Resuming and starting go through the same open-or-create: `herdr worktree
+# open --branch` lands in the branch's worktree when it has one, and only a
+# `worktree_not_found` answer falls through to `herdr worktree create`. So an
+# `arocco/<key>/` branch already existing skips naming entirely. herdr
+# places new worktrees under its worktrees.directory and focuses the
+# workspace; git-worktree-setup prepares the checkout.
 #
 # Naming — existing-branch matching and slug generation — lives in
 # jira-branch-name, shared with jira-start-watch: the two must agree on what
@@ -29,15 +26,14 @@
 # from (model or deterministic fallback).
 #
 # `--dry-run` is the test seam: it resolves the full branch name and prints
-# the `wt` command that would run, without side effects, so query handling,
-# slug generation/fallback, existing-branch matching and name assembly
-# (jira-branch-name included) can all be exercised by stubbing acli/claude/wt
-# earlier on PATH.
+# the herdr commands that would run, without side effects, so query
+# handling, slug generation/fallback, existing-branch matching and name
+# assembly (jira-branch-name included) can all be exercised by stubbing
+# acli/claude/herdr earlier on PATH.
 #
 # Requires the herdr environment marker, like herdr-workspace-setup: a script
 # on PATH can't change its parent shell's directory, so landing in the
-# worktree only works through worktrunk's own post-switch hook, which is
-# herdr-only.
+# worktree only works by focusing its herdr workspace.
 
 set -euo pipefail
 
@@ -94,8 +90,8 @@ fi
 command -v acli >/dev/null 2>&1 \
   || die "acli not found on PATH (install acli, Atlassian CLI)"
 
-command -v wt >/dev/null 2>&1 \
-  || die "wt (worktrunk) not found on PATH"
+command -v herdr >/dev/null 2>&1 \
+  || die "herdr not found on PATH"
 
 [[ -n ${JIRA_PROJECT:-} ]] \
   || die "JIRA_PROJECT not set for this repo"
@@ -160,28 +156,58 @@ fi
 # symlink alike.
 branch_name="$(dirname "$(readlink -f "$0")")/jira-branch-name"
 
+# herdr only accepts the primary worktree as the source of an open or a
+# create: from a linked one it answers `linked_worktree_source`. The first
+# entry of `git worktree list` is always the primary.
+repo=$(git worktree list --porcelain | sed -n '1s/^worktree //p')
+
+# Open the branch's worktree, focused, or create it when there is none.
+# Detection goes by herdr's JSON error code, not its exit status.
+open_or_create() {
+  local branch=$1 base=$2 out
+  local -a create=(herdr worktree create --cwd "$repo" --branch "$branch")
+  [[ -n $base ]] && create+=(--base "$base")
+  create+=(--focus)
+
+  if [[ $dry_run == true ]]; then
+    echo "$branch"
+    echo "Would run: herdr worktree open --cwd $repo --branch $branch --focus"
+    echo "  or, with no worktree: ${create[*]}"
+    exit 0
+  fi
+
+  out=$(herdr worktree open --cwd "$repo" --branch "$branch" --focus 2>&1) \
+    && exit 0
+  if [[ $(jq -r '.error.code? // empty' <<<"$out" 2>/dev/null) \
+    == worktree_not_found ]]; then
+    out=$("${create[@]}" 2>&1) && exit 0
+  fi
+  die "$out"
+}
+
 existing_branch=$("$branch_name" existing "$issue_key") || exit 1
 
 if [[ -n $existing_branch ]]; then
-  if [[ $dry_run == true ]]; then
-    echo "$existing_branch"
-    echo "Would run: wt switch $existing_branch"
-    exit 0
-  fi
-  exec wt switch "$existing_branch"
+  # Remote-only: base it on the remote ref, so the new local branch tracks
+  # it. A local branch needs no base.
+  base=""
+  git show-ref --verify --quiet "refs/heads/$existing_branch" \
+    || base=$(git for-each-ref --format='%(refname:short)' \
+      "refs/remotes/*/$existing_branch" | head -n1)
+  open_or_create "$existing_branch" "$base"
 fi
 
 # ── Propose a name for a fresh issue ─────────────────────────────────────────
 
 proposed=$("$branch_name" propose "$issue_key") || exit 1
 
-if [[ $dry_run == true ]]; then
-  echo "$proposed"
-  echo "Would run: wt switch --create $proposed --base @"
-  exit 0
-fi
+# Based on this checkout's HEAD, resolved here rather than left to herdr,
+# which may resolve it against the repo's primary checkout.
+head=$(git rev-parse HEAD)
+
+[[ $dry_run == true ]] && open_or_create "$proposed" "$head"
 
 read -e -i "$proposed" -p "Branch name: " final_name || exit 0
 [[ -z $final_name ]] && exit 0
 
-exec wt switch --create "$final_name" --base @
+open_or_create "$final_name" "$head"

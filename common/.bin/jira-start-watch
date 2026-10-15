@@ -1,16 +1,16 @@
 #!/bin/bash
 #
 # Poll Jira for issues assigned to me that are In Progress. For each one with
-# no worktree yet, create it (named by jira-branch-name, exactly as
-# jira-worktree-start would), register it as its own herdr workspace, start
-# an interactive Claude session in it and send it $GRILL_COMMAND plus the
+# no worktree yet, create it through herdr (named by jira-branch-name,
+# exactly as jira-worktree-start would) without focusing it, start an
+# interactive Claude session in it and send it $GRILL_COMMAND plus the
 # issue key — so the grilling is already underway by the time I open the
 # tab. Meant to run every 5 minutes from Dagu
 # (linux/.config/dagu/dags/jira-start-watch.yaml).
 #
 # Same mechanics as gh-review-watch, whose header documents the herdr side
-# (the agent_pane_busy retry, `worktree open --json`'s root pane, agent
-# prompts fired without --wait). Only what differs is explained here.
+# (the agent_pane_busy retry, the root pane herdr hands back, agent prompts
+# fired without --wait). Only what differs is explained here.
 #
 # Deliberately contains no Jira projects, server or repo names: the repos to
 # poll are discovered, not listed. A main checkout under ~/code/<owner>/<repo>
@@ -23,8 +23,8 @@
 # found wins and the other is logged and skipped: one issue, one worktree.
 #
 # No separate "seen" state: an existing worktree for the issue is the signal
-# that it has been handled, so there is nothing to track that worktrunk
-# doesn't already know. The check is deliberately broader than
+# that it has been handled, so there is nothing to track that git doesn't
+# already know. The check is deliberately broader than
 # jira-branch-name's own `arocco/<key>/` matching — any worktree whose branch
 # or path mentions the key counts — because a duplicate worktree (and a
 # second grill session) is far worse than a skipped issue, and branches
@@ -32,11 +32,8 @@
 # issue for the same reason. Removing the worktree while the issue is still
 # In Progress means it comes back next run — deliberately.
 #
-# $HERDR_ENV is stripped from `wt switch` only (not from this process, so
-# the herdr CLI calls still see whatever they need): worktrunk's post-switch
-# hook (herdr-worktree-workspace) would otherwise register the workspace
-# itself and race this script's own `herdr worktree open` over the label.
-# Under Dagu it is unset anyway; this covers a run from a herdr pane.
+# The session only starts when `herdr worktree create` ran: an open of a
+# worktree that already existed means someone got there first.
 #
 # Dagu steps get no login-shell environment: PATH is extended
 # here, and each repo's Jira env comes from `mise env` in that checkout, the
@@ -45,7 +42,8 @@
 #
 # `--dry-run` is the test seam: it discovers repos, queries Jira and resolves
 # each issue's branch (read-only calls only), and prints what it would do
-# instead of creating worktrees, workspaces or sessions.
+# instead of creating worktrees, workspaces or sessions. herdr is only asked
+# for real on a real run, so the printed command names both outcomes.
 # $JIRA_START_WATCH_CODE_DIR points discovery elsewhere for stubbed tests.
 
 set -uo pipefail
@@ -128,25 +126,16 @@ agent_name_for() {
   fi
 }
 
-# Everything after the worktree exists: workspace, session, grill command.
+# Everything after `herdr worktree create`: session, grill command.
 # Best-effort throughout, like gh-review-watch — a failure here must never
 # stop the notification.
 start_session() {
-  local path=$1 branch=$2 key_upper=$3 key_lower=$4
-  local root_ws open_result pane_id new_ws agent_name
+  local created=$1 key_upper=$2 key_lower=$3
+  local pane_id new_ws agent_name
 
-  root_ws=$(herdr worktree list --cwd "$path" --json 2>/dev/null \
-    | jq -r '.result.source.source_workspace_id // empty')
-  [[ -z $root_ws ]] && { log "$key_upper: repo not open in herdr"; return 1; }
-
-  # Labeled with the bare branch, as herdr-worktree-workspace does for a
-  # worktree created by hand, so the sidebar looks the same either way.
-  open_result=$(herdr worktree open --workspace "$root_ws" --path "$path" \
-    --label "$branch" --no-focus --json 2>/dev/null)
-
-  pane_id=$(jq -r '.result.root_pane.pane_id // empty' <<<"$open_result")
+  pane_id=$(jq -r '.result.root_pane.pane_id // empty' <<<"$created")
   if [[ -z $pane_id ]]; then
-    new_ws=$(jq -r '.result.workspace.workspace_id // empty' <<<"$open_result")
+    new_ws=$(jq -r '.result.workspace.workspace_id // empty' <<<"$created")
     [[ -n $new_ws ]] && pane_id=$(herdr pane list --workspace "$new_ws" \
       2>/dev/null | jq -r '.result.panes[0].pane_id // empty')
   fi
@@ -171,19 +160,19 @@ start_session() {
 # One issue, inside its repo's checkout with its mise env loaded.
 handle_issue() {
   local repo=$1 repo_path=$2 key=$3 summary=$4
-  local key_upper key_lower worktrees key_re branch create=false result path
+  local key_upper key_lower worktrees key_re branch base="" out
 
   key_upper=$(tr '[:lower:]' '[:upper:]' <<<"$key")
   key_lower=$(tr '[:upper:]' '[:lower:]' <<<"$key")
 
-  worktrees=$(wt list --format json 2>/dev/null) \
-    || { log "$key_upper: wt list failed, skipping"; return; }
+  # Every worktree's path and branch, one per line.
+  worktrees=$(git worktree list --porcelain 2>/dev/null \
+    | sed -n 's#^worktree ##p; s#^branch refs/heads/##p') \
+    || { log "$key_upper: git worktree list failed, skipping"; return; }
 
   # A key followed by a digit is a different issue (PROJ-12 vs PROJ-123).
   key_re="(^|[^a-z0-9])${key_lower}([^0-9]|$)"
-  if jq -e --arg re "$key_re" 'any(.[];
-      ((.branch // "") + " " + (.path // "")) | ascii_downcase | test($re))' \
-    <<<"$worktrees" >/dev/null; then
+  if grep -Eiq "$key_re" <<<"$worktrees"; then
     report "$key_upper: worktree already exists in $repo, skipping"
     return
   fi
@@ -191,32 +180,39 @@ handle_issue() {
   branch=$("$branch_name" existing "$key_upper") || return
   if [[ -z $branch ]]; then
     branch=$("$branch_name" propose "$key_upper") || return
-    create=true
+  elif ! git show-ref --verify --quiet "refs/heads/$branch"; then
+    # Remote-only: base it on the remote ref, so the local branch tracks it.
+    base=$(git for-each-ref --format='%(refname:short)' \
+      "refs/remotes/*/$branch" | head -n1)
   fi
 
-  local -a switch_args=(switch "$branch")
-  [[ $create == true ]] && switch_args=(switch --create "$branch")
-  switch_args+=(--no-cd --yes --format=json)
+  local -a create=(worktree create --cwd "$repo_path" --branch "$branch")
+  [[ -n $base ]] && create+=(--base "$base")
+  create+=(--no-focus)
 
   if [[ $dry_run == true ]]; then
-    report "$key_upper: would run in $repo: wt ${switch_args[*]}"
+    report "$key_upper: would run in $repo:" \
+      "herdr worktree open --cwd $repo_path --branch $branch --no-focus," \
+      "or with no worktree: herdr ${create[*]}"
     report "$key_upper: then start $(agent_name_for "$key_lower")" \
       "with: $GRILL_COMMAND $key_upper"
     return
   fi
 
-  result=$(env -u HERDR_ENV wt "${switch_args[@]}" 2>/dev/null) \
-    || { log "$key_upper: wt switch $branch failed"; return; }
-
-  # Anything but `created` means a worktree was already there after all:
-  # never start a second session on it.
-  [[ $(jq -r .action <<<"$result") == created ]] || return
-
-  path=$(jq -r .path <<<"$result")
-  [[ -z $path || $path == null ]] && return
+  # Opened means a worktree was already there after all: never start a
+  # second session on it. Only `worktree_not_found` falls through.
+  out=$(herdr worktree open --cwd "$repo_path" --branch "$branch" \
+    --no-focus 2>&1) && return
+  if [[ $(jq -r '.error.code? // empty' <<<"$out" 2>/dev/null) \
+    != worktree_not_found ]]; then
+    log "$key_upper: herdr worktree open $branch failed: $out"
+    return
+  fi
+  out=$(herdr "${create[@]}" 2>&1) \
+    || { log "$key_upper: herdr worktree create $branch failed: $out"; return; }
 
   local title="Worktree pronto: $key_upper"
-  start_session "$path" "$branch" "$key_upper" "$key_lower" \
+  start_session "$out" "$key_upper" "$key_lower" \
     && title="Grill avviato: $key_upper"
 
   herdr notification show "$title" --body "$repo — $summary" \
@@ -245,9 +241,8 @@ handle_repo() {
     <<<"$out" 2>/dev/null) \
     || { log "$repo: unexpected acli output: $out"; return; }
 
-  # Rows come in on fd 3 and each issue runs with stdin closed: `wt switch`
-  # runs project hooks, and anything in them that reads stdin would
-  # otherwise swallow the remaining rows.
+  # Rows come in on fd 3 and each issue runs with stdin closed: anything
+  # in it that reads stdin would otherwise swallow the remaining rows.
   local key summary
   while IFS='|' read -r -u 3 key summary; do
     key=${key//[[:space:]]/}

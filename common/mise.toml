@@ -8,6 +8,12 @@ acli = "latest"
 heroku = "latest"
 "npm:cf" = { version = "latest", prerelease = "true" }
 
+# Google Workspace CLI (gws). Not in mise's registry, and AUR's `gws` is an
+# unrelated git helper, so pull the release binary straight from GitHub.
+"github:googleworkspace/cli" = "latest"
+# `gws auth setup` shells out to gcloud to create the OAuth client.
+gcloud = "latest"
+
 [env]
 # claude.ai connectors (Gmail, Slack, …) stay off in Claude Code by default;
 # repos that need them set this to true in their own mise.toml.

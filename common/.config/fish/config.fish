@@ -80,9 +80,6 @@ abbr bi "bundle install"
 abbr bu "bundle update"
 abbr bo "bundle open"
 
-# Noctalia
-abbr noctalia-export "noctalia config export > ~/.config/noctalia/config.toml"
-
 # Herdr
 abbr s herdr-workspace-setup
 

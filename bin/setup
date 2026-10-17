@@ -33,6 +33,8 @@ PRIVATE_DIR="${PRIVATE_DIR:-$HOME/dotfiles-private}"
 PRIVATE_REPO="${PRIVATE_REPO:-git@github.com:AlessioRocco/dotfiles-private.git}"
 LOCCO_DIR="${LOCCO_DIR:-$HOME/locco}"
 LOCCO_REPO="${LOCCO_REPO:-git@github.com:AlessioRocco/locco.git}"
+SKILLS_DIR="${SKILLS_DIR:-$HOME/code/AlessioRocco/skills}"
+SKILLS_REPO="${SKILLS_REPO:-git@github.com:AlessioRocco/skills.git}"
 
 # Clone the repo if it is not already present.
 if [ ! -d "$DOTFILES_DIR" ]; then
@@ -186,6 +188,17 @@ if [ -d "$LOCCO_DIR" ]; then
   else
     fancy_echo 'npx not found; skipping locco agent skills install.'
     fancy_echo "Install Node, then run: (cd $LOCCO_DIR && npx @sentry/dotagents@latest install)"
+  fi
+fi
+
+# Clone Alessio's skills marketplace. Claude Code reads it from this local
+#   checkout (a `directory` marketplace in settings.json), so it must exist.
+#   Same SSH-key caveat as dotfiles-private above: a failure here only warns.
+if [ ! -d "$SKILLS_DIR" ]; then
+  fancy_echo "Cloning skills into $SKILLS_DIR ..."
+  if ! git clone "$SKILLS_REPO" "$SKILLS_DIR"; then
+    fancy_echo "Could not clone $SKILLS_REPO." >&2
+    fancy_echo "Add an SSH key with access to it and re-run this script." >&2
   fi
 fi
 

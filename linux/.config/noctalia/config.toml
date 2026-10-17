@@ -7,6 +7,9 @@ show_on_workspace_switch = false
 start = [ "control-center", "tray", "active_window" ]
 
     [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
     fill = "surface_variant"
     id = "g1"
     members = [ "network", "bluetooth" ]
@@ -14,6 +17,9 @@ start = [ "control-center", "tray", "active_window" ]
     padding = 6.0
 
     [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
     fill = "surface_variant"
     id = "g2"
     members = [ "battery", "power_profile", "caffeine" ]
@@ -21,6 +27,9 @@ start = [ "control-center", "tray", "active_window" ]
     padding = 6.0
 
     [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
     fill = "surface_variant"
     id = "g3"
     members = [ "network_rx", "network_tx", "cpu", "ram" ]
@@ -28,15 +37,24 @@ start = [ "control-center", "tray", "active_window" ]
     padding = 6.0
 
     [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
     fill = "surface_variant"
     id = "g4"
-    members = [ "clock", "weather" ]
+    members = [ "weather", "clock" ]
     opacity = 1.0
     padding = 6.0
 
-[calendar.account.nebulab]
-name = "Nebulab"
-type = "google"
+[brightness]
+enable_ddcutil = true
+
+[calendar]
+enabled = true
+
+    [calendar.account.nebulab]
+    name = "Nebulab"
+    type = "google"
 
 [dock]
 enabled = false
@@ -76,9 +94,9 @@ behavior_order = [ "Reduce Brightness", "Keyboard Brightness", "lock", "screen-o
 auto_locate = true
 
 [lockscreen_widgets]
-enabled = true
+enabled = false
 schema_version = 2
-widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-4", "lockscreen-login-box@eDP-1" ]
+widget_order = [ "lockscreen-login-box@FALLBACK", "lockscreen-login-box@DP-1", "lockscreen-login-box@eDP-1" ]
 
     [lockscreen_widgets.grid]
     cell_size = 16
@@ -86,11 +104,13 @@ widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-4", "lock
     visible = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
-    box_height = 70.0
-    box_width = 400.0
-    cx = 1720.0
-    cy = 1321.0
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1280.000244140625
+    cy = 1197.333740234375
     output = "DP-1"
+    placement_height = 1440.0
+    placement_width = 2560.0
     rotation = 0.0
     type = "login_box"
 
@@ -98,9 +118,17 @@ widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-4", "lock
         background_color = "surface_variant"
         background_opacity = 0.88
         background_radius = 12.0
+        center_password_text = false
         input_opacity = 1.0
         input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
         show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@DP-4"]
     box_height = 70.0
@@ -119,12 +147,41 @@ widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-4", "lock
         input_radius = 6.0
         show_login_button = true
 
-    [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
-    box_height = 70.0
-    box_width = 400.0
+    [lockscreen_widgets.widget."lockscreen-login-box@FALLBACK"]
+    box_height = 196.0
+    box_width = 810.0
     cx = 960.0
-    cy = 1081.0
+    cy = 898.0
+    output = "FALLBACK"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@FALLBACK".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 960.0
+    cy = 1037.3333740234375
     output = "eDP-1"
+    placement_height = 1280.0
+    placement_width = 1920.0
     rotation = 0.0
     type = "login_box"
 
@@ -132,9 +189,17 @@ widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-4", "lock
         background_color = "surface_variant"
         background_opacity = 0.88
         background_radius = 12.0
+        center_password_text = false
         input_opacity = 1.0
         input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
         show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
 
 [nightlight]
 enabled = true
@@ -148,58 +213,65 @@ hide_inactive = true
 [plugins]
 enabled = [ "noctalia/screen_recorder" ]
 
-[shell.launcher]
-categories = false
-compact = true
+[shell]
+launch_apps_as_systemd_services = true
 
-[shell.panel]
-launcher_position = "auto"
+    [shell.greeter_sync]
+    auto_sync = true
 
-[shell.screenshot]
-pipe_command = "satty -f -"
-pipe_to_command = true
-save_to_file = false
+    [shell.launcher]
+    categories = false
+    compact = true
 
-[[shell.session.actions]]
-action = "lock"
-countdown_seconds = 0.0
-enabled = true
-shortcut = "l"
-variant = "default"
+    [shell.panel]
+    launcher_position = "auto"
 
-[[shell.session.actions]]
-action = "logout"
-countdown_seconds = 0.0
-enabled = true
-shortcut = "o"
-variant = "default"
+    [shell.screenshot]
+    annotate = true
+    pipe_command = ""
+    pipe_to_command = false
+    save_to_file = false
 
-[[shell.session.actions]]
-action = "lock_and_suspend"
-countdown_seconds = 0.0
-enabled = true
-shortcut = "u"
-variant = "default"
+    [[shell.session.actions]]
+    action = "lock"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "l"
+    variant = "default"
 
-[[shell.session.actions]]
-action = "reboot"
-countdown_seconds = 0.0
-enabled = true
-shortcut = "r"
-variant = "default"
+    [[shell.session.actions]]
+    action = "logout"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "o"
+    variant = "default"
 
-[[shell.session.actions]]
-action = "shutdown"
-countdown_seconds = 0.0
-enabled = true
-shortcut = "s"
-variant = "destructive"
+    [[shell.session.actions]]
+    action = "lock_and_suspend"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "u"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "reboot"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "r"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "shutdown"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "s"
+    variant = "destructive"
 
 [theme]
 builtin = "Catppuccin"
 community_palette = "Catppuccin Macchiato Lavender"
 mode = "dark"
-source = "community"
+source = "builtin"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
@@ -224,7 +296,7 @@ path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
 path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
 
 [[wallpaper.favorite]]
-builtin_palette = "Ayu"
+builtin_palette = "Catppuccin"
 palette_source = "builtin"
 path = "/home/alessio/Pictures/Wallpapers/nebulab.jpg"
 theme_mode = "dark"

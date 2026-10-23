@@ -96,6 +96,16 @@ width = "90%"
 height = "90%"
 description = "Jira: pick an issue, get a worktree"
 
+# Custom actions for the current checkout; the lists live in
+# ~/.config/herdr/actions/ (see herdr-actions). Cancelling the picker exits 0.
+[[keys.command]]
+key = "prefix+a"
+type = "popup"
+command = 'herdr-actions; ec=$?; [ $ec -ne 0 ] && { echo; echo "[exit $ec] press enter to close"; read -r _; }; exit $ec'
+width = "80%"
+height = "60%"
+description = "Actions: run a custom action on the current worktree"
+
 [[keys.command]]
 key = "prefix+s"
 type = "plugin_action"

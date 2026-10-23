@@ -1,0 +1,234 @@
+#!/usr/bin/env bash
+#
+# Pick a custom action for the checkout you are looking at and run it. Bound
+# to a herdr popup chord; the action lists are plain files, read on every
+# open, so editing one needs no reload.
+#
+# Action files live in ${XDG_CONFIG_HOME:-~/.config}/herdr/actions/:
+#
+#   global       shown in every checkout
+#   <org>/<repo> shown when the checkout's origin remote is that GitHub repo,
+#                so every worktree of a repo gets the same actions
+#
+# One action per line, `label | command`, split on the first ` | `. Lines
+# starting with `#` and blank lines are ignored. Repo actions list first,
+# then global ones, each tagged with the file it came from.
+#
+# Commands run through bash with the checkout as cwd and this context
+# exported:
+#
+#   WORKTREE  checkout path
+#   REPO      org/repo, from the origin remote
+#   BRANCH    current branch
+#   TICKET    first `[a-z]+-[0-9]+` in the branch, uppercased
+#             (arocco/abc-123-some-feature -> ABC-123)
+#
+# The subcommands below keep action lines one-liners:
+#
+#   herdr-actions issue <base-url>  open <base-url>$TICKET
+#   herdr-actions pr                open the branch's pull request
+#   herdr-actions ci                pick one of the PR's checks, open it
+#   herdr-actions review-app        open the PR's latest deployment URL
+#   herdr-actions open <url>        open a URL, detached from the popup
+#   herdr-actions context           print the context above
+#   herdr-actions list              print the parsed actions
+#
+# `--dry-run` (or HERDR_ACTIONS_DRY_RUN=1) prints URLs instead of opening
+# them. It is exported, so actions that call back into this script inherit
+# it.
+
+set -uo pipefail
+
+actions_dir=${XDG_CONFIG_HOME:-$HOME/.config}/herdr/actions
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+if [[ ${1:-} == --dry-run ]]; then
+  export HERDR_ACTIONS_DRY_RUN=1
+  shift
+fi
+
+# Resolve the context once; actions calling back into this script inherit
+# it through HERDR_ACTIONS_CONTEXT instead of trusting whatever WORKTREE or
+# BRANCH the calling shell happens to have.
+load_context() {
+  if [[ -n ${HERDR_ACTIONS_CONTEXT:-} ]]; then
+    cd "$WORKTREE" || die "Cannot enter $WORKTREE."
+    return
+  fi
+
+  WORKTREE=$(herdr-worktree-current 2>/dev/null)
+  [[ -n $WORKTREE ]] || die "Not in a git checkout."
+  cd "$WORKTREE" || die "Cannot enter $WORKTREE."
+
+  local url
+  url=$(git remote get-url origin 2>/dev/null)
+  REPO=""
+  if [[ $url =~ github\.com[:/]([^/]+/[^/]+)$ ]]; then
+    REPO=${BASH_REMATCH[1]%.git}
+  fi
+
+  BRANCH=$(git branch --show-current 2>/dev/null)
+
+  TICKET=""
+  if [[ ${BRANCH,,} =~ [a-z]+-[0-9]+ ]]; then
+    TICKET=${BASH_REMATCH[0]^^}
+  fi
+
+  HERDR_ACTIONS_CONTEXT=1
+  export WORKTREE REPO BRANCH TICKET HERDR_ACTIONS_CONTEXT
+}
+
+open_url() {
+  if [[ -n ${HERDR_ACTIONS_DRY_RUN:-} ]]; then
+    printf 'would open: %s\n' "$1"
+  else
+    # setsid -f returns before its child has left the popup's session, so
+    # the hangup sent when the popup closes can still reach it: nohup
+    # covers that window.
+    nohup setsid -f xdg-open "$1" </dev/null >/dev/null 2>&1
+  fi
+}
+
+# Print `label<TAB>source<TAB>command` for every action in a file.
+read_actions() {
+  local file=$1 source=$2 line label command
+  [[ -f $file ]] || return 0
+  while IFS= read -r line || [[ -n $line ]]; do
+    [[ $line =~ ^[[:space:]]*(#|$) ]] && continue
+    if [[ $line != *' | '* ]]; then
+      printf 'herdr-actions: skipping malformed line in %s: %s\n' \
+        "$file" "$line" >&2
+      continue
+    fi
+    label=${line%% | *}
+    command=${line#* | }
+    label=$(sed -E 's/^[[:space:]]+|[[:space:]]+$//g' <<<"$label")
+    command=$(sed -E 's/^[[:space:]]+|[[:space:]]+$//g' <<<"$command")
+    printf '%s\t%s\t%s\n' "$label" "$source" "$command"
+  done <"$file"
+}
+
+all_actions() {
+  [[ -n $REPO ]] && read_actions "$actions_dir/$REPO" "$REPO"
+  read_actions "$actions_dir/global" global
+}
+
+require_pr() {
+  [[ -n $REPO ]] || die "No GitHub origin remote in $WORKTREE."
+  [[ -n $BRANCH ]] || die "Detached HEAD: no branch to find a PR for."
+  pr_json=$(gh pr view "$BRANCH" --repo "$REPO" --json number,url 2>/dev/null) \
+    || die "No pull request for $BRANCH in $REPO."
+  pr_number=$(jq -r .number <<<"$pr_json")
+  pr_url=$(jq -r .url <<<"$pr_json")
+}
+
+cmd_pick() {
+  local actions choice command
+  actions=$(all_actions)
+  [[ -n $actions ]] || die "No actions in $actions_dir (global or ${REPO:-no repo})."
+
+  choice=$(fzf --delimiter '\t' --with-nth '{1}  ({2})' \
+    --prompt 'action> ' --header "${REPO:-no repo}  ${BRANCH:-detached}  ${TICKET}" \
+    --reverse <<<"$actions")
+  [[ -n $choice ]] || exit 0
+
+  command=$(cut -f3 <<<"$choice")
+  exec bash -c "$command"
+}
+
+cmd_issue() {
+  [[ -n ${1:-} ]] || die "usage: herdr-actions issue <base-url>"
+  [[ -n $TICKET ]] || die "No ticket key in branch '${BRANCH:-}'."
+  open_url "$1$TICKET"
+}
+
+cmd_pr() {
+  require_pr
+  open_url "$pr_url"
+}
+
+# Checks with a link, failing first, then pending, then the rest.
+cmd_ci() {
+  local checks rows summary choice
+  require_pr
+  # gh exits non-zero while checks fail or are pending; the JSON is still
+  # there.
+  checks=$(gh pr checks "$pr_number" --repo "$REPO" \
+    --json name,link,bucket 2>/dev/null)
+  jq -e 'type == "array"' >/dev/null 2>&1 <<<"$checks" \
+    || die "No checks on PR #$pr_number."
+
+  summary=$(jq -r '
+    group_by(.bucket) | map("\(length) \(.[0].bucket)") | join(", ")
+  ' <<<"$checks")
+
+  rows=$(jq -r '
+    def rank: {fail: 0, cancel: 1, pending: 2, pass: 3, skipping: 4}[.] // 5;
+    map(select(.link != "")) | sort_by((.bucket | rank), .name)[]
+    | "\(.bucket)\t\(.name)\t\(.link)"
+  ' <<<"$checks")
+  [[ -n $rows ]] || die "PR #$pr_number: no checks with a link ($summary)."
+
+  choice=$(fzf --delimiter '\t' --with-nth '{1}  {2}' --select-1 \
+    --prompt 'check> ' --header "PR #$pr_number: $summary" \
+    --reverse <<<"$rows" | head -n1)
+  [[ -n $choice ]] || exit 0
+  open_url "$(cut -f3 <<<"$choice")"
+}
+
+cmd_review_app() {
+  local url
+  require_pr
+  # shellcheck disable=SC2016 # GraphQL variables, not shell ones.
+  url=$(gh api graphql -F owner="${REPO%%/*}" -F name="${REPO#*/}" \
+    -F number="$pr_number" -f query='
+      query($owner: String!, $name: String!, $number: Int!) {
+        repository(owner: $owner, name: $name) {
+          pullRequest(number: $number) {
+            timelineItems(last: 50, itemTypes: [DEPLOYED_EVENT]) {
+              nodes {
+                ... on DeployedEvent {
+                  deployment { latestStatus { environmentUrl } }
+                }
+              }
+            }
+          }
+        }
+      }' --jq '[.data.repository.pullRequest.timelineItems.nodes[]
+        | .deployment.latestStatus.environmentUrl // empty
+        | select(. != "")] | last // empty' 2>/dev/null)
+  [[ -n $url ]] || die "PR #$pr_number has no deployment with a URL."
+  open_url "$url"
+}
+
+cmd_context() {
+  printf 'WORKTREE=%s\nREPO=%s\nBRANCH=%s\nTICKET=%s\n' \
+    "$WORKTREE" "$REPO" "$BRANCH" "$TICKET"
+}
+
+subcommand=${1:-pick}
+shift $(($# > 0 ? 1 : 0))
+
+case $subcommand in
+  open)
+    [[ -n ${1:-} ]] || die "usage: herdr-actions open <url>"
+    open_url "$1"
+    exit
+    ;;
+  pick | issue | pr | ci | review-app | context | list) load_context ;;
+  *) die "usage: herdr-actions [--dry-run] [pick|issue|pr|ci|review-app|open|context|list]" ;;
+esac
+
+case $subcommand in
+  pick) cmd_pick ;;
+  issue) cmd_issue "$@" ;;
+  pr) cmd_pr ;;
+  ci) cmd_ci ;;
+  review-app) cmd_review_app ;;
+  context) cmd_context ;;
+  list) all_actions ;;
+esac

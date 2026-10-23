@@ -210,7 +210,11 @@ window_rule {
 window_rule {
   name = 'workspace-4',
   match = {
-    class = class_pattern(chrome_pwa_class 'GitHub', chrome_pwa_class 'Jira'),
+    class = class_pattern(
+      chrome_pwa_class 'GitHub',
+      chrome_pwa_class 'Jira',
+      chrome_pwa_class 'Linear'
+    ),
   },
   workspace = 4,
 }

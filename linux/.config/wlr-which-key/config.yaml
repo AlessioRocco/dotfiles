@@ -44,6 +44,9 @@ menu:
       - key: "j"
         desc: Jira
         cmd: chrome-pwa "Jira"
+      - key: "l"
+        desc: Linear
+        cmd: chrome-pwa "Linear"
       - key: "u"
         desc: Spotify
         cmd: focus-or-launch Spotify spotify

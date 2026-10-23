@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# chrome-open [URL...]
+# Open URLs in the most recently focused Chrome browser window. Chrome
+# puts new tabs in the window it last saw active, which is unreliable
+# on Wayland and becomes a brand new window when a PWA was last used,
+# so focus the right window first and let Chrome follow it.
+
+ADDRESS="$(
+  hyprctl clients -j 2>/dev/null |
+    jq -r '[.[] | select(.class == "google-chrome")]
+      | min_by(.focusHistoryID) | .address // empty'
+)"
+
+if [ -n "$ADDRESS" ]; then
+  hyprctl dispatch "hl.dsp.focus{window='address:${ADDRESS}'}" >/dev/null
+fi
+
+exec google-chrome-stable "$@"

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Chrome (focused window)
+Comment=Open links in the last focused Chrome window
+Exec=chrome-open %U
+Icon=google-chrome
+Type=Application
+Terminal=false
+NoDisplay=true
+Categories=Network;WebBrowser;
+MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;

@@ -186,7 +186,7 @@ hl.window_rule {
 hl.window_rule {
   name = 'workspace-1',
   match = {
-    class = '(com.mitchellh.ghostty|google-chrome)',
+    class = 'com.mitchellh.ghostty',
   },
   workspace = 1,
 }
@@ -258,6 +258,46 @@ window_rule {
   },
   workspace = 10,
 }
+
+-- Apps whose first window goes to the laptop screen (workspace 10)
+-- while an external monitor is connected, and to their default
+-- workspace otherwise. Later windows always use the default one.
+-- Decided on each open rather than with a static rule, so it follows
+-- hotplugs that hyprmoncfgd applies without a reload. A static
+-- workspace rule for these apps would still switch the external
+-- monitor to its workspace, so they must not have one.
+local laptop_screen_apps = {}
+laptop_screen_apps['google-chrome'] = 1
+local datadog_class = chrome_pwa_class 'Datadog'
+if datadog_class then
+  laptop_screen_apps[datadog_class] = 5
+end
+
+local function has_other_window(window)
+  for _, other in ipairs(hl.get_windows { class = window.class }) do
+    if other.class == window.class and other.address ~= window.address then
+      return true
+    end
+  end
+  return false
+end
+
+-- open_early moves the window before it maps.
+hl.on('window.open_early', function(window)
+  local default_workspace = laptop_screen_apps[window.class]
+  if not default_workspace then
+    return
+  end
+  local workspace = default_workspace
+  if #hl.get_monitors() > 1 and not has_other_window(window) then
+    workspace = 10
+  end
+  hl.dispatch(hl.dsp.window.move {
+    workspace = workspace,
+    window = window,
+    follow = false,
+  })
+end)
 
 -- Send the Noctalia settings window to the special:magic overlay
 

@@ -10,6 +10,10 @@ engine = "parakeet"
 [parakeet]
 # The int8 build is a quarter of the size of the fp32 one (670 MB).
 model = "parakeet-tdt-0.6b-v3-int8"
+# Load the model when recording starts and unload it at idle, so the
+# daemon doesn't hold ~1 GB between dictations. The first word after an
+# idle period waits for the model to load.
+on_demand_loading = true
 
 [audio]
 # The C922 webcam mic, so dictating doesn't switch the Bluetooth headset

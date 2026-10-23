@@ -86,6 +86,9 @@ menu:
       - key: "s"
         desc: Systemd Services
         cmd: quick_terminal systemctl-tui -s user
+      - key: "m"
+        desc: Monitors
+        cmd: quick_terminal hyprmoncfg
       - key: "n"
         desc: Night Light
         cmd: system-action nightlight toggle

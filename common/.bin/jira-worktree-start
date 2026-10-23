@@ -6,11 +6,12 @@
 # gh-dash are.
 #
 # fzf, not television: the picker is deliberately embedded in this script
-# (list and preview have to agree, so they live in one file), which removes
-# television's only advantage here — its themed, declarative channel config
-# — while fzf's --preview/--height/--bind make it the better primitive to
-# embed directly in a script. Called out because a future reader will see
-# television everywhere else in this repo and wonder.
+# (the list's columns and the key extraction have to agree, so they live in
+# one file), which removes television's only advantage here — its themed,
+# declarative channel config — while fzf's --height/--bind make it the
+# better primitive to embed directly in a script. Called out because a
+# future reader will see television everywhere else in this repo and
+# wonder.
 #
 # Resuming and starting go through the same open-or-create: `herdr worktree
 # open --branch` lands in the branch's worktree when it has one, and only a
@@ -112,12 +113,16 @@ if [[ -z $issue_key ]]; then
   jql="project = \"$JIRA_PROJECT\" AND ($where) ORDER BY updated ASC"
 
   json=$(acli jira workitem search --jql "$jql" \
-    --fields key,summary,status --json --paginate) \
+    --fields key,summary,status,labels --json --paginate) \
     || die "acli workitem search failed (logged out? acli jira auth login)"
 
-  # Flattened to key|summary|status rows, one line each.
-  rows=$(jq -r '.[] | [.key, (.fields.summary // ""), .fields.status.name // ""]
-    | map(gsub("\n"; " ")) | join("|")' <<<"$json") \
+  # Flattened to key|status|labels|summary rows, one line each. Summary goes
+  # last, being the only column whose width varies widely. An empty column
+  # becomes "-": column(1) would otherwise collapse it and shift the rest.
+  rows=$(jq -r '.[] | [.key, (.fields.status.name // ""),
+      ((.fields.labels // []) | join(",")), (.fields.summary // "")]
+    | map(gsub("[\n|]"; " ") | if . == "" then "-" else . end)
+    | join("|")' <<<"$json") \
     || die "unexpected acli output"
 
   if [[ -z $rows ]]; then
@@ -125,15 +130,12 @@ if [[ -z $issue_key ]]; then
     exit 0
   fi
 
-  # Realigned on whitespace (not the '|' delimiter) so fzf's default field
-  # splitting hands {1} the bare key, with no --delimiter of its own to keep
-  # in sync with the rows'.
-  list=$(awk -F'|' '{ printf "%-15s %-60s %s\n", $1, $2, $3 }' <<<"$rows")
+  # Aligned on whitespace (not the '|' delimiter), each column as wide as
+  # its longest entry, so the bare key stays the first word of a line.
+  list=$(column -t -s'|' <<<"$rows")
 
   selected=$(fzf --height=90% --layout=reverse --border \
-    --header 'Jira: pick an issue (Esc to cancel)' \
-    --preview 'acli jira workitem view {1} 2>/dev/null' \
-    --preview-window=right:60% <<<"$list") || true
+    --header 'Jira: pick an issue (Esc to cancel)' <<<"$list") || true
 
   [[ -z $selected ]] && exit 0
 

@@ -205,6 +205,7 @@ bindh('U', exec 'focus-or-launch Spotify spotify', 'Open Spotify')
 bindh('H', exec 'chrome-pwa "Home Assistant"', 'Open Home Assistant')
 bindh('K', exec 'chrome-pwa "Heroku"', 'Open Heroku')
 bindh('F', exec 'chrome-pwa "Cloudflare"', 'Open Cloudflare')
+bindh('D', exec 'chrome-pwa "Datadog"', 'Open Datadog')
 bindh('1', exec 'focus-or-launch 1password gtk-launch 1password', 'Open 1Password')
 bindh('2', exec 'chrome-pwa "Google Password Manager"', 'Open Google Password Manager')
 

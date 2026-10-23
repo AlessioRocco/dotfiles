@@ -59,6 +59,9 @@ menu:
       - key: "f"
         desc: Cloudflare
         cmd: chrome-pwa "Cloudflare"
+      - key: "d"
+        desc: Datadog
+        cmd: chrome-pwa "Datadog"
       - key: "1"
         desc: 1Password
         cmd: focus-or-launch 1password gtk-launch 1password

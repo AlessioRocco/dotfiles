@@ -30,6 +30,7 @@ prefix = "ctrl+a"
 settings = "prefix+,"
 copy_mode = "prefix+enter"
 new_worktree = ""
+remove_worktree = "prefix+shift+x"
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
 

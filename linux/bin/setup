@@ -97,10 +97,13 @@ if [ "$voxtype_restart" = true ]; then
 fi
 
 # Add user to the docker group (lets docker commands run without sudo) and
-# enable the service so it starts at boot.
+# enable the socket, so the daemon starts on the first docker command
+# instead of at boot. Disabling the service undoes the boot start on
+# machines set up before the switch.
 fancy_echo "Setting up Docker ..."
 sudo usermod -aG docker "$USER"
-sudo systemctl enable --now docker.service
+sudo systemctl disable docker.service
+sudo systemctl enable --now docker.socket
 
 # Install tools declared in the global mise config (~/.config/mise/config.toml),
 # which is already stowed by the time this script runs.

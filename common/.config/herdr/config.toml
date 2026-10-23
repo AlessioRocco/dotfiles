@@ -39,8 +39,8 @@ navigate_workspace_down = "j"
 [[keys.command]]
 key = "prefix+space"
 type = "shell"
-command = "herdr-open-space starship \"$HOME/starship\""
-description = "Space: starship"
+command = "herdr-open-space locco \"$HOME/locco\""
+description = "Space: locco"
 
 [[keys.command]]
 key = "prefix+period"
